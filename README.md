@@ -31,7 +31,7 @@ emd
 
 ## 构建与用户级安装（Linux）
 
-需要 Node.js 22.12+、npm、`setsid`（util-linux）及 `desktop-file-utils`，运行 Electron 需要图形会话和系统图形库。
+需要 Node.js 22.12+、npm、`setsid`（util-linux）、ImageMagick（`magick`）及 `desktop-file-utils`，运行 Electron 需要图形会话和系统图形库。
 
 ```sh
 npm ci
@@ -67,7 +67,7 @@ npm start
 npm test
 ```
 
-`npm test` 进行类型检查、生产构建、原始字节保存与覆盖保护测试，以及真实 Electron 无边框窗口测试：公式、代码、图表、相对图片、多标签、另存为、重新读取、重复启动和 HTML 清理。需要运行图形会话；无头 Linux 可用 `xvfb-run -a npm test`。测试临时文件在 `~/.pi/work/`。
+`npm test` 进行类型检查、生产构建、原始字节保存与覆盖保护测试，以及真实 Electron 无边框窗口测试：公式、代码、图表、相对图片、多标签、另存为、重新读取、重复启动和 HTML 清理。需要运行图形会话和 `xprop`（用于原生窗口图标检查）；无头 Linux 可用 `xvfb-run -a npm test`。测试临时文件在 `~/.pi/work/`。
 
 主进程负责文件与原生菜单，沙箱化渲染进程只通过限定的 IPC 接口操作已打开的文件。文档 HTML 经 DOMPurify 清理，应用使用独立协议与 CSP，文档脚本不会执行。
 
@@ -82,3 +82,5 @@ npm test
 ## 开源许可
 
 MIT [LICENSE](LICENSE)。
+
+应用图标以 `assets/emd.svg` 为唯一设计源：暖陶色底板、展开的书页与 Markdown 符号。`npm run build:icons` 生成窗口用 PNG 和 16–512px 的桌面图标；安装时图标名称与应用 ID 一致，并给 desktop 入口写入明确的 PNG 路径。

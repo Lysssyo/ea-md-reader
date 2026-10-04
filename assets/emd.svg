@@ -1,7 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
-<rect x="12" y="12" width="232" height="232" rx="52" fill="#f0ebe4"/>
-<path d="M68 42h93l33 33v132H68Z" fill="#fdfdf7" stroke="#d2c8bc" stroke-width="3" stroke-linejoin="round"/>
-<path d="M161 42v33h33" fill="none" stroke="#d2c8bc" stroke-width="3"/>
-<path d="M96 121h54c9-37-45-43-54-4-9 38 22 45 44 27" fill="none" stroke="#a45d47" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M91 174h70m-70 13h46" fill="none" stroke="#d2c8bc" stroke-width="3" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title id="title">Ea.Md.Reader — Markdown reading</title>
+  <defs>
+    <linearGradient id="clay" x1="0" y1="0" x2="0.8" y2="1">
+      <stop stop-color="#b77355"/>
+      <stop offset="1" stop-color="#914d3d"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="54" fill="url(#clay)"/>
+  <path d="M48 69c28-8 54-3 77 12v111c-23-15-49-20-77-12Z" fill="#fffdf6"/>
+  <path d="M131 81c23-15 49-20 77-12v111c-28-8-54-3-77 12Z" fill="#fffdf6"/>
+  <g fill="none" stroke="#a45d47" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M66 149v-46l18 24 18-24v46"/>
+    <path d="M170 103v46m-14-14 14 14 14-14"/>
+  </g>
 </svg>

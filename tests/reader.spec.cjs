@@ -2,7 +2,7 @@ const { test, expect, _electron: electron } = require('@playwright/test');
 const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
-const { spawn } = require('node:child_process');
+const { spawn, execFileSync } = require('node:child_process');
 
 test('渲染、只读、多标签、另存为、重读、第二次启动及相对图片', async () => {
   const directory = await fs.mkdtemp(path.join(os.homedir(), '.pi/work/emd-ui-'));
@@ -21,6 +21,9 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
     const page = await application.firstWindow();
     page.on('pageerror', (error) => errors.push(error.message));
     await expect(page.locator('.vp-doc h1')).toHaveText('静心阅读');
+    const nativeHandle = await application.evaluate(({ BrowserWindow }) => Array.from(BrowserWindow.getAllWindows()[0].getNativeWindowHandle()));
+    const windowId = Buffer.from(nativeHandle).readUInt32LE();
+    await expect.poll(() => /Icon \(\d+ x \d+\)/.test(execFileSync('xprop', ['-id', String(windowId), '_NET_WM_ICON'], { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 }))).toBe(true);
     await expect(page.locator('.vp-doc pre.shiki span').first()).toBeVisible();
     await expect(page.locator('.katex').first()).toBeVisible();
     await expect(page.locator('.github-alert')).toContainText('原始 Markdown');

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, dialog, ipcMain, protocol, net, shell, nativeTheme } = require('electron');
+const { app, BrowserWindow, Menu, dialog, ipcMain, protocol, net, shell, nativeTheme, nativeImage } = require('electron');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
@@ -91,7 +91,7 @@ else {
     });
     window = new BrowserWindow({
       width: 1180, height: 850, minWidth: 620, minHeight: 440, show: false, frame: false, transparent: true,
-      title: 'Ea.Md.Reader', backgroundColor: '#00000000', icon: path.join(__dirname, '..', 'assets', 'emd.png'),
+      title: 'Ea.Md.Reader', backgroundColor: '#00000000', icon: nativeImage.createFromPath(path.join(__dirname, '..', 'assets', 'emd.png')).resize({ width: 128, height: 128 }),
       webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true },
     });
     window.webContents.on('will-navigate', (event) => event.preventDefault());

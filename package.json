@@ -6,12 +6,13 @@
   "license": "MIT",
   "main": "electron/main.cjs",
   "scripts": {
-    "build": "tsc --noEmit && vite build",
+    "build": "npm run build:icons && tsc --noEmit && vite build",
     "start": "npm run build && electron .",
     "test": "npm run build && node --test tests/files.test.cjs && playwright test",
     "pack": "npm run build && electron-builder --linux dir tar.gz",
     "install:local": "node scripts/install.mjs",
-    "uninstall:local": "node scripts/install.mjs --uninstall"
+    "uninstall:local": "node scripts/install.mjs --uninstall",
+    "build:icons": "node scripts/render-icons.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
