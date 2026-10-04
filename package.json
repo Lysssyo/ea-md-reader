@@ -1,0 +1,68 @@
+{
+  "name": "emd",
+  "version": "0.1.0",
+  "description": "Read-only Markdown reader with the ea-kb reading style",
+  "author": "yceachan",
+  "license": "MIT",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "start": "npm run build && electron .",
+    "test": "npm run build && node --test tests/files.test.cjs && playwright test",
+    "pack": "npm run build && electron-builder --linux dir tar.gz",
+    "install:local": "node scripts/install.mjs",
+    "uninstall:local": "node scripts/install.mjs --uninstall"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "dompurify": "^3.2.4",
+    "electron": "44.5.1",
+    "electron-builder": "26.15.3",
+    "katex": "^0.18.0",
+    "marked": "^18.0.14",
+    "marked-katex-extension": "^5.1.13",
+    "medium-zoom": "^1.1.0",
+    "mermaid": "^11.16.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "shiki": "^4.5.0",
+    "typescript": "^5.8.0",
+    "vite": "^7.0.0"
+  },
+  "build": {
+    "appId": "io.github.yceachan.emd",
+    "productName": "emd",
+    "executableName": "emd",
+    "asar": true,
+    "directories": {
+      "output": "release",
+      "buildResources": "assets"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "assets/emd.svg",
+      "assets/emd.png",
+      "LICENSE",
+      "package.json"
+    ],
+    "linux": {
+      "target": [
+        "dir",
+        "tar.gz"
+      ],
+      "category": "Office",
+      "icon": "assets/emd.png",
+      "syncDesktopName": true
+    },
+    "artifactName": "emd-${version}-${os}-${arch}.${ext}"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "desktopName": "io.github.yceachan.emd.desktop"
+}

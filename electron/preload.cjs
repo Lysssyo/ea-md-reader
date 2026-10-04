@@ -1,0 +1,22 @@
+const { contextBridge, ipcRenderer } = require('electron');
+function subscribe(channel, listener) {
+  const handler = (_event, payload) => listener(payload);
+  ipcRenderer.on(channel, handler);
+  return () => ipcRenderer.removeListener(channel, handler);
+}
+contextBridge.exposeInMainWorld('emd', {
+  window: (action) => ipcRenderer.invoke('emd:window', action),
+  onWindowState: (listener) => subscribe('emd:window-state', listener),
+  ready: () => ipcRenderer.invoke('emd:ready'),
+  open: () => ipcRenderer.invoke('emd:open'),
+  save: (id) => ipcRenderer.invoke('emd:save', id),
+  close: (id) => ipcRenderer.invoke('emd:close', id),
+  reload: (id) => ipcRenderer.invoke('emd:reload', id),
+  link: (id, href) => ipcRenderer.invoke('emd:link', id, href),
+  find: (text, forward) => ipcRenderer.invoke('emd:find', text, forward),
+  onDocument: (listener) => subscribe('emd:document', listener),
+  onActivate: (listener) => subscribe('emd:activate', listener),
+  onAction: (listener) => subscribe('emd:action', listener),
+  onAnchor: (listener) => subscribe('emd:anchor', listener),
+  onError: (listener) => subscribe('emd:error', listener),
+});
