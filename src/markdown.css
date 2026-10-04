@@ -39,7 +39,6 @@
 
 .frontmatter-block {
   width: 100%;
-  max-width: 900px;
   margin: 0 0 24px;
 }
 
@@ -60,7 +59,6 @@
 
 /* Markdown content */
 .vp-doc {
-  max-width: 82ch;
   color: var(--kb-text);
   font-family: var(--kb-font-sans);
   font-size: 16px;
@@ -75,7 +73,6 @@
 .vp-doc h5,
 .vp-doc h6 {
   position: relative;
-  max-width: 42rem;
   margin: 1.75em 0 0.75em;
   color: var(--kb-text);
   font-weight: var(--kb-weight-semibold);
@@ -118,7 +115,6 @@
 
 .vp-doc p,
 .vp-doc li {
-  max-width: 75ch;
   text-wrap: pretty;
 }
 
@@ -160,7 +156,6 @@
 }
 
 .vp-doc blockquote {
-  max-width: 75ch;
   margin: 1.25em 0;
   padding: 0.55em 1em;
   border-left: 3px solid var(--kb-line-strong);

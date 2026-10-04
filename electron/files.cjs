@@ -30,6 +30,29 @@ function publicDocument(document) {
   return result;
 }
 
+async function scanWorkspace(root) {
+  async function scan(directory) {
+    const entries = await fs.readdir(directory, { withFileTypes: true });
+    const nodes = [];
+    for (const entry of entries) {
+      const entryPath = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        const children = await scan(entryPath);
+        if (children.length) nodes.push({ name: entry.name, path: entryPath, children });
+      } else if (entry.isFile() && MARKDOWN_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) {
+        nodes.push({ name: entry.name, path: entryPath });
+      }
+    }
+    return nodes.sort((a, b) => Number(!a.children) - Number(!b.children) || a.name.localeCompare(b.name, 'zh-CN', { numeric: true }));
+  }
+  return { root, name: path.basename(root), nodes: await scan(root) };
+}
+
+function isWithin(root, filePath) {
+  const relative = path.relative(root, filePath);
+  return relative !== '' && !relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative);
+}
+
 async function saveDocument(document, destination) {
   const original = await fs.stat(document.path);
   const target = await fs.stat(destination).catch((error) => {
@@ -43,4 +66,4 @@ async function saveDocument(document, destination) {
   await fs.writeFile(destination, document.bytes);
 }
 
-module.exports = { fileArguments, readDocument, publicDocument, saveDocument, IMAGE_TYPES };
+module.exports = { fileArguments, readDocument, publicDocument, saveDocument, scanWorkspace, isWithin, IMAGE_TYPES };

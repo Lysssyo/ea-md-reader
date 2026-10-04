@@ -23,13 +23,14 @@ export default function Article({ document, active, anchor, onHeadings, onError 
   useEffect(() => {
     let canceled = false;
     setResult(null); setError(null);
+    headingsCallback.current(document.id, []);
     renderMarkdown(document.text).then((rendered) => {
       if (canceled) return;
       setResult(rendered);
       headingsCallback.current(document.id, rendered.headings);
     }).catch((error: Error) => { if (!canceled) setError(error.message); });
     return () => { canceled = true; };
-  }, [document.id, document.text]);
+  }, [document.id, document.path, document.text]);
 
   useEffect(() => {
     const container = element.current;
@@ -83,7 +84,7 @@ export default function Article({ document, active, anchor, onHeadings, onError 
       }).catch((error: Error) => { if (!canceled) onError(`图表渲染失败：${error.message}`); });
     }
     return () => { canceled = true; zoom.detach(); };
-  }, [result, document.id]);
+  }, [result, document.id, document.path]);
 
   useEffect(() => {
     if (active && anchor && result) {

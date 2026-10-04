@@ -95,3 +95,169 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
     await fs.rm(directory, { recursive: true, force: true });
   }
 });
+
+test('工作区切换、右键菜单、面板拖拽与容器自适应', async () => {
+  const directory = await fs.mkdtemp(path.join(os.homedir(), '.pi/work/emd-workspace-'));
+  const outside = `${directory}-outside.md`;
+  let application;
+  const errors = [];
+  try {
+    const fixture = path.join(directory, '入口.md');
+    const nested = path.join(directory, '章节', '正文.md');
+    await fs.mkdir(path.dirname(nested));
+    await fs.writeFile(fixture, '# 入口\n\n## 子标题\n\n开始阅读。');
+    await fs.writeFile(nested, `---\ntitle: 宽屏检查\n---\n# 正文\n\n## 深入\n\n子目录文档。${'宽屏阅读时，正文应利用扣除侧栏后的剩余空间；打开、收起或调整面板宽度时，段落、引用和代码区域同步调整，左右保留适当的留白。'.repeat(10)}\n\n> 引用内容应随阅读容器展开。\n\n- 列表内容应随阅读容器展开。\n\n\`\`\`text\n代码内容应随阅读容器展开。\n\`\`\`\n\n| 内容 | 说明 |\n| --- | --- |\n| 表格 | 随阅读容器展开 |`);
+    await fs.writeFile(outside, '# 工作区外部');
+    application = await electron.launch({ args: [path.resolve('.'), '--ozone-platform=x11', `--user-data-dir=${path.join(directory, 'profile')}`, fixture], env: { ...process.env, XDG_CONFIG_HOME: path.join(directory, 'config'), XDG_CACHE_HOME: path.join(directory, 'cache') } });
+    const page = await application.firstWindow();
+    page.on('pageerror', (error) => errors.push(error.message));
+    const tree = page.getByRole('navigation', { name: '工作区文件' });
+    await expect(tree.getByRole('treeitem', { name: 'MD 入口.md', exact: true })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: '本文目录' })).toBeVisible();
+    await tree.getByRole('treeitem', { name: '章节', exact: true }).click();
+    await tree.getByRole('treeitem', { name: 'MD 正文.md', exact: true }).click();
+    await expect(page.getByRole('tab')).toHaveCount(1);
+    await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('正文');
+    await expect(page.locator('.workspace-root')).toHaveAttribute('title', directory);
+    await expect(tree.getByRole('treeitem', { name: 'MD 正文.md' })).toHaveAttribute('aria-selected', 'true');
+    await tree.getByRole('treeitem', { name: 'MD 正文.md' }).click();
+    await expect(page.getByRole('navigation', { name: '本文目录' }).getByRole('button', { name: '深入', exact: true })).toBeVisible();
+    await tree.getByRole('treeitem', { name: 'MD 入口.md' }).click({ modifiers: ['Alt'] });
+    await expect(page.getByRole('tab')).toHaveCount(2);
+    await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('入口');
+    await tree.getByRole('treeitem', { name: 'MD 入口.md' }).click({ modifiers: ['Alt'] });
+    await expect(page.getByRole('tab')).toHaveCount(3);
+
+    // Inspect the native menu and exercise its real click callback without an OS menu grab.
+    await application.evaluate(({ Menu }) => {
+      const original = Menu.buildFromTemplate;
+      Menu.buildFromTemplate = (template) => {
+        const menu = original(template);
+        menu.popup = () => { global.workspaceMenu = menu; };
+        return menu;
+      };
+    });
+    await tree.getByRole('treeitem', { name: 'MD 正文.md' }).click({ button: 'right' });
+    await expect.poll(() => application.evaluate(() => global.workspaceMenu?.items.map((item) => item.label))).toEqual(['在当前标签页打开', '在新标签页打开', '', '在文件管理器中显示', '刷新工作区']);
+    await application.evaluate(() => global.workspaceMenu.items[0].click());
+    await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('正文');
+    await expect(page.getByRole('tab')).toHaveCount(3);
+    await fs.writeFile(path.join(directory, '新文档.md'), '# 新文档');
+    await page.getByRole('button', { name: '刷新工作区', exact: true }).click();
+    await expect(tree.getByRole('treeitem', { name: 'MD 新文档.md' })).toBeVisible();
+    await expect(page.locator('.workspace-root')).toHaveAttribute('title', directory);
+    await page.evaluate(async ({ root, outside }) => { await window.emd.workspaceOpen(root, outside, false, document.querySelector('[role=tab][aria-selected=true]').id.slice(4)); }, { root: directory, outside });
+    await expect(page.getByRole('alert')).toContainText('文件不在当前工作区内');
+    await expect(page.getByRole('tab')).toHaveCount(3);
+    await page.getByRole('button', { name: '关闭提示' }).click();
+    const selectedTab = await page.getByRole('tab', { selected: true }).getAttribute('id');
+    await page.getByRole('tab').first().click({ button: 'middle' });
+    await expect(page.getByRole('tab')).toHaveCount(2);
+    await expect(page.getByRole('tab', { selected: true })).toHaveAttribute('id', selectedTab);
+
+    async function dimensions() {
+      return page.evaluate(() => {
+        const reading = document.querySelector('.reading-area').getBoundingClientRect();
+        const panel = document.querySelector('.document-panel:not([hidden])');
+        const article = panel.querySelector('.article');
+        const box = article.getBoundingClientRect();
+        const padding = parseFloat(getComputedStyle(article).paddingLeft);
+        return { reading: reading.width, article: box.width, padding, left: box.left - reading.left, right: reading.left + panel.clientWidth - box.right, total: document.querySelector('.workspace').getBoundingClientRect().width, workspace: document.querySelector('.workspace-sidebar')?.getBoundingClientRect().width ?? 0, outline: document.querySelector('.outline').getBoundingClientRect().width };
+      });
+    }
+    const before = await dimensions();
+    const leftHandle = page.getByRole('separator', { name: '调整工作区宽度' });
+    const handle = await leftHandle.boundingBox();
+    await page.mouse.move(handle.x + handle.width / 2, handle.y + 100);
+    await page.mouse.down(); await page.mouse.move(handle.x + 62, handle.y + 100, { steps: 8 }); await page.mouse.up();
+    await expect.poll(async () => (await dimensions()).workspace).toBeGreaterThan(before.workspace + 50);
+    const afterLeft = await dimensions();
+    expect(afterLeft.reading).toBeLessThan(before.reading - 50);
+    expect(afterLeft.padding).toBeLessThan(before.padding);
+    const rightHandle = page.getByRole('separator', { name: '调整目录宽度' });
+    const rightBox = await rightHandle.boundingBox();
+    await page.mouse.move(rightBox.x + rightBox.width / 2, rightBox.y + 100);
+    await page.mouse.down(); await page.mouse.move(rightBox.x - 48, rightBox.y + 100, { steps: 8 }); await page.mouse.up();
+    await expect.poll(async () => (await dimensions()).outline).toBeGreaterThan(before.outline + 40);
+    const afterBoth = await dimensions();
+    expect(Math.abs(afterBoth.reading + afterBoth.workspace + afterBoth.outline + 5 - afterBoth.total)).toBeLessThan(1);
+    expect(afterBoth.article).toBeLessThanOrEqual(afterBoth.reading);
+    expect(Math.abs(afterBoth.left - afterBoth.right)).toBeLessThan(1);
+    expect(await page.locator('.outline ul ul').first().evaluate((node) => getComputedStyle(node).borderLeftWidth)).toBe('0px');
+    const overlay = await page.getByRole('button', { name: '折叠目录面板', exact: true }).boundingBox();
+    const outlineBox = await page.locator('.outline').boundingBox();
+    expect(Math.abs(overlay.y + overlay.height / 2 - outlineBox.y - outlineBox.height / 2)).toBeLessThan(1);
+
+    await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(900, 650));
+    await expect(page.getByRole('navigation', { name: '本文目录' })).toHaveCount(0);
+    await expect(tree).toBeVisible();
+    await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(620, 650));
+    await expect(tree).toHaveCount(0);
+    await page.getByRole('button', { name: '显示工作区', exact: true }).click();
+    await expect(tree).toBeVisible();
+    expect((await dimensions()).reading).toBeGreaterThanOrEqual(360);
+    await page.getByRole('button', { name: '展开目录面板', exact: true }).click();
+    await expect(tree).toHaveCount(0);
+    await expect(page.getByRole('navigation', { name: '本文目录' })).toBeVisible();
+    expect((await dimensions()).reading).toBeGreaterThanOrEqual(360);
+    await page.screenshot({ path: path.join(os.homedir(), '.pi/work/emd-workspace-narrow.png') });
+    await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(1180, 850));
+    await expect(tree).toBeVisible();
+    await expect(page.getByRole('navigation', { name: '本文目录' })).toBeVisible();
+    await page.getByRole('button', { name: '显示工作区', exact: true }).click();
+    await expect(tree).toHaveCount(0);
+    await page.getByRole('button', { name: '显示工作区', exact: true }).click();
+    await expect(tree).toBeVisible();
+    await page.screenshot({ path: path.join(os.homedir(), '.pi/work/emd-workspace-wide.png') });
+
+    // Zoom supplies a 2360px layout viewport even when the window manager caps native window sizes.
+    const viewportWidth = await page.evaluate(() => window.innerWidth);
+    await application.evaluate(({ BrowserWindow }, factor) => BrowserWindow.getAllWindows()[0].webContents.setZoomFactor(factor), viewportWidth / 2360);
+    await expect.poll(async () => (await dimensions()).total).toBeGreaterThan(2300);
+    async function checkWideContent() {
+      const sizes = await page.locator('.document-panel:not([hidden])').evaluate((panel) => {
+        const article = panel.querySelector('.article');
+        const content = panel.querySelector('.vp-doc').getBoundingClientRect();
+        const padding = parseFloat(getComputedStyle(article).paddingLeft);
+        const blocks = ['.frontmatter-block', '.vp-doc h1', '.vp-doc h2', '.vp-doc > p', '.vp-doc blockquote', '.vp-doc pre', '.vp-doc table'].map((selector) => panel.querySelector(selector).getBoundingClientRect().width);
+        const list = panel.querySelector('.vp-doc ul');
+        return { available: panel.clientWidth, content: content.width, padding, left: content.left - panel.getBoundingClientRect().left, blocks,
+          list: list.clientWidth - parseFloat(getComputedStyle(list).paddingLeft), item: list.querySelector('li').getBoundingClientRect().width };
+      });
+      expect(Math.abs(sizes.content - (sizes.available - sizes.padding * 2))).toBeLessThan(1);
+      expect(Math.abs(sizes.left - sizes.padding)).toBeLessThan(1);
+      expect(sizes.padding).toBeGreaterThanOrEqual(24);
+      expect(sizes.padding).toBeLessThanOrEqual(120);
+      for (const block of sizes.blocks) expect(Math.abs(block - sizes.content)).toBeLessThan(1);
+      expect(Math.abs(sizes.item - sizes.list)).toBeLessThan(1);
+      return sizes.content;
+    }
+    const bothOpen = await checkWideContent();
+    await page.getByRole('button', { name: '显示工作区', exact: true }).click();
+    await expect(tree).toHaveCount(0);
+    const leftHidden = await checkWideContent();
+    expect(leftHidden).toBeGreaterThan(bothOpen + 200);
+    await page.getByRole('button', { name: '折叠目录面板', exact: true }).click();
+    await expect(page.getByRole('navigation', { name: '本文目录' })).toHaveCount(0);
+    const bothHidden = await checkWideContent();
+    expect(bothHidden).toBeGreaterThan(leftHidden + 200);
+    await page.screenshot({ path: path.join(os.homedir(), '.pi/work/emd-full-width.png') });
+    await page.getByRole('button', { name: '显示工作区', exact: true }).click();
+    await page.getByRole('button', { name: '展开目录面板', exact: true }).click();
+    await expect(tree).toBeVisible();
+    await expect(page.getByRole('navigation', { name: '本文目录' })).toBeVisible();
+    expect(await checkWideContent()).toBeCloseTo(bothOpen, 0);
+    await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].webContents.setZoomFactor(1));
+    await page.getByRole('tab', { selected: true }).click({ button: 'middle' });
+    await expect(page.getByRole('tab')).toHaveCount(1);
+    await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('入口');
+    await page.getByRole('tab').click({ button: 'middle' });
+    await expect(page.getByRole('tab')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: '打开 Markdown' })).toBeVisible();
+    expect(errors).toEqual([]);
+  } finally {
+    if (application) await application.close();
+    await fs.rm(directory, { recursive: true, force: true });
+    await fs.rm(outside, { force: true });
+  }
+});

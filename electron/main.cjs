@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu, dialog, ipcMain, protocol, net, shell, nativeT
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
-const { fileArguments, readDocument, publicDocument, saveDocument, IMAGE_TYPES } = require('./files.cjs');
+const { fileArguments, readDocument, publicDocument, saveDocument, scanWorkspace, isWithin, IMAGE_TYPES } = require('./files.cjs');
 
 app.setName('emd');
 nativeTheme.themeSource = 'light';
@@ -14,6 +14,7 @@ protocol.registerSchemesAsPrivileged([
 let window;
 let rendererReady = false;
 const documents = new Map();
+const workspaceRoots = new Set();
 const pending = [];
 const isPrimary = app.requestSingleInstanceLock();
 
@@ -131,6 +132,39 @@ else {
       for (const [channel, payload] of pending.splice(0)) window.webContents.send(channel, payload);
     });
     checkedHandler('emd:open', openDialog);
+    checkedHandler('emd:workspace', async (id, requestedRoot) => {
+      const document = getDocument(id);
+      const root = requestedRoot ?? path.dirname(document.path);
+      if (root !== path.dirname(document.path) && (!workspaceRoots.has(root) || !isWithin(root, document.path))) throw new Error('无效的工作区请求。');
+      const workspace = await scanWorkspace(root);
+      workspaceRoots.add(root);
+      return workspace;
+    });
+    checkedHandler('emd:workspace-open', async (root, filePath, newTab, activeId) => {
+      if (!workspaceRoots.has(root) || typeof filePath !== 'string' || typeof newTab !== 'boolean') throw new Error('无效的工作区请求。');
+      const canonicalPath = await fs.realpath(filePath);
+      if (!isWithin(root, canonicalPath)) throw new Error('文件不在当前工作区内。');
+      const document = await readDocument(canonicalPath);
+      if (!newTab) { getDocument(activeId); document.id = activeId; }
+      documents.set(document.id, document);
+      send('emd:document', publicDocument(document));
+    });
+    checkedHandler('emd:workspace-menu', async (root, filePath, activeId) => {
+      if (!workspaceRoots.has(root) || typeof filePath !== 'string') throw new Error('无效的工作区请求。');
+      const canonicalPath = await fs.realpath(filePath);
+      if (canonicalPath !== root && !isWithin(root, canonicalPath)) throw new Error('文件不在当前工作区内。');
+      getDocument(activeId);
+      const isFile = (await fs.stat(canonicalPath)).isFile();
+      Menu.buildFromTemplate([
+        ...(isFile ? [
+          { label: '在当前标签页打开', click: () => send('emd:workspace-action', { action: 'open', path: canonicalPath }) },
+          { label: '在新标签页打开', click: () => send('emd:workspace-action', { action: 'new-tab', path: canonicalPath }) },
+          { type: 'separator' },
+        ] : []),
+        { label: '在文件管理器中显示', click: () => shell.showItemInFolder(canonicalPath) },
+        { label: '刷新工作区', click: () => send('emd:workspace-action', { action: 'refresh' }) },
+      ]).popup({ window });
+    });
     checkedHandler('emd:save', async (id) => {
       const document = getDocument(id);
       const result = await dialog.showSaveDialog(window, {

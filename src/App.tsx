@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import Article from './components/Article';
 import Outline from './components/Outline';
+import Workspace from './components/Workspace';
+import PanelResize from './components/PanelResize';
 import type { RenderResult } from './lib/markdown';
 
-function Icon({ name }: { name: 'menu' | 'open' | 'save' | 'close' | 'refresh' | 'outline' | 'search' | 'minimize' | 'maximize' | 'restore' }) {
+const MIN_READING_WIDTH = 360;
+const AUTO_READING_WIDTH = 520;
+const PANEL_GUTTER = 5;
+
+function Icon({ name }: { name: 'workspace' | 'menu' | 'open' | 'save' | 'close' | 'refresh' | 'outline' | 'search' | 'minimize' | 'maximize' | 'restore' }) {
   const paths = {
+    workspace: <><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M9 4v16M5.5 8h1M5.5 12h1" /></>,
     menu: <path d="M4 6h16M4 12h16M4 18h16" />,
     open: <><path d="M3 7V5a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v2" /><path d="M3 7v12h16l3-10H7L3 19" /></>,
     save: <><path d="M12 3v12m-4-4 4 4 4-4M4 15v5h16v-5" /></>,
@@ -24,7 +31,13 @@ export default function App() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [headings, setHeadings] = useState<Record<string, RenderResult['headings']>>({});
   const [maximized, setMaximized] = useState(false);
-  const [outline, setOutline] = useState(() => !window.matchMedia('(max-width: 760px)').matches);
+  const [panels, setPanels] = useState({ left: true, right: true });
+  const [panelWidths, setPanelWidths] = useState({ left: 240, right: 240 });
+  const [availableWidth, setAvailableWidth] = useState(window.innerWidth);
+  const [workspaceRoot, setWorkspaceRoot] = useState<string | null>(null);
+  const [workspace, setWorkspace] = useState<MarkdownWorkspace | null>(null);
+  const [workspaceLoading, setWorkspaceLoading] = useState(false);
+  const [workspaceRevision, setWorkspaceRevision] = useState(0);
   const [message, setMessage] = useState<{ text: string; error: boolean } | null>(null);
   const [finding, setFinding] = useState(false);
   const [query, setQuery] = useState('');
@@ -33,7 +46,27 @@ export default function App() {
   const [progress, setProgress] = useState(0);
   const findInput = useRef<HTMLInputElement>(null);
   const commands = useRef<(action: string) => void>(() => {});
+  const workspaceActions = useRef<(action: WorkspaceAction) => void>(() => {});
+  const workspaceElement = useRef<HTMLElement>(null);
+  const widthsRef = useRef(panelWidths);
+  widthsRef.current = panelWidths;
   const active = tabs.find((tab) => tab.id === activeId);
+  const leftWidth = Math.min(panelWidths.left, availableWidth - MIN_READING_WIDTH - PANEL_GUTTER);
+  const rightWidth = Math.min(panelWidths.right, availableWidth - MIN_READING_WIDTH - PANEL_GUTTER);
+
+  function togglePanel(side: 'left' | 'right') {
+    const other = side === 'left' ? 'right' : 'left';
+    setPanels((current) => ({ ...current, [side]: !current[side],
+      ...(!current[side] && availableWidth < panelWidths.left + panelWidths.right + MIN_READING_WIDTH + PANEL_GUTTER ? { [other]: false } : {}),
+    }));
+  }
+  function openWorkspaceFile(path: string, newTab: boolean) {
+    if (workspace && activeId) void window.emd.workspaceOpen(workspace.root, path, newTab, activeId);
+  }
+  workspaceActions.current = ({ action, path }) => {
+    if (action === 'refresh') setWorkspaceRevision((value) => value + 1);
+    else if (path) openWorkspaceFile(path, action === 'new-tab');
+  };
 
   async function save() {
     if (!active) return;
@@ -70,7 +103,11 @@ export default function App() {
   useEffect(() => {
     const cleanups = [
       window.emd.onWindowState(setMaximized),
-      window.emd.onDocument((document) => { setTabs((current) => [...current, document]); setActiveId(document.id); setAnchor(null); }),
+      window.emd.onDocument((document) => {
+        setTabs((current) => current.some((tab) => tab.id === document.id) ? current.map((tab) => tab.id === document.id ? document : tab) : [...current, document]);
+        setActiveId(document.id); setAnchor(null);
+      }),
+      window.emd.onWorkspaceAction((action) => workspaceActions.current(action)),
       window.emd.onActivate((id) => { setActiveId(id); setAnchor(null); }),
       window.emd.onAction((action) => commands.current(action)),
       window.emd.onAnchor(setAnchor),
@@ -80,11 +117,33 @@ export default function App() {
     return () => cleanups.forEach((cleanup) => cleanup());
   }, []);
   useEffect(() => {
-    const narrow = window.matchMedia('(max-width: 760px)');
-    const changed = () => setOutline(!narrow.matches);
-    narrow.addEventListener('change', changed);
-    return () => narrow.removeEventListener('change', changed);
+    let previous: { left: boolean; right: boolean } | null = null;
+    const observer = new ResizeObserver(([entry]) => {
+      const width = entry.contentRect.width;
+      const sizes = widthsRef.current;
+      const next = { left: width >= sizes.left + AUTO_READING_WIDTH + PANEL_GUTTER, right: width >= sizes.left + sizes.right + AUTO_READING_WIDTH + PANEL_GUTTER };
+      setAvailableWidth(width);
+      const old = previous;
+      setPanels((current) => ({ left: old?.left === next.left ? current.left : next.left, right: old?.right === next.right ? current.right : next.right }));
+      previous = next;
+    });
+    observer.observe(workspaceElement.current!);
+    return () => observer.disconnect();
   }, []);
+  useEffect(() => {
+    if (!active) return;
+    setWorkspaceRoot((root) => root && active.path.startsWith(`${root === '/' ? '' : root}/`) ? root : active.path.slice(0, active.path.lastIndexOf('/')) || '/');
+  }, [active?.path]);
+  useEffect(() => {
+    if (!workspaceRoot || !active) return;
+    let canceled = false;
+    setWorkspaceLoading(true);
+    if (workspace?.root !== workspaceRoot) setWorkspace(null);
+    void window.emd.workspace(active.id, workspaceRoot).then((result) => {
+      if (!canceled) { setWorkspace(result); setWorkspaceLoading(false); }
+    });
+    return () => { canceled = true; };
+  }, [workspaceRoot, workspaceRevision]);
   useEffect(() => { document.title = active ? `${active.name} — Ea.Md.Reader` : 'Ea.Md.Reader'; setProgress(0); }, [active]);
   useEffect(() => {
     if (finding) findInput.current?.focus();
@@ -94,7 +153,7 @@ export default function App() {
     if (!query) { void window.emd.find('', true); return; }
     const timer = setTimeout(() => { void window.emd.find(query, true); }, 120);
     return () => clearTimeout(timer);
-  }, [query, activeId]);
+  }, [query, activeId, active?.path]);
   useEffect(() => {
     if (!message || message.error) return;
     const timer = setTimeout(() => setMessage(null), 5000);
@@ -112,6 +171,7 @@ export default function App() {
     if (event.key === 'Escape') { setFileMenu(false); setFinding(false); setMessage(null); }
   }}>
     <header className="toolbar" onDoubleClick={(event) => { if (!(event.target as Element).closest('button, .file-menu')) void window.emd.window('maximize'); }}>
+      <button className={`icon-button workspace-trigger ${panels.left && active ? 'selected' : ''}`} title="显示 / 隐藏工作区" aria-label="显示工作区" aria-pressed={panels.left && !!active} disabled={!active} onClick={() => togglePanel('left')}><Icon name="workspace" /></button>
       <span className="wordmark">Ea<span className="wordmark-dot">.</span>Md<span className="wordmark-dot">.</span>Reader</span>
       <div className="file-actions">
         <div className="file-menu">
@@ -130,7 +190,7 @@ export default function App() {
       <span className="toolbar-path" title={active?.path}>{active?.path ?? 'Markdown 阅读器'}</span>
       <div className="toolbar-actions">
         <button className="icon-button" title="查找 · Ctrl+F" aria-label="查找" disabled={!active} onClick={() => setFinding((value) => !value)}><Icon name="search" /></button>
-        <button className={`icon-button ${outline ? 'selected' : ''}`} title="显示目录" aria-label="显示目录" aria-pressed={outline} disabled={!active} onClick={() => setOutline((value) => !value)}><Icon name="outline" /></button>
+        <button className={`icon-button ${panels.right ? 'selected' : ''}`} title="显示目录" aria-label="显示目录" aria-pressed={panels.right && !!active} disabled={!active} onClick={() => togglePanel('right')}><Icon name="outline" /></button>
       </div>
       <div className="window-controls">
         <button aria-label="最小化窗口" title="最小化" onClick={() => { void window.emd.window('minimize'); }}><Icon name="minimize" /></button>
@@ -139,14 +199,24 @@ export default function App() {
       </div>
     </header>
     {tabs.length > 0 && <nav className="tabbar" role="tablist" aria-label="已打开的文件">
-      {tabs.map((tab) => <div className={`tab ${tab.id === activeId ? 'active' : ''}`} key={tab.id}>
+      {tabs.map((tab) => <div className={`tab ${tab.id === activeId ? 'active' : ''}`} key={tab.id}
+        onMouseDown={(event) => { if (event.button === 1) event.preventDefault(); }}
+        onAuxClick={(event) => { if (event.button === 1) { event.preventDefault(); void close(tab.id); } }}>
         <button className="tab-select" role="tab" aria-selected={tab.id === activeId} aria-controls={`panel-${tab.id}`} id={`tab-${tab.id}`} title={tab.path} onClick={() => { setActiveId(tab.id); setAnchor(null); }}><span className="file-badge">MD</span><span className="tab-name">{tab.name}</span></button>
         <button className="tab-close" aria-label={`关闭 ${tab.name}`} title="关闭标签页" onClick={() => { void close(tab.id); }}><Icon name="close" /></button>
       </div>)}
       <button className="new-tab" title="打开更多文件" aria-label="打开更多文件" onClick={() => { void window.emd.open(); }}>+</button>
     </nav>}
     {finding && <div className="findbar"><Icon name="search" /><input ref={findInput} aria-label="查找内容" placeholder="在文档中查找…" value={query} onChange={(event) => setQuery(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); void window.emd.find(query, !event.shiftKey); } }} /><button title="上一个" onClick={() => { void window.emd.find(query, false); }}>↑</button><button title="下一个" onClick={() => { void window.emd.find(query, true); }}>↓</button><button className="icon-button" aria-label="关闭查找" onClick={() => setFinding(false)}><Icon name="close" /></button></div>}
-    <main className="workspace">
+    <main className="workspace" ref={workspaceElement}>
+      {active && panels.left && <>
+        <aside className="workspace-sidebar sidebar" aria-label="工作区面板" style={{ width: leftWidth }}>
+          <Workspace workspace={workspace} loading={workspaceLoading} activePath={active.path} onOpen={openWorkspaceFile}
+            onMenu={(path) => { if (workspace) void window.emd.workspaceMenu(workspace.root, path, active.id); }} onRefresh={() => setWorkspaceRevision((value) => value + 1)} />
+        </aside>
+        <PanelResize side="left" width={leftWidth} maxWidth={Math.min(420, availableWidth - (panels.right ? rightWidth : 0) - MIN_READING_WIDTH - PANEL_GUTTER)} onResize={(left) => setPanelWidths((current) => ({ ...current, left }))} />
+      </>}
+      <div className="reading-area">
       {!tabs.length && <section className="welcome">
         <div className="welcome-mark"><span>e</span><span className="paper-line" /><span className="paper-line short" /></div>
         <p className="eyebrow">A QUIET PLACE TO READ</p>
@@ -156,7 +226,7 @@ export default function App() {
         <p className="welcome-hint">也可以在终端运行 <code>emd 文件.md</code></p>
         <div className="welcome-footer"><span>ea-kb 的纸色与排版</span><span>只读阅读 · 多标签页</span></div>
       </section>}
-      {tabs.map((tab) => <section className="document-panel" hidden={tab.id !== activeId} role="tabpanel" aria-labelledby={`tab-${tab.id}`} id={`panel-${tab.id}`} key={tab.id} onScroll={(event) => {
+      {tabs.map((tab) => <section className="document-panel" hidden={tab.id !== activeId} role="tabpanel" aria-labelledby={`tab-${tab.id}`} id={`panel-${tab.id}`} key={`${tab.id}-${tab.path}`} onScroll={(event) => {
         if (tab.id !== activeId) return;
         const target = event.currentTarget;
         const distance = target.scrollHeight - target.clientHeight;
@@ -168,9 +238,16 @@ export default function App() {
           <div className="document-end"><span />文档结束<span /></div>
         </article>
       </section>)}
-      {active && <Outline key={active.id} headings={sections} expanded={outline} onToggle={() => setOutline((value) => !value)} onSelect={(id) => {
+      </div>
+      {active && <aside className={`outline sidebar ${panels.right ? '' : 'collapsed'}`} aria-label="目录面板" style={{ width: panels.right ? rightWidth : 0 }}>
+        {panels.right && <PanelResize side="right" width={rightWidth} maxWidth={Math.min(420, availableWidth - (panels.left ? leftWidth : 0) - MIN_READING_WIDTH - PANEL_GUTTER)} onResize={(right) => setPanelWidths((current) => ({ ...current, right }))} />}
+        <button className="panel-toggle" aria-label={`${panels.right ? '折叠' : '展开'}目录面板`} title={`${panels.right ? '折叠' : '展开'}目录面板`} aria-expanded={panels.right} onClick={() => togglePanel('right')}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={panels.right ? 'm9 6 6 6-6 6' : 'm15 6-6 6 6 6'} /></svg>
+        </button>
+        <div className="outline-content" hidden={!panels.right}><Outline key={active.path} headings={sections} onSelect={(id) => {
         document.getElementById(`panel-${activeId}`)?.querySelectorAll<HTMLElement>('[id]').forEach((element) => { if (element.id === id) element.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
-      }} />}
+        }} /></div>
+      </aside>}
     </main>
     {message && <div className={`notification ${message.error ? 'error' : ''}`} role={message.error ? 'alert' : 'status'}><span>{message.text}</span><button className="icon-button" aria-label="关闭提示" onClick={() => setMessage(null)}><Icon name="close" /></button></div>}
     <footer className="statusbar"><span><span className="status-dot" />{active ? '只读' : '就绪'}</span><span>{tabs.length ? `${tabs.length} 个标签页` : 'emd 0.1.0'}</span><span className="status-spacer" />{active && <><span>UTF-8</span><button className="status-reload" title="重新读取文件 · Ctrl+R" aria-label="重新读取文件" onClick={() => { void reload(); }}><Icon name="refresh" /></button><span className="progress">{progress}%</span></>}</footer>

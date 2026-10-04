@@ -29,19 +29,14 @@ function Chapter({ branch, onSelect }: { branch: Branch; onSelect: (id: string) 
   </li>;
 }
 
-export default function Outline({ headings, expanded, onToggle, onSelect }: {
-  headings: Heading[]; expanded: boolean; onToggle: () => void; onSelect: (id: string) => void;
+export default function Outline({ headings, onSelect }: {
+  headings: Heading[]; onSelect: (id: string) => void;
 }) {
   const roots = headingTree(headings);
-  return <aside className={`outline ${expanded ? '' : 'collapsed'}`}>
-    <div className="outline-header">
-      {expanded && <p className="outline-title">本文目录</p>}
-      <button className="icon-button panel-toggle" aria-label={`${expanded ? '折叠' : '展开'}目录面板`} title={`${expanded ? '折叠' : '展开'}目录面板`} aria-expanded={expanded} onClick={onToggle}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={expanded ? 'm9 6 6 6-6 6' : 'm15 6-6 6 6 6'} /></svg>
-      </button>
-    </div>
-    {expanded && <nav aria-label="本文目录">
+  return <>
+    <div className="sidebar-header"><p className="sidebar-title">本文目录</p></div>
+    <nav className="sidebar-scroll" aria-label="本文目录">
       {roots.length ? <ul>{roots.map((branch, index) => <Chapter key={`${branch.heading.id}-${index}`} branch={branch} onSelect={onSelect} />)}</ul> : <p className="toc-empty">此文档暂无标题</p>}
-    </nav>}
-  </aside>;
+    </nav>
+  </>;
 }
