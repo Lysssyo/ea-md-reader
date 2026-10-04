@@ -33,6 +33,18 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
     expect(await page.evaluate(() => typeof window.require)).toBe('undefined');
     await expect(page.locator('.vp-doc iframe, .vp-doc script')).toHaveCount(0);
     await page.locator('.document-panel').evaluate((panel) => { panel.scrollTop = 0; });
+    await expect(page.getByRole('navigation', { name: '本文目录' })).toBeVisible();
+    await page.getByRole('button', { name: '折叠 静心阅读', exact: true }).click();
+    await expect(page.getByRole('navigation', { name: '本文目录' }).getByRole('button', { name: '代码与公式', exact: true })).toHaveCount(0);
+    await page.getByRole('button', { name: '展开 静心阅读', exact: true }).click();
+    await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(700, 650));
+    await expect(page.getByRole('navigation', { name: '本文目录' })).toHaveCount(0);
+    await page.getByRole('button', { name: '展开目录面板', exact: true }).click();
+    await expect(page.getByRole('navigation', { name: '本文目录' })).toBeVisible();
+    await page.getByRole('button', { name: '折叠目录面板', exact: true }).click();
+    await expect(page.getByRole('button', { name: '展开目录面板', exact: true })).toBeVisible();
+    expect(await page.locator('.app').evaluate((element) => getComputedStyle(element).borderRadius)).toBe('5px');
+    await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(1180, 850));
     await page.screenshot({ path: path.join(os.homedir(), '.pi/work/emd-light.png') });
     await expect(page.getByRole('button', { name: '最大化窗口' })).toBeVisible();
     await page.getByRole('button', { name: '最大化窗口' }).click();

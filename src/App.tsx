@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Article from './components/Article';
+import Outline from './components/Outline';
 import type { RenderResult } from './lib/markdown';
 
 function Icon({ name }: { name: 'menu' | 'open' | 'save' | 'close' | 'refresh' | 'outline' | 'search' | 'minimize' | 'maximize' | 'restore' }) {
@@ -23,7 +24,7 @@ export default function App() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [headings, setHeadings] = useState<Record<string, RenderResult['headings']>>({});
   const [maximized, setMaximized] = useState(false);
-  const [outline, setOutline] = useState(true);
+  const [outline, setOutline] = useState(() => !window.matchMedia('(max-width: 760px)').matches);
   const [message, setMessage] = useState<{ text: string; error: boolean } | null>(null);
   const [finding, setFinding] = useState(false);
   const [query, setQuery] = useState('');
@@ -77,6 +78,12 @@ export default function App() {
     ];
     void window.emd.ready();
     return () => cleanups.forEach((cleanup) => cleanup());
+  }, []);
+  useEffect(() => {
+    const narrow = window.matchMedia('(max-width: 760px)');
+    const changed = () => setOutline(!narrow.matches);
+    narrow.addEventListener('change', changed);
+    return () => narrow.removeEventListener('change', changed);
   }, []);
   useEffect(() => { document.title = active ? `${active.name} — Ea.Md.Reader` : 'Ea.Md.Reader'; setProgress(0); }, [active]);
   useEffect(() => {
@@ -161,9 +168,9 @@ export default function App() {
           <div className="document-end"><span />文档结束<span /></div>
         </article>
       </section>)}
-      {active && outline && sections.length > 0 && <aside className="outline"><p className="outline-title">本文目录</p><nav aria-label="本文目录">{sections.map((heading, index) => <button key={`${heading.id}-${index}`} style={{ paddingLeft: `${12 + Math.max(0, heading.depth - 1) * 12}px` }} onClick={() => {
-        document.getElementById(`panel-${activeId}`)?.querySelectorAll<HTMLElement>('[id]').forEach((element) => { if (element.id === heading.id) element.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
-      }}>{heading.text}</button>)}</nav></aside>}
+      {active && <Outline key={active.id} headings={sections} expanded={outline} onToggle={() => setOutline((value) => !value)} onSelect={(id) => {
+        document.getElementById(`panel-${activeId}`)?.querySelectorAll<HTMLElement>('[id]').forEach((element) => { if (element.id === id) element.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+      }} />}
     </main>
     {message && <div className={`notification ${message.error ? 'error' : ''}`} role={message.error ? 'alert' : 'status'}><span>{message.text}</span><button className="icon-button" aria-label="关闭提示" onClick={() => setMessage(null)}><Icon name="close" /></button></div>}
     <footer className="statusbar"><span><span className="status-dot" />{active ? '只读' : '就绪'}</span><span>{tabs.length ? `${tabs.length} 个标签页` : 'emd 0.1.0'}</span><span className="status-spacer" />{active && <><span>UTF-8</span><button className="status-reload" title="重新读取文件 · Ctrl+R" aria-label="重新读取文件" onClick={() => { void reload(); }}><Icon name="refresh" /></button><span className="progress">{progress}%</span></>}</footer>

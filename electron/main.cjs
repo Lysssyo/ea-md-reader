@@ -90,8 +90,8 @@ else {
       }
     });
     window = new BrowserWindow({
-      width: 1180, height: 850, minWidth: 620, minHeight: 440, show: false, frame: false,
-      title: 'Ea.Md.Reader', backgroundColor: '#fdfdf7', icon: path.join(__dirname, '..', 'assets', 'emd.png'),
+      width: 1180, height: 850, minWidth: 620, minHeight: 440, show: false, frame: false, transparent: true,
+      title: 'Ea.Md.Reader', backgroundColor: '#00000000', icon: path.join(__dirname, '..', 'assets', 'emd.png'),
       webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true },
     });
     window.webContents.on('will-navigate', (event) => event.preventDefault());

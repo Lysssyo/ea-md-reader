@@ -1,18 +1,21 @@
 # Ea.Md.Reader (emd)
 
-使用 ea-kb 排版的只读 Markdown 桌面阅读器，基于 Electron。使用自行绘制的标题栏、窗口按钮与文件菜单。仓库名为 `ea-md-reader`，界面标识为 `Ea.Md.Reader`，终端命令名为 `emd`。
+使用 [ea.kb,io](https://yceachan.github.io/) 排版的只读 Markdown 桌面阅读器，基于 Electron。使用自行绘制的标题栏、窗口按钮与文件菜单，窗口圆角为 5px。仓库名为 `ea-md-reader`，界面标识为 `Ea.Md.Reader`，终端命令名为 `emd`。
 
 ## 使用
 
 ```sh
+# teminal
 emd 文档.md
 emd "带 空格的文件.md" 第二页.md
 emd
+# 
+#just open md file with emd
 ```
 
 命令立即返回；应用通过 `setsid` 独立运行，关闭终端后继续阅读。再次运行命令会将文件打开到已有窗口的新标签页；同一文件复用已有标签页。桌面应用菜单中可搜索 **Ea.Md.Reader**，Dolphin 的 Markdown 文件「打开方式」中可选择 **Ea.Md.Reader**。
 
-界面提供文件菜单、打开、另存为、多标签页、目录、查找、统一亮色主题和重新读取文件。源文件保持只读；**另存为保存打开时的原始 Markdown 字节**，包括 BOM、CRLF 和 frontmatter，禁止覆盖源文件及其硬链接。磁盘内容改变后按 `Ctrl+R` 重新读取。另存为不会复制引用的图片，移动文档时需要同时保留图片及其相对位置。
+界面提供文件菜单、打开、另存为、多标签页、可折叠目录面板、查找、统一亮色主题和重新读取文件。目录面板在窄屏自动折叠，仍保留展开入口；展开后可单独折叠目录树章节。源文件保持只读；**另存为保存打开时的原始 Markdown 字节**，包括 BOM、CRLF 和 frontmatter，禁止覆盖源文件及其硬链接。磁盘内容改变后按 `Ctrl+R` 重新读取。另存为不会复制引用的图片，移动文档时需要同时保留图片及其相对位置。
 
 | 操作 | 快捷键 |
 | --- | --- |
@@ -70,10 +73,12 @@ npm test
 
 ## 排版来源
 
-渲染代码和样式通过 **rsync** 从 `ssh vps:~/work/ea-kb` 提取，未克隆仓库或导入其文档/Git 历史。来源为 [yceachan.github.io](https://github.com/yceachan/yceachan.github.io)，提取时提交 `aa3146bfd7066704373cd978d7a0585e91f9b4ba`。
+渲染器与主题来源[yceachan.github.io](https://github.com/yceachan/yceachan.github.io)
 
 - `src/markdown.css`：原 `src/index.css` 的阅读色彩、frontmatter 和 `.vp-doc` 样式。
 - `src/lib/markdown.ts`、`shiki.ts`、`slugify.ts`：原渲染链；针对桌面阅读补充 HTML 清理、属性转义和 BOM/CRLF 处理。
 - `src/components/Article.tsx`：沿用原 Mermaid、图片缩放的呈现方式，加入本地图片协议和明确的错误提示。
 
-源文件直接作为本工程实现维护；不另外保存一套上游副本。遵循原 MIT 许可，见 [LICENSE](LICENSE)。
+## 开源许可
+
+MIT [LICENSE](LICENSE)。
