@@ -1,6 +1,6 @@
 # Ea.Md.Reader (emd)
 
-使用 [ea.kb,io](https://yceachan.github.io/) 排版的只读 Markdown 桌面阅读器，基于 Electron。使用自行绘制的标题栏、窗口按钮与文件菜单，窗口圆角为 5px。仓库名为 `ea-md-reader`，界面标识为 `Ea.Md.Reader`，终端命令名为 `emd`。
+使用 [ea.kb,io](https://yceachan.github.io/) 排版的只读 Markdown 桌面阅读器，基于 Electron。使用自行绘制的标题栏、窗口按钮与文件菜单，窗口圆角为 10px。仓库名为 `ea-md-reader`，界面标识为 `Ea.Md.Reader`，终端命令名为 `emd`。
 
 ## 使用
 

@@ -43,7 +43,7 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
     await expect(page.getByRole('navigation', { name: '本文目录' })).toBeVisible();
     await page.getByRole('button', { name: '折叠目录面板', exact: true }).click();
     await expect(page.getByRole('button', { name: '展开目录面板', exact: true })).toBeVisible();
-    expect(await page.locator('.app').evaluate((element) => getComputedStyle(element).borderRadius)).toBe('5px');
+    expect(await page.locator('.app').evaluate((element) => getComputedStyle(element).borderRadius)).toBe('10px');
     await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(1180, 850));
     await page.screenshot({ path: path.join(os.homedir(), '.pi/work/emd-light.png') });
     await expect(page.getByRole('button', { name: '最大化窗口' })).toBeVisible();
