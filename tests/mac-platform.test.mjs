@@ -104,7 +104,8 @@ test('macOS 安装保留框架链接和权限，启动器传递字面参数与�
   const args = ['文档 空格.md', "quote's.md", '--', '-draft.md', 'literal $() %.md'];
   const result = spawnSync('/bin/sh', [context.launcher, ...args], { cwd: working, encoding: 'utf8', timeout: 5000 });
   assert.equal(result.status, 0, result.stderr);
-  assert.deepEqual((await waitForFile(capture)).trimEnd().split('\n'), [await realpath(working), ...args]);
+  const captured = await waitForFile(capture, (text) => text.trimEnd().split('\n').length === args.length + 1);
+  assert.deepEqual(captured.trimEnd().split('\n'), [await realpath(working), ...args]);
   assert.match(await waitForFile(context.log, (text) => text.includes('application log')), /application log/);
   const registrations = context.calls.filter(({ command }) => command.endsWith('/lsregister'));
   assert.deepEqual(registrations.map(({ args }) => args), [['-f', context.target]]);

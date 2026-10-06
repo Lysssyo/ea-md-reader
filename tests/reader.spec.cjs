@@ -56,6 +56,11 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
       window.unmaximize();
       window.setSize(Math.min(1180, width - 100), Math.min(850, height - 100));
     });
+    console.log('Native normal-window state:', await application.evaluate(({ BrowserWindow, screen }) => {
+      const window = BrowserWindow.getAllWindows()[0];
+      return { maximized: window.isMaximized(), bounds: window.getBounds(), workArea: screen.getDisplayMatching(window.getBounds()).workArea };
+    }));
+    await expect.poll(() => application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isMaximized())).toBe(false);
     await page.screenshot({ path: test.info().outputPath('emd-light.png') });
     await expect(page.getByRole('button', { name: '最大化窗口' })).toBeVisible();
     await page.getByRole('button', { name: '最大化窗口' }).click();

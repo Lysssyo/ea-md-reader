@@ -129,6 +129,7 @@ else {
     });
     window.on('maximize', () => send('emd:window-state', true));
     window.on('unmaximize', () => send('emd:window-state', false));
+    window.on('resize', () => send('emd:window-state', window.isMaximized()));
     checkedHandler('emd:window', (action) => {
       if (action === 'minimize') window.minimize();
       else if (action === 'maximize') { if (window.isMaximized()) window.unmaximize(); else window.maximize(); }

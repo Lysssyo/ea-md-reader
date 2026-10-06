@@ -44,6 +44,16 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox x11-utils desktop-file-utils libgtk-3-0 libnss3 libasound2t64
       - run: npm ci
+      - name: Configure the Electron sandbox helper on Linux
+        if: runner.os == 'Linux'
+        run: |
+          node - <<'NODE'
+          const { execFileSync } = require('node:child_process');
+          const path = require('node:path');
+          const helper = path.join(path.dirname(require('electron')), 'chrome-sandbox');
+          execFileSync('sudo', ['chown', 'root:root', helper], { stdio: 'inherit' });
+          execFileSync('sudo', ['chmod', '4755', helper], { stdio: 'inherit' });
+          NODE
       - name: Build native application and archives
         id: package
         run: npm run pack -- --platform=${{ matrix.platform }}
