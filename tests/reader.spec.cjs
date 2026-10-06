@@ -50,7 +50,12 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
     await page.getByRole('button', { name: '折叠目录面板', exact: true }).click();
     await expect(page.getByRole('button', { name: '展开目录面板', exact: true })).toBeVisible();
     expect(await page.locator('.app').evaluate((element) => getComputedStyle(element).borderRadius)).toBe('10px');
-    await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(1180, 850));
+    await application.evaluate(({ BrowserWindow, screen }) => {
+      const window = BrowserWindow.getAllWindows()[0];
+      const { width, height } = screen.getDisplayMatching(window.getBounds()).workAreaSize;
+      window.unmaximize();
+      window.setSize(Math.min(1180, width - 100), Math.min(850, height - 100));
+    });
     await page.screenshot({ path: test.info().outputPath('emd-light.png') });
     await expect(page.getByRole('button', { name: '最大化窗口' })).toBeVisible();
     await page.getByRole('button', { name: '最大化窗口' }).click();
@@ -86,8 +91,11 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
     await fs.writeFile(third, '# 从第二次启动打开\n');
     await fs.writeFile(fourth, '# 多文件参数打开\n');
     const child = spawn(require('electron'), [path.resolve('.'), ...platformArgs, `--user-data-dir=${path.join(directory, 'profile')}`, '--', path.basename(third), path.basename(fourth)], { cwd: directory, env: launchEnv, stdio: 'pipe' });
+    let childOutput = '';
+    child.stdout.on('data', (chunk) => { childOutput += chunk; });
+    child.stderr.on('data', (chunk) => { childOutput += chunk; });
     const code = await new Promise((resolve, reject) => { child.on('exit', resolve); child.on('error', reject); });
-    expect(code).toBe(0);
+    expect(code, `Second launch exited with signal ${child.signalCode}:\n${childOutput}`).toBe(0);
     await expect(page.getByRole('tab')).toHaveCount(3);
     await expect(page.getByRole('tab', { name: '相对 路径.md' })).toBeVisible();
     await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('多文件参数打开');
