@@ -32,7 +32,7 @@ layout = "default"
 
 ## 平台执行
 
-沿用 [ADR-001](../1-feat-platform-interface/adr.md)：应用定义启动布局语义，平台实现取得启动上下文并执行。平台返回实际几何和执行结果。主进程把界面需要的当前屏幕工作区信息传给渲染层。
+沿用 [ADR-001](../../closed/1-feat-platform-interface/adr.md)：应用定义启动布局语义，平台实现取得启动上下文并执行。平台返回实际几何和执行结果。主进程把界面需要的当前屏幕工作区信息传给渲染层。
 
 KDE Wayland 由 KWin 执行定位。KDE 模块在 Reader 取得焦点前捕获活动窗口所在输出。按工作区矩形 `(x, y, width, height)` 和最小宽度 `m`，目标矩形为 `(x + width - m, y, m, height)`。使用逻辑坐标，不在应用重复乘设备像素比。
 

@@ -1,6 +1,6 @@
 # 3：配置外部编辑器并自动重读
 
-状态：3.0 的 Linux 编辑会话探测完成，macOS 与 Windows 原生探测仍待验证。完整功能待共用设置入口。证据见 [probe-editor](artifacts/probe-editor.md)。 来源：本轮用户请求。源码证据来自当前未提交工作区，取证基线见[条目 1](../1-feat-platform-interface/issue.md)。本文维护本条目的需求、证据和验收条件。
+状态：3.0 的 Linux 编辑会话探测完成，macOS 与 Windows 原生探测仍待验证。完整功能待共用设置入口。证据见 [probe-editor](artifacts/probe-editor.md)。 来源：本轮用户请求。源码证据来自当前未提交工作区，取证基线见[条目 1](../../closed/1-feat-platform-interface/issue.md)。本文维护本条目的需求、证据和验收条件。
 
 ## 原始请求
 

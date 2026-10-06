@@ -1,6 +1,6 @@
 # 2：顶栏与工作区整理，修复标签栏滚动条
 
-状态：2.0 尺寸取证完成，正式 UI 实现待前置接口与 F12 接入。取证证据见 [probe-layout](artifacts/probe-layout.md)。 来源：本轮用户请求。源码证据来自当前未提交工作区，取证基线见[条目 1](../1-feat-platform-interface/issue.md)。本文维护本条目的需求、证据和验收条件。
+状态：2.0 尺寸取证完成，正式 UI 实现待前置接口与 F12 接入。取证证据见 [probe-layout](artifacts/probe-layout.md)。 来源：本轮用户请求。源码证据来自当前未提交工作区，取证基线见[条目 1](../../closed/1-feat-platform-interface/issue.md)。本文维护本条目的需求、证据和验收条件。
 
 ## 原始请求
 
@@ -19,7 +19,7 @@
 | R2.5 | 标签栏不显示原生滚动条。标签内容和实际容器高度一致。阅读区占用剩余可见高度。 |
 | R2.6 | 多标签仍能访问。长 Markdown 的正文和 HTML 内部页面仍能正常滚动。 |
 
-设置按钮的顶栏布局属于本条目。编辑器配置属于[条目 3](../3-feat-external-editor/issue.md)，共用设置存储与启动布局属于[条目 4](../4-feat-startup-layout/issue.md)。文件菜单的设置/开发者控制台分组属于[条目 6](../6-feat-devtools/issue.md)。快捷键提示来源属于 [ADR-001](../1-feat-platform-interface/adr.md)。
+设置按钮的顶栏布局属于本条目。编辑器配置属于[条目 3](../3-feat-external-editor/issue.md)，共用设置存储与启动布局属于[条目 4](../4-feat-startup-layout/issue.md)。文件菜单的设置/开发者控制台分组属于[条目 6](../6-feat-devtools/issue.md)。快捷键提示来源属于 [ADR-001](../../closed/1-feat-platform-interface/adr.md)。
 
 ## 现状证据
 

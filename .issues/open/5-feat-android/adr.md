@@ -12,7 +12,7 @@
 
 ## 应用接口与文档身份
 
-沿用 [ADR-001](../1-feat-platform-interface/adr.md) 的方向：应用声明能力，各端实现。桌面端使用 Electron，Android 端使用原生插件。UI 调用应用能力接口，不直接依赖 `window.emd` 的 Electron 注入存在。
+沿用 [ADR-001](../../closed/1-feat-platform-interface/adr.md) 的方向：应用声明能力，各端实现。桌面端使用 Electron，Android 端使用原生插件。UI 调用应用能力接口，不直接依赖 `window.emd` 的 Electron 注入存在。
 
 文档引用需要支持桌面路径与 Android 文档 URI。共享 UI 使用不透明的文档标识、显示名称和工作区关系。平台负责解析资源、读取 bytes 和定位父子节点。不能把 `content://` 通过字符串处理伪装成普通路径。
 

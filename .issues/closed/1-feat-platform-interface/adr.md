@@ -1,6 +1,6 @@
 # ADR-001：应用命令与实际平台差异
 
-状态：已实施，待最终集成验证。需求以 [issue.md](issue.md) 为准。
+状态：已实施，Linux 开发基线交付。需求以 [issue.md](issue.md) 为准。
 
 `electron/platforms/index.cjs` 是运行时平台选择入口。各端口提供 `keyboard`、`install(context)` 、`createMenu(context)` 与 `createFullscreenToggle(window)`：Linux 设置桌面身份，macOS 绑定 Finder/Dock 事件并创建原生菜单，Windows 使用共同生命周期且不新增无差异包装。构建安装仍使用现有 `scripts/platforms/*.mjs` 的 `packOptions/install/uninstall`。
 
