@@ -32,23 +32,7 @@ test('真实键盘、按钮和原生菜单共用命令，查找输入保留复�
     });
     await application.evaluate(({ BrowserWindow }) => {
       global.commandInputs = [];
-      const contents = BrowserWindow.getAllWindows()[0].webContents;
-      global.editPermissions = [];
-      contents.session.setPermissionRequestHandler((_contents, permission, callback, details) => {
-        global.editPermissions.push({ kind: 'request', permission, details });
-        callback(false);
-      });
-      contents.session.setPermissionCheckHandler((_contents, permission, origin, details) => {
-        global.editPermissions.push({ kind: 'check', permission, origin, details });
-        return false;
-      });
-      global.clearFindCalls = 0;
-      const stopFind = contents.stopFindInPage.bind(contents);
-      contents.stopFindInPage = (action) => {
-        stopFind(action);
-        if (action === 'clearSelection') global.clearFindCalls++;
-      };
-      contents.on('before-input-event', (_event, input) => {
+      BrowserWindow.getAllWindows()[0].webContents.on('before-input-event', (_event, input) => {
         if (input.type === 'keyDown') global.commandInputs.push({ ...input, prevented: _event.defaultPrevented });
       });
     });
@@ -93,48 +77,16 @@ test('真实键盘、按钮和原生菜单共用命令，查找输入保留复�
         const input = await application.evaluate(() => global.commandInputs.at(-1));
         expect(input.key.toLowerCase()).toBe(keyCode.toLowerCase());
         expect(input.prevented).toBe(false);
-        await application.evaluate(({ Menu, BrowserWindow }, action) => {
-          if (action === 'paste:') {
-            const window = BrowserWindow.getAllWindows()[0];
-            global.pasteTarget = { windowFocused: window.isFocused(), contentsFocused: window.webContents.isFocused(),
-              focusedWindow: BrowserWindow.getFocusedWindow()?.id, windowId: window.id };
-          }
-          Menu.sendActionToFirstResponder(action);
-        }, action);
+        await application.evaluate(({ Menu }, action) => Menu.sendActionToFirstResponder(action), action);
       }
     }
     await edit('A', 'selectAll:');
     await expect.poll(() => search.evaluate((input) => input.selectionEnd - input.selectionStart)).toBe(4);
     await edit('C', 'copy:');
     await expect.poll(() => application.evaluate(({ clipboard }) => clipboard.readText())).toBe('原生复制');
-    const clearCalls = await application.evaluate(() => global.clearFindCalls);
     await search.fill('');
-    // Emptying the React field also asynchronously clears native find selection.
-    // Wait for that actual effect before starting a new native editing action.
-    await expect.poll(() => application.evaluate(() => global.clearFindCalls)).toBeGreaterThan(clearCalls);
-    await expect(search).toBeFocused();
-    await expect(search).toHaveValue('');
     await edit('V', 'paste:');
-    try { await expect(search).toHaveValue('原生复制'); }
-    catch (error) {
-      const native = await application.evaluate(({ BrowserWindow, clipboard }) => {
-        const window = BrowserWindow.getAllWindows()[0];
-        return { windowFocused: window.isFocused(), contentsFocused: window.webContents.isFocused(),
-          focusedWindow: BrowserWindow.getFocusedWindow()?.id, windowId: window.id,
-          clipboard: clipboard.readText(), permissions: global.editPermissions, inputs: global.commandInputs.slice(-6) };
-      });
-      const field = await search.evaluate((input) => ({ focused: document.activeElement === input,
-        value: input.value, start: input.selectionStart, end: input.selectionEnd }));
-      await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].webContents.paste());
-      let directPaste;
-      try { await expect(search).toHaveValue('原生复制'); directPaste = 'passed'; }
-      catch (pasteError) { directPaste = pasteError.message; }
-      const pasteTarget = await application.evaluate(() => global.pasteTarget);
-      const diagnostic = { pasteTarget, native, field, directPaste };
-      console.log('Native paste diagnostic:', JSON.stringify(diagnostic));
-      await fs.writeFile(test.info().outputPath('native-paste-diagnostic.json'), JSON.stringify(diagnostic, null, 2));
-      throw error;
-    }
+    await expect(search).toHaveValue('原生复制');
     await page.getByRole('button', { name: '关闭查找' }).click();
     const zoom = () => application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].webContents.getZoomLevel());
     await key('+', [primary, 'shift']);

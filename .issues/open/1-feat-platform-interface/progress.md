@@ -1,7 +1,11 @@
-# Issue 1 当前 checkpoint
+# Issue 1 审查 checkpoint
 
-macOS PR 已审查、修复安装失败后的 LaunchServices 恢复，并 squash 合入主线。组合实现已汇总；平台接口和 Windows 全屏修复的独立审查通过，Linux/Windows 原生 CI 已通过。macOS 打包与安装通过，原生编辑夹具的粘贴验证仍未收口，本 issue 保持 open，PR #2 暂不合入。
+状态：停止当前 CI 试错路线；issue 保持 open，PR #2 未合入。
 
-来源、审查、各轮 CI 与诊断入口见 [artifacts](artifacts/)。
+macOS PR #1 已修复、验证并合入 main。组合实现的来源已固定，平台接口、共享语义命令和 Windows 路径/全屏处理已实现并完成独立审查；Linux/Windows 原生验证通过。
 
-当前只推进 issue 1。其他 issue 的原型保留在各自 worktree，完整功能暂停。下一步是限定原生诊断后判断产品权限、Cocoa 路径或测试夹具的实际原因，不能以跳过粘贴、放宽权限或重复运行掩盖失败。
+剩余阻塞是 macOS 粘贴自动化的可信度：原生复制成功，Cocoa paste 偶发无结果；查找清理、焦点与空值门槛没有解释失败。现有证据不能判断它是产品故障还是夹具故障，不能据此继续修改产品行为或关闭 issue。
+
+下一步先在原生 Mac 上完成独立最小复现，确认实际编辑行为、原生菜单路径及测试注入的差异，再确定修复；完整四平台 CI 用于确认后的验收。当前没有可用的 Mac 实机执行入口，需要先对齐这一验证条件。
+
+来源、独立审查与已发生 CI 的链接见 [artifacts](artifacts/)。原始日志仅保留本地，不进入最终版本库。其他 issue 保持暂停。

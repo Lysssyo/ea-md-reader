@@ -6,4 +6,4 @@ macOS PR #1 最终 head 为 7051129fd33295905e48dad4e10e94d15e21cc3b，三原生
 
 本轮集成基于 7cebdef，HTML 集成来源 9783a51、跨平台 CI 来源 9a1917a（cherry-pick 为 6f695e3）、平台与命令实现来源 dce7641（cherry-pick 为 086b3f0）。最终主线使用单一集成 PR squash，以上来源分支保留供追溯。
 
-本地 build 成功，Node 29 pass / 2 原生 macOS skip，Electron UI 5 pass / 1 macOS skip。执行输出保存在 local-build.log、local-node.log、local-ui.log。
+本地 build 成功，Node 29 pass / 2 原生 macOS skip，Electron UI 5 pass / 1 macOS skip。原始执行输出仅在本地保留，不进入版本库；原生结果以对应 CI run 为准。
