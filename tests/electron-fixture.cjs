@@ -7,7 +7,13 @@ async function launch(options) {
   for (const stream of [application.process().stdout, application.process().stderr]) {
     stream.on('data', (chunk) => appendFileSync(log, chunk));
   }
-  await application.context().tracing.start({ screenshots: true, snapshots: true, sources: true });
+  try {
+    await application.context().tracing.start({ screenshots: true, snapshots: true, sources: true });
+  } catch (error) {
+    try { await application.close(); }
+    catch (closeError) { throw new AggregateError([error, closeError], 'Cannot start tracing or close Electron.'); }
+    throw error;
+  }
   return application;
 }
 

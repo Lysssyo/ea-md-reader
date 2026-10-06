@@ -55,17 +55,23 @@ test('macOS 原生包、隔离安装、系统打开、升级与重复卸载', as
     expect(await fs.readFile(first)).toEqual(bytes);
     await assert.rejects(fs.access(bundle), { code: 'ENOENT' });
   } finally {
-    if (application) await close(application);
     try {
-      await test.info().attach('installed-launcher-log', {
-        body: await fs.readFile(path.join(context.home, 'Library/Logs/emd/emd.log')),
-        contentType: 'text/plain',
-      });
-    } catch (error) {
-      if (error.code !== 'ENOENT') throw error;
+      if (application) await close(application);
+    } finally {
+      try {
+        try {
+          await test.info().attach('installed-launcher-log', {
+            body: await fs.readFile(path.join(context.home, 'Library/Logs/emd/emd.log')),
+            contentType: 'text/plain',
+          });
+        } catch (error) {
+          if (error.code !== 'ENOENT') throw error;
+        }
+      } finally {
+        // The isolated install still has a system registration that must be removed on failure.
+        try { await uninstall(context); }
+        finally { await fs.rm(directory, { recursive: true, force: true }); }
+      }
     }
-    // The isolated install still has a system registration that must be removed on failure.
-    try { await uninstall(context); }
-    finally { await fs.rm(directory, { recursive: true, force: true }); }
   }
 });
