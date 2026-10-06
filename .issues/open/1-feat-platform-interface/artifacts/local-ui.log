@@ -1,0 +1,22 @@
+
+Running 6 tests using 1 worker
+
+(node:43664) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node-22 --trace-warnings ...` to show where the warning was created)
+
+
+[1/6] tests/commands.spec.cjs:8:1 › 真实键盘、按钮和原生菜单共用命令，查找输入保留复制粘贴
+[2/6] tests/commands.spec.cjs:112:1 › 全屏使用本平台绑定，工作区祖先由主进程返回
+[3/6] tests/reader.spec.cjs:10:1 › HTML 内嵌脚本与样式、隔离、工作区切换、查找、重读和原始字节另存为
+[4/6] tests/reader.spec.cjs:86:1 › 渲染、只读、多标签、另存为、重读、第二次启动及相对图片
+tests/reader.spec.cjs:86:1 › 渲染、只读、多标签、另存为、重读、第二次启动及相对图片
+Native normal-window state: {
+  maximized: false,
+  bounds: { x: 262, y: 108, width: 1180, height: 850 },
+  workArea: { x: 0, y: 0, width: 1707, height: 1067 }
+}
+
+[5/6] tests/reader.spec.cjs:198:1 › 工作区切换、右键菜单、面板拖拽与容器自适应
+[6/6] tests/reader.spec.cjs:366:1 › macOS Finder 打开恢复窗口、Dock 激活及 Command 快捷键
+  1 skipped
+  5 passed (16.3s)
