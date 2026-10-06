@@ -2,7 +2,7 @@
 const platforms = {
   kde: { name: 'KDE/Linux', os: 'linux', load: () => import('./platforms/kde.mjs') },
   gnome: { name: 'GNOME/Linux', os: 'linux' },
-  mac: { name: 'macOS', os: 'darwin' },
+  mac: { name: 'macOS', os: 'darwin', load: () => import('./platforms/mac.mjs') },
   windows: { name: 'Windows', os: 'win32' },
 };
 
