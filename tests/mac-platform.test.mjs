@@ -65,7 +65,7 @@ async function waitForFile(file, ready = () => true) {
   assert.fail(`Launcher did not write ${file}`);
 }
 
-test('macOS 打包包含应用、DMG、ZIP 和只读 Markdown 文件关联', async () => {
+test('macOS 打包包含应用、DMG、ZIP 和只读 Markdown / HTML 文件关联', async () => {
   const { packOptions } = await import('../scripts/platforms/mac.mjs');
   assert.deepEqual(packOptions.mac, ['dir', 'dmg', 'zip']);
   const mac = packOptions.config.mac;
@@ -79,7 +79,7 @@ test('macOS 打包包含应用、DMG、ZIP 和只读 Markdown 文件关联', asy
     assert.equal(association.rank, 'Alternate');
     return association.ext;
   });
-  assert.deepEqual(extensions.toSorted(), ['md', 'markdown', 'mdown', 'mkd', 'mkdn', 'mdx'].toSorted());
+  assert.deepEqual(extensions.toSorted(), ['md', 'markdown', 'mdown', 'mkd', 'mkdn', 'mdx', 'html', 'htm'].toSorted());
 });
 
 test('macOS 安装保留框架链接和权限，启动器传递字面参数与调用目录', async (t) => {

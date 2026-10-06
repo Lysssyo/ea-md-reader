@@ -10,6 +10,7 @@ if (process.platform === 'linux') app.setDesktopName('io.github.yceachan.emd.des
 protocol.registerSchemesAsPrivileged([
   { scheme: 'emd', privileges: { standard: true, secure: true, supportFetchAPI: true } },
   { scheme: 'emd-asset', privileges: { standard: true, secure: true } },
+  { scheme: 'emd-page', privileges: { standard: true, secure: true } },
 ]);
 let window;
 let rendererReady = false;
@@ -42,8 +43,8 @@ async function openPaths(paths) {
 }
 async function openDialog() {
   const result = await dialog.showOpenDialog(window, {
-    title: '打开 Markdown', properties: ['openFile', 'multiSelections'],
-    filters: [{ name: 'Markdown', extensions: ['md', 'markdown', 'mdown', 'mkd', 'mkdn', 'mdx'] }],
+    title: '打开 Markdown 或 HTML', properties: ['openFile', 'multiSelections'],
+    filters: [{ name: 'Markdown / HTML', extensions: ['md', 'markdown', 'mdown', 'mkd', 'mkdn', 'mdx', 'html', 'htm'] }],
   });
   if (!result.canceled) await openPaths(result.filePaths);
 }
@@ -97,12 +98,34 @@ else {
         return new Response('Image unavailable', { status: 404 });
       }
     });
+    protocol.handle('emd-page', (request) => {
+      try {
+        const url = new URL(request.url);
+        const document = getDocument(url.host);
+        if (document.kind !== 'html' || url.pathname !== '/index.html') return new Response('Page unavailable', { status: 404 });
+        // Serve the opened snapshot on a separate origin. Inline scripts have no app or filesystem access.
+        return new Response(document.bytes, { headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'no-store',
+          'Content-Security-Policy': "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; object-src 'none'; base-uri 'none'; form-action 'none'; sandbox allow-scripts",
+        } });
+      } catch (error) {
+        console.error('Cannot read HTML page:', error.message);
+        return new Response('HTML 页面无法读取，请重新打开文件。', { status: 404, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+      }
+    });
     window = new BrowserWindow({
       width: 1180, height: 850, minWidth: 620, minHeight: 440, show: false, frame: false, transparent: true,
       title: 'Ea.Md.Reader', backgroundColor: '#00000000', icon: nativeImage.createFromPath(path.join(__dirname, '..', 'assets', 'emd.png')).resize({ width: 128, height: 128 }),
       webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true },
     });
     window.webContents.on('will-navigate', (event) => event.preventDefault());
+    window.webContents.on('will-frame-navigate', (event) => {
+      // Only the app can load an opened HTML snapshot. Block other frame destinations.
+      const url = new URL(event.url);
+      if (event.initiator?.url !== 'emd://app/index.html' || url.protocol !== 'emd-page:' ||
+          url.pathname !== '/index.html' || documents.get(url.host)?.kind !== 'html') event.preventDefault();
+    });
     window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
     window.webContents.session.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
     window.webContents.session.setPermissionCheckHandler(() => false);
@@ -178,8 +201,8 @@ else {
     checkedHandler('emd:save', async (id) => {
       const document = getDocument(id);
       const result = await dialog.showSaveDialog(window, {
-        title: '另存为 Markdown', defaultPath: document.path,
-        filters: [{ name: 'Markdown', extensions: ['md', 'markdown'] }],
+        title: document.kind === 'html' ? '另存为 HTML' : '另存为 Markdown', defaultPath: document.path,
+        filters: [document.kind === 'html' ? { name: 'HTML', extensions: ['html', 'htm'] } : { name: 'Markdown', extensions: ['md', 'markdown'] }],
       });
       if (result.canceled) return null;
       await saveDocument(document, result.filePath);

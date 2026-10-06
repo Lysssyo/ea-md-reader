@@ -1,7 +1,7 @@
 {
   "name": "emd",
   "version": "0.1.0",
-  "description": "Read-only Markdown reader with the ea-kb reading style",
+  "description": "Read-only Markdown and self-contained HTML reader with the ea-kb reading style",
   "author": "yceachan",
   "license": "MIT",
   "main": "electron/main.cjs",
