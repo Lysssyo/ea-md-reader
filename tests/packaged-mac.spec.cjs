@@ -1,4 +1,5 @@
-const { test, expect, _electron: electron } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
+const { launch, close } = require('./electron-fixture.cjs');
 const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
@@ -28,7 +29,7 @@ test('macOS 原生包、隔离安装、系统打开、升级与重复卸载', as
     const archives = (await fs.readdir('release')).filter((name) => name.endsWith('.dmg'));
     expect(archives.length).toBe(1);
     await execFile('/usr/bin/hdiutil', ['verify', path.resolve('release', archives[0])]);
-    application = await electron.launch({ executablePath: executable, args: [`--user-data-dir=${profile}`, first] });
+    application = await launch({ executablePath: executable, args: [`--user-data-dir=${profile}`, first] });
     const page = await application.firstWindow();
     await expect(page.locator('.vp-doc h1')).toHaveText('只读示例');
     expect(await application.evaluate(() => process.arch)).toBe(process.arch);
@@ -43,7 +44,7 @@ test('macOS 原生包、隔离安装、系统打开、升级与重复卸载', as
     await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('终端参数');
     await expect(page.getByRole('tab')).toHaveCount(3);
     await page.screenshot({ path: test.info().outputPath('system-open.png') });
-    await application.close();
+    await close(application);
     application = null;
     await fs.writeFile(path.join(bundle, 'Contents/obsolete'), 'old');
     await install(context);
@@ -54,7 +55,15 @@ test('macOS 原生包、隔离安装、系统打开、升级与重复卸载', as
     expect(await fs.readFile(first)).toEqual(bytes);
     await assert.rejects(fs.access(bundle), { code: 'ENOENT' });
   } finally {
-    if (application) await application.close();
+    if (application) await close(application);
+    try {
+      await test.info().attach('installed-launcher-log', {
+        body: await fs.readFile(path.join(context.home, 'Library/Logs/emd/emd.log')),
+        contentType: 'text/plain',
+      });
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+    }
     // The isolated install still has a system registration that must be removed on failure.
     try { await uninstall(context); }
     finally { await fs.rm(directory, { recursive: true, force: true }); }

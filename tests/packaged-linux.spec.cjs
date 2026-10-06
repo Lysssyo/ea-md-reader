@@ -1,4 +1,5 @@
-const { test, expect, _electron: electron } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
+const { launch, close } = require('./electron-fixture.cjs');
 const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
@@ -11,7 +12,7 @@ test('Linux 原生打包产物启动且源文件保持只读', async () => {
   let application;
   try {
     await fs.writeFile(source, bytes);
-    application = await electron.launch({
+    application = await launch({
       executablePath: path.resolve('release/linux-unpacked/emd'),
       args: ['--ozone-platform=x11', `--user-data-dir=${path.join(directory, 'profile')}`, source],
     });
@@ -22,7 +23,7 @@ test('Linux 原生打包产物启动且源文件保持只读', async () => {
     await page.screenshot({ path: test.info().outputPath('packaged-linux.png') });
     expect(await fs.readFile(source)).toEqual(bytes);
   } finally {
-    if (application) await application.close();
+    if (application) await close(application);
     await fs.rm(directory, { recursive: true, force: true });
   }
 });

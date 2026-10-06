@@ -44,29 +44,42 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox x11-utils desktop-file-utils libgtk-3-0 libnss3 libasound2t64
       - run: npm ci
-      - name: Configure the Electron sandbox helper on Linux
+      - name: Build native application and archives
+        id: package
+        run: npm run pack -- --platform=${{ matrix.platform }}
+      - name: Configure Electron sandbox helpers on the Linux runner
         if: runner.os == 'Linux'
         run: |
           node - <<'NODE'
           const { execFileSync } = require('node:child_process');
           const path = require('node:path');
-          const helper = path.join(path.dirname(require('electron')), 'chrome-sandbox');
-          execFileSync('sudo', ['chown', 'root:root', helper], { stdio: 'inherit' });
-          execFileSync('sudo', ['chmod', '4755', helper], { stdio: 'inherit' });
+          const helpers = [path.join(path.dirname(require('electron')), 'chrome-sandbox'), path.resolve('release/linux-unpacked/chrome-sandbox')];
+          for (const helper of helpers) {
+            execFileSync('sudo', ['chown', 'root:root', helper], { stdio: 'inherit' });
+            execFileSync('sudo', ['chmod', '4755', helper], { stdio: 'inherit' });
+          }
           NODE
-      - name: Build native application and archives
-        id: package
-        run: npm run pack -- --platform=${{ matrix.platform }}
       - name: Shared files and platform contracts
         run: node --test tests/files.test.cjs tests/platforms.test.mjs tests/mac-platform.test.mjs
       - name: Electron UI on Linux
         if: runner.os == 'Linux'
-        run: xvfb-run -a -s '-screen 0 2560x1440x24' sh -c 'openbox >/tmp/emd-openbox.log 2>&1 & npx playwright test --reporter=line,html && npx playwright test --config=playwright.packaged.config.cjs --reporter=line,html'
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/reader
+        run: xvfb-run -a -s '-screen 0 2560x1440x24' sh -c 'openbox >/tmp/emd-openbox.log 2>&1 & npx playwright test --reporter=line,html'
+      - name: Packaged app on Linux
+        if: always() && runner.os == 'Linux' && steps.package.outcome == 'success'
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/packaged
+        run: xvfb-run -a -s '-screen 0 2560x1440x24' npx playwright test --config=playwright.packaged.config.cjs --reporter=line,html
       - name: Native Electron UI on macOS
         if: runner.os == 'macOS'
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/reader
         run: npx playwright test --reporter=line,html
       - name: Packaged app and system file dispatch
         if: always() && runner.os == 'macOS' && steps.package.outcome == 'success'
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/packaged
         run: npx playwright test --config=playwright.packaged.config.cjs --reporter=line,html
       - name: Preserve reports and native artifacts
         if: always()

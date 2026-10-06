@@ -1,4 +1,5 @@
-const { test, expect, _electron: electron } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
+const { launch, close } = require('./electron-fixture.cjs');
 const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
@@ -18,7 +19,7 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
   let application;
   try {
     const launchEnv = { ...process.env, XDG_CONFIG_HOME: path.join(directory, 'config'), XDG_CACHE_HOME: path.join(directory, 'cache') };
-    application = await electron.launch({ args: [path.resolve('.'), ...platformArgs, `--user-data-dir=${path.join(directory, 'profile')}`, fixture], env: launchEnv });
+    application = await launch({ args: [path.resolve('.'), ...platformArgs, `--user-data-dir=${path.join(directory, 'profile')}`, fixture], env: launchEnv });
     const page = await application.firstWindow();
     page.on('pageerror', (error) => errors.push(error.message));
     await expect(page.locator('.vp-doc h1')).toHaveText('静心阅读');
@@ -112,7 +113,7 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
     expect(await fs.readFile(fixture, 'utf8')).toBe(markdown);
     expect(errors).toEqual([]);
   } finally {
-    if (application) await application.close();
+    if (application) await close(application);
     await fs.rm(directory, { recursive: true, force: true });
   }
 });
@@ -129,7 +130,7 @@ test('工作区切换、右键菜单、面板拖拽与容器自适应', async ()
     await fs.writeFile(fixture, '# 入口\n\n## 子标题\n\n开始阅读。');
     await fs.writeFile(nested, `---\ntitle: 宽屏检查\n---\n# 正文\n\n## 深入\n\n子目录文档。${'宽屏阅读时，正文应利用扣除侧栏后的剩余空间；打开、收起或调整面板宽度时，段落、引用和代码区域同步调整，左右保留适当的留白。'.repeat(10)}\n\n> 引用内容应随阅读容器展开。\n\n- 列表内容应随阅读容器展开。\n\n\`\`\`text\n代码内容应随阅读容器展开。\n\`\`\`\n\n| 内容 | 说明 |\n| --- | --- |\n| 表格 | 随阅读容器展开 |`);
     await fs.writeFile(outside, '# 工作区外部');
-    application = await electron.launch({ args: [path.resolve('.'), ...platformArgs, `--user-data-dir=${path.join(directory, 'profile')}`, fixture], env: { ...process.env, XDG_CONFIG_HOME: path.join(directory, 'config'), XDG_CACHE_HOME: path.join(directory, 'cache') } });
+    application = await launch({ args: [path.resolve('.'), ...platformArgs, `--user-data-dir=${path.join(directory, 'profile')}`, fixture], env: { ...process.env, XDG_CONFIG_HOME: path.join(directory, 'config'), XDG_CACHE_HOME: path.join(directory, 'cache') } });
     const page = await application.firstWindow();
     page.on('pageerror', (error) => errors.push(error.message));
     const tree = page.getByRole('navigation', { name: '工作区文件' });
@@ -190,16 +191,18 @@ test('工作区切换、右键菜单、面板拖拽与容器自适应', async ()
     const leftHandle = page.getByRole('separator', { name: '调整工作区宽度' });
     const handle = await leftHandle.boundingBox();
     await page.mouse.move(handle.x + handle.width / 2, handle.y + 100);
-    await page.mouse.down(); await page.mouse.move(handle.x + 62, handle.y + 100, { steps: 8 }); await page.mouse.up();
+    await page.mouse.down(); await page.mouse.move(handle.x + 62, handle.y + 100, { steps: 8 });
     await expect.poll(async () => (await dimensions()).workspace).toBeGreaterThan(before.workspace + 50);
+    await page.mouse.up();
     const afterLeft = await dimensions();
     expect(afterLeft.reading).toBeLessThan(before.reading - 50);
     expect(afterLeft.padding).toBeLessThan(before.padding);
     const rightHandle = page.getByRole('separator', { name: '调整目录宽度' });
     const rightBox = await rightHandle.boundingBox();
     await page.mouse.move(rightBox.x + rightBox.width / 2, rightBox.y + 100);
-    await page.mouse.down(); await page.mouse.move(rightBox.x - 48, rightBox.y + 100, { steps: 8 }); await page.mouse.up();
+    await page.mouse.down(); await page.mouse.move(rightBox.x - 48, rightBox.y + 100, { steps: 8 });
     await expect.poll(async () => (await dimensions()).outline).toBeGreaterThan(before.outline + 40);
+    await page.mouse.up();
     const afterBoth = await dimensions();
     expect(Math.abs(afterBoth.reading + afterBoth.workspace + afterBoth.outline + 5 - afterBoth.total)).toBeLessThan(1);
     expect(afterBoth.article).toBeLessThanOrEqual(afterBoth.reading);
@@ -277,7 +280,7 @@ test('工作区切换、右键菜单、面板拖拽与容器自适应', async ()
     await expect(page.getByRole('button', { name: '打开 Markdown' })).toBeVisible();
     expect(errors).toEqual([]);
   } finally {
-    if (application) await application.close();
+    if (application) await close(application);
     await fs.rm(directory, { recursive: true, force: true });
     await fs.rm(outside, { force: true });
   }
@@ -297,7 +300,7 @@ test('macOS Finder 打开恢复窗口、Dock 激活及 Command 快捷键', async
     await fs.writeFile(first, '# Finder 示例\n');
     await fs.writeFile(second, '# 另一个文件\n');
     await fs.writeFile(shortcut, original);
-    application = await electron.launch({
+    application = await launch({
       args: [path.resolve('.'), `--user-data-dir=${path.join(directory, 'profile')}`, path.basename(first), path.basename(second)],
       cwd: directory,
     });
@@ -380,7 +383,7 @@ test('macOS Finder 打开恢复窗口、Dock 激活及 Command 快捷键', async
     await expect(page.getByRole('tab')).toHaveCount(2);
     expect(errors).toEqual([]);
   } finally {
-    if (application) await application.close();
+    if (application) await close(application);
     await fs.rm(directory, { recursive: true, force: true });
   }
 });
