@@ -1,17 +1,18 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { access, chmod, lstat, mkdir, mkdtemp, readFile, readdir, readlink, realpath, rm, stat, symlink, writeFile } from 'node:fs/promises';
-import { cpSync, readFileSync } from 'node:fs';
+import { cpSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 
 const appId = 'io.github.yceachan.emd';
+const launchServices = '/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister';
 const quote = (value) => `'${value.replaceAll("'", "'\\''")}'`;
 const missing = (file) => assert.rejects(access(file), { code: 'ENOENT' });
 
 async function fixture(t) {
-  const directory = await mkdtemp(join(tmpdir(), 'emd-mac-'));
+  const directory = await realpath(await mkdtemp(join(tmpdir(), 'emd-mac-')));
   t.after(() => rm(directory, { recursive: true, force: true }));
   const home = join(directory, "home with ' quote %");
   const root = join(directory, 'repository');
@@ -150,8 +151,12 @@ test('macOS 无效源包、复制失败与注册失败保留已有安装', async
   assert.equal(await readFile(join(context.target, 'Contents/Resources.txt'), 'utf8'), 'version one');
   assert.equal(await readFile(context.launcher, 'utf8'), launcher);
   assert.deepEqual(await readdir(dirname(context.target)), ['emd.app']);
+  let registrationFailed = false;
   const failedRegistration = (command, args, options) => {
-    if (command.endsWith('/lsregister') && args[0] === '-f') throw new Error('registration failed');
+    if (command.endsWith('/lsregister') && args[0] === '-f' && !registrationFailed) {
+      registrationFailed = true;
+      throw new Error('registration failed');
+    }
     return context.run(command, args, options);
   };
   await assert.rejects(install({ ...context, source: upgrade, run: failedRegistration }), /registration failed/);
@@ -159,6 +164,196 @@ test('macOS 无效源包、复制失败与注册失败保留已有安装', async
   assert.equal(await readFile(context.launcher, 'utf8'), launcher);
   assert.deepEqual(await readdir(dirname(context.target)), ['emd.app']);
 });
+
+for (const upgrade of [false, true]) {
+  test(`macOS ${upgrade ? '升级' : '首次安装'}注册后启动器提交失败恢复注册与原文件`, async (t) => {
+    const { install } = await import('../scripts/platforms/mac.mjs');
+    const context = await fixture(t);
+    const registration = new Map();
+    let failLauncher = false;
+    const run = (command, args, options) => {
+      const result = context.run(command, args, options);
+      if (command.endsWith('/lsregister')) {
+        if (args[0] === '-u') registration.delete(args[1]);
+        else {
+          registration.set(args[1], readFileSync(join(args[1], 'Contents/Resources.txt'), 'utf8'));
+          if (failLauncher) {
+            failLauncher = false;
+            // Delete the staged command after registration to fail its final rename.
+            const temporary = readdirSync(dirname(context.launcher)).find((name) => name.startsWith('.emd-install-'));
+            assert.ok(temporary);
+            rmSync(join(dirname(context.launcher), temporary));
+          }
+        }
+      }
+      return result;
+    };
+    let originalLauncher;
+    if (upgrade) {
+      const original = await bundle(join(context.directory, 'original/emd.app'));
+      await install({ ...context, source: original, run });
+      originalLauncher = await readFile(context.launcher);
+    }
+    const source = await bundle(join(context.directory, 'new/emd.app'), { contents: 'version two' });
+    const sourceBinary = await readFile(join(source, 'Contents/MacOS/emd'));
+    failLauncher = true;
+    await assert.rejects(install({ ...context, source, run }), { code: 'ENOENT' });
+    assert.equal(registration.get(context.target), upgrade ? 'version one' : undefined);
+    if (upgrade) {
+      assert.equal(await readFile(join(context.target, 'Contents/Resources.txt'), 'utf8'), 'version one');
+      assert.deepEqual(await readFile(context.launcher), originalLauncher);
+      assert.equal(await readlink(join(context.target, 'Contents/Frameworks/Demo.framework/Versions/Current')), 'A');
+    } else {
+      await missing(context.target);
+      await missing(context.launcher);
+    }
+    assert.equal(await readFile(join(source, 'Contents/Resources.txt'), 'utf8'), 'version two');
+    assert.deepEqual(await readFile(join(source, 'Contents/MacOS/emd')), sourceBinary);
+    assert.equal(await readlink(join(source, 'Contents/Frameworks/Demo.framework/Demo')), 'Versions/Current/Demo');
+    assert.deepEqual(await readdir(dirname(context.target)), upgrade ? ['emd.app'] : []);
+    assert.deepEqual(await readdir(dirname(context.launcher)), upgrade ? ['emd'] : []);
+    const operations = context.calls.filter(({ command }) => command.endsWith('/lsregister')).map(({ args }) => args[0]);
+    assert.deepEqual(operations, upgrade ? ['-f', '-f', '-u', '-f'] : ['-f', '-u']);
+  });
+}
+
+test('macOS 注册恢复失败同时报告原故障并继续恢复旧包和启动器', async (t) => {
+  const { install } = await import('../scripts/platforms/mac.mjs');
+  for (const failure of ['unregister', 'restore']) {
+    await t.test(failure, async (t) => {
+      const context = await fixture(t);
+      const original = await bundle(join(context.directory, 'original/emd.app'));
+      await install({ ...context, source: original });
+      const originalLauncher = await readFile(context.launcher);
+      const source = await bundle(join(context.directory, 'new/emd.app'), { contents: 'version two' });
+      const recoveryError = new Error(`${failure} registration failed`);
+      let registrations = 0;
+      const run = (command, args, options) => {
+        if (command.endsWith('/lsregister')) {
+          const expected = args[0] === '-f' && registrations === 1 ? 'version one' : 'version two';
+          assert.equal(readFileSync(join(context.target, 'Contents/Resources.txt'), 'utf8'), expected);
+          if ((failure === 'unregister' && args[0] === '-u') || (failure === 'restore' && args[0] === '-f' && registrations === 1)) throw recoveryError;
+        }
+        const result = context.run(command, args, options);
+        if (command.endsWith('/lsregister') && args[0] === '-f' && registrations++ === 0) {
+          const temporary = readdirSync(dirname(context.launcher)).find((name) => name.startsWith('.emd-install-'));
+          assert.ok(temporary);
+          rmSync(join(dirname(context.launcher), temporary));
+        }
+        return result;
+      };
+      await assert.rejects(install({ ...context, source, run }), (error) => {
+        assert.ok(error instanceof AggregateError);
+        assert.equal(error.errors[0].code, 'ENOENT');
+        assert.equal(error.errors[1], recoveryError);
+        assert.match(error.message, /ENOENT/);
+        assert.ok(error.message.includes(recoveryError.message));
+        return true;
+      });
+      assert.equal(await readFile(join(context.target, 'Contents/Resources.txt'), 'utf8'), 'version one');
+      assert.deepEqual(await readFile(context.launcher), originalLauncher);
+      assert.equal(await readlink(join(context.target, 'Contents/Frameworks/Demo.framework/Versions/Current')), 'A');
+      assert.deepEqual(await readdir(dirname(context.target)), ['emd.app']);
+      assert.deepEqual(await readdir(dirname(context.launcher)), ['emd']);
+    });
+  }
+});
+
+// lsregister's diagnostic format is not a public API. Fail if the expected fields disappear.
+function registeredClaims(dump, target) {
+  const records = dump.split(/^[ \t]*-{10,}[ \t]*$/m);
+  const bundles = records.filter((record) => /^[ \t]*bundle id:/m.test(record));
+  assert.ok(bundles.length, '无法识别 lsregister -dump 的 bundle id 字段，请检查保存的原输出。');
+  const matches = bundles.filter((record) => {
+    const path = record.match(/^[ \t]*path:[ \t]*(.+)$/m)?.[1].trim().replace(/ \(0x[\da-f]+\)$/i, '');
+    return path === target;
+  });
+  assert.ok(matches.length <= 1, 'lsregister -dump 返回了多条目标路径记录。');
+  if (!matches.length) {
+    assert.ok(!dump.includes(target), '无法识别 lsregister -dump 的目标路径字段，请检查保存的原输出。');
+    return '';
+  }
+  const identifier = matches[0].match(/^[ \t]*bundle id:[ \t]*(.+)$/m)[1].trim();
+  const claims = records.filter((record) => /^[ \t]*claim id:/m.test(record) && record.match(/^[ \t]*bundle:[ \t]*(.+)$/m)?.[1].trim() === identifier);
+  assert.ok(claims.length, '目标包没有可识别的注册绑定，请检查保存的原输出。');
+  return claims.map((record) => {
+    const bindings = record.match(/^[ \t]*bindings:[ \t]*(.+)$/m);
+    assert.ok(bindings, '无法识别 lsregister -dump 的 bindings 字段，请检查保存的原输出。');
+    return bindings[1].trim();
+  }).join('\n');
+}
+
+for (const upgrade of [false, true]) {
+  test(`macOS 原生 ${upgrade ? '升级' : '首次安装'}启动器失败恢复 LaunchServices 绑定`, { skip: process.platform !== 'darwin' && '需要 macOS 原生 plutil、ditto 和 LaunchServices' }, async (t) => {
+    const { install, uninstall } = await import('../scripts/platforms/mac.mjs');
+    const context = await fixture(t);
+    const artifactDirectory = join(process.cwd(), 'test-results', 'mac-registration', `${process.arch}-${upgrade ? 'upgrade' : 'first-install'}`);
+    mkdirSync(artifactDirectory, { recursive: true });
+    const marker = context.directory.split('/').at(-1).toLowerCase();
+    const oldExtension = `${marker}-old`, newExtension = `${marker}-new`;
+    const createBundle = async (path, extension, contents) => {
+      await bundle(path, { contents });
+      await writeFile(join(path, 'Contents/Info.plist'), `<?xml version="1.0"?><plist version="1.0"><dict>
+<key>CFBundleIdentifier</key><string>${appId}</string>
+<key>CFBundleName</key><string>emd</string>
+<key>CFBundleExecutable</key><string>emd</string>
+<key>CFBundlePackageType</key><string>APPL</string>
+<key>CFBundleVersion</key><string>1.0</string>
+<key>CFBundleDocumentTypes</key><array><dict>
+<key>CFBundleTypeName</key><string>${extension}</string>
+<key>CFBundleTypeExtensions</key><array><string>${extension}</string></array>
+<key>CFBundleTypeRole</key><string>Viewer</string>
+<key>LSHandlerRank</key><string>Alternate</string>
+</dict></array></dict></plist>`);
+      return path;
+    };
+    const snapshot = (name) => {
+      const dump = execFileSync(launchServices, ['-dump'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+      writeFileSync(join(artifactDirectory, `${name}.txt`), dump);
+      return registeredClaims(dump, context.target);
+    };
+    let originalLauncher;
+    try {
+      assert.equal(snapshot('before-install'), '');
+      if (upgrade) {
+        const original = await createBundle(join(context.directory, 'original/emd.app'), oldExtension, 'version one');
+        await install({ ...context, source: original, run: execFileSync });
+        assert.ok(snapshot('original-registration').includes(oldExtension));
+        originalLauncher = await readFile(context.launcher);
+      }
+      const source = await createBundle(join(context.directory, 'new/emd.app'), newExtension, 'version two');
+      const sourcePlist = await readFile(join(source, 'Contents/Info.plist'));
+      let failLauncher = true;
+      const run = (command, args, options) => {
+        const result = execFileSync(command, args, options);
+        if (command === launchServices && args[0] === '-f' && failLauncher) {
+          failLauncher = false;
+          assert.ok(snapshot('new-registration').includes(newExtension));
+          const temporary = readdirSync(dirname(context.launcher)).find((name) => name.startsWith('.emd-install-'));
+          assert.ok(temporary);
+          rmSync(join(dirname(context.launcher), temporary));
+        }
+        return result;
+      };
+      await assert.rejects(install({ ...context, source, run }), { code: 'ENOENT' });
+      const restored = snapshot('after-rollback');
+      assert.ok(!restored.includes(newExtension), '失败的新包绑定仍在目标注册中。');
+      if (upgrade) {
+        assert.ok(restored.includes(oldExtension), '旧包绑定没有恢复。');
+        assert.equal(await readFile(join(context.target, 'Contents/Resources.txt'), 'utf8'), 'version one');
+        assert.deepEqual(await readFile(context.launcher), originalLauncher);
+        assert.equal(await readlink(join(context.target, 'Contents/Frameworks/Demo.framework/Versions/Current')), 'A');
+      } else {
+        assert.equal(restored, '');
+        await missing(context.target);
+        await missing(context.launcher);
+      }
+      assert.deepEqual(await readFile(join(source, 'Contents/Info.plist')), sourcePlist);
+    } finally {
+      await uninstall({ home: context.home, run: execFileSync });
+    }
+  });
+}
 
 test('macOS 拒绝覆盖或卸载不属于 emd 的应用和命令', async (t) => {
   const { install, uninstall } = await import('../scripts/platforms/mac.mjs');

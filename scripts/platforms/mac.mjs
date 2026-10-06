@@ -79,7 +79,7 @@ export async function install({ root, home, source, run = execFileSync }) {
   const staging = await mkdtemp(join(applications, '.emd-install-'));
   const stagedApp = join(staging, appName), oldApp = join(staging, 'previous.app');
   const stagedLauncher = join(staging, 'emd');
-  let movedOld = false, installedNew = false, preserveRecovery = false;
+  let movedOld = false, installedNew = false, registrationAttempted = false, preserveRecovery = false;
   const launcherTemp = join(bin, `.emd-install-${basename(staging)}`);
   try {
     // ditto preserves Framework symlinks, signing metadata and quarantine attributes.
@@ -93,15 +93,33 @@ export async function install({ root, home, source, run = execFileSync }) {
     try {
       if (await exists(target)) { await rename(target, oldApp); movedOld = true; }
       await rename(stagedApp, target); installedNew = true;
+      registrationAttempted = true;
       refreshRegistration(target, run);
       await rename(launcherTemp, launcher);
     } catch (error) {
+      const rollbackErrors = [];
+      let restoredOld = false;
+      // Unregister while the new bundle is present, even if registration reported a failure.
+      if (registrationAttempted) {
+        try { refreshRegistration(target, run, true); }
+        catch (rollbackError) { rollbackErrors.push(rollbackError); }
+      }
       try {
         if (installedNew) await rm(target, { recursive: true, force: true });
-        if (movedOld) { await rename(oldApp, target); movedOld = false; }
+        if (movedOld) { await rename(oldApp, target); movedOld = false; restoredOld = true; }
       } catch (rollbackError) {
         preserveRecovery = movedOld;
-        throw new AggregateError([error, rollbackError], `安装失败；旧应用保留在 ${oldApp}，请手动恢复。`);
+        rollbackErrors.push(rollbackError);
+      }
+      if (restoredOld && registrationAttempted) {
+        try { refreshRegistration(target, run); }
+        catch (rollbackError) { rollbackErrors.push(rollbackError); }
+      }
+      if (rollbackErrors.length) {
+        const recovery = preserveRecovery
+          ? `旧应用保留在 ${oldApp}，请手动恢复。`
+          : `恢复未完成，请检查应用和 LaunchServices 注册：${target}。`;
+        throw new AggregateError([error, ...rollbackErrors], `安装失败：${error.message}；恢复失败：${rollbackErrors.map((item) => item.message).join('；')}；${recovery}`);
       }
       throw error;
     } finally { await rm(launcherTemp, { force: true }); }
