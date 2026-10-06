@@ -3,9 +3,10 @@ const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 const { spawn, execFileSync } = require('node:child_process');
+const platformArgs = process.platform === 'linux' ? ['--ozone-platform=x11'] : [];
 
 test('渲染、只读、多标签、另存为、重读、第二次启动及相对图片', async () => {
-  const directory = await fs.mkdtemp(path.join(os.homedir(), '.pi/work/emd-ui-'));
+  const directory = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'emd-ui-')));
   const fixture = path.join(directory, '阅读 示例.md');
   const sibling = path.join(directory, '第二页.md');
   const copy = path.join(directory, '副本.md');
@@ -17,13 +18,15 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
   let application;
   try {
     const launchEnv = { ...process.env, XDG_CONFIG_HOME: path.join(directory, 'config'), XDG_CACHE_HOME: path.join(directory, 'cache') };
-    application = await electron.launch({ args: [path.resolve('.'), '--ozone-platform=x11', `--user-data-dir=${path.join(directory, 'profile')}`, fixture], env: launchEnv });
+    application = await electron.launch({ args: [path.resolve('.'), ...platformArgs, `--user-data-dir=${path.join(directory, 'profile')}`, fixture], env: launchEnv });
     const page = await application.firstWindow();
     page.on('pageerror', (error) => errors.push(error.message));
     await expect(page.locator('.vp-doc h1')).toHaveText('静心阅读');
-    const nativeHandle = await application.evaluate(({ BrowserWindow }) => Array.from(BrowserWindow.getAllWindows()[0].getNativeWindowHandle()));
-    const windowId = Buffer.from(nativeHandle).readUInt32LE();
-    await expect.poll(() => /Icon \(\d+ x \d+\)/.test(execFileSync('xprop', ['-id', String(windowId), '_NET_WM_ICON'], { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 }))).toBe(true);
+    if (process.platform === 'linux') {
+      const nativeHandle = await application.evaluate(({ BrowserWindow }) => Array.from(BrowserWindow.getAllWindows()[0].getNativeWindowHandle()));
+      const windowId = Buffer.from(nativeHandle).readUInt32LE();
+      await expect.poll(() => /Icon \(\d+ x \d+\)/.test(execFileSync('xprop', ['-id', String(windowId), '_NET_WM_ICON'], { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 }))).toBe(true);
+    }
     await expect(page.locator('.vp-doc pre.shiki span').first()).toBeVisible();
     await expect(page.locator('.katex').first()).toBeVisible();
     await expect(page.locator('.github-alert')).toContainText('原始 Markdown');
@@ -48,13 +51,15 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
     await expect(page.getByRole('button', { name: '展开目录面板', exact: true })).toBeVisible();
     expect(await page.locator('.app').evaluate((element) => getComputedStyle(element).borderRadius)).toBe('10px');
     await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(1180, 850));
-    await page.screenshot({ path: path.join(os.homedir(), '.pi/work/emd-light.png') });
+    await page.screenshot({ path: test.info().outputPath('emd-light.png') });
     await expect(page.getByRole('button', { name: '最大化窗口' })).toBeVisible();
     await page.getByRole('button', { name: '最大化窗口' }).click();
     await expect(page.getByRole('button', { name: '还原窗口' })).toBeVisible();
     await page.getByRole('button', { name: '还原窗口' }).click();
     await expect(page.getByRole('button', { name: '最大化窗口' })).toBeVisible();
-    expect(await application.evaluate(({ Menu }) => Menu.getApplicationMenu())).toBe(null);
+    if (process.platform === 'darwin') {
+      expect(await application.evaluate(({ Menu }) => Menu.getApplicationMenu().items.map((item) => item.role.toLowerCase()))).toEqual(['appmenu', 'editmenu', 'windowmenu']);
+    } else expect(await application.evaluate(({ Menu }) => Menu.getApplicationMenu())).toBe(null);
     await application.evaluate(({ dialog }, destination) => { dialog.showSaveDialog = async () => ({ canceled: false, filePath: destination }); }, copy);
     await page.getByRole('button', { name: '另存为', exact: true }).click();
     await expect(page.getByRole('status')).toContainText('已另存为');
@@ -77,16 +82,19 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
     await expect(page.getByRole('tab')).toHaveCount(1);
     await expect(page.getByRole('tab')).toHaveAttribute('aria-selected', 'true');
     const third = path.join(directory, '相对 路径.md');
+    const fourth = path.join(directory, '-第二次启动.md');
     await fs.writeFile(third, '# 从第二次启动打开\n');
-    const child = spawn(require('electron'), [path.resolve('.'), `--user-data-dir=${path.join(directory, 'profile')}`, path.basename(third)], { cwd: directory, env: launchEnv, stdio: 'pipe' });
+    await fs.writeFile(fourth, '# 多文件参数打开\n');
+    const child = spawn(require('electron'), [path.resolve('.'), ...platformArgs, `--user-data-dir=${path.join(directory, 'profile')}`, '--', path.basename(third), path.basename(fourth)], { cwd: directory, env: launchEnv, stdio: 'pipe' });
     const code = await new Promise((resolve, reject) => { child.on('exit', resolve); child.on('error', reject); });
     expect(code).toBe(0);
-    await expect(page.getByRole('tab')).toHaveCount(2);
-    await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('从第二次启动打开');
+    await expect(page.getByRole('tab')).toHaveCount(3);
+    await expect(page.getByRole('tab', { name: '相对 路径.md' })).toBeVisible();
+    await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('多文件参数打开');
     await application.evaluate(({ dialog }, source) => { dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [source] }); }, fixture);
     await page.getByRole('button', { name: '文件', exact: true }).click();
     await page.getByRole('menuitem', { name: '打开…' }).click();
-    await expect(page.getByRole('tab')).toHaveCount(2);
+    await expect(page.getByRole('tab')).toHaveCount(3);
     await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('静心阅读');
     expect(await fs.readFile(fixture, 'utf8')).toBe(markdown);
     expect(errors).toEqual([]);
@@ -97,7 +105,7 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
 });
 
 test('工作区切换、右键菜单、面板拖拽与容器自适应', async () => {
-  const directory = await fs.mkdtemp(path.join(os.homedir(), '.pi/work/emd-workspace-'));
+  const directory = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'emd-workspace-')));
   const outside = `${directory}-outside.md`;
   let application;
   const errors = [];
@@ -108,7 +116,7 @@ test('工作区切换、右键菜单、面板拖拽与容器自适应', async ()
     await fs.writeFile(fixture, '# 入口\n\n## 子标题\n\n开始阅读。');
     await fs.writeFile(nested, `---\ntitle: 宽屏检查\n---\n# 正文\n\n## 深入\n\n子目录文档。${'宽屏阅读时，正文应利用扣除侧栏后的剩余空间；打开、收起或调整面板宽度时，段落、引用和代码区域同步调整，左右保留适当的留白。'.repeat(10)}\n\n> 引用内容应随阅读容器展开。\n\n- 列表内容应随阅读容器展开。\n\n\`\`\`text\n代码内容应随阅读容器展开。\n\`\`\`\n\n| 内容 | 说明 |\n| --- | --- |\n| 表格 | 随阅读容器展开 |`);
     await fs.writeFile(outside, '# 工作区外部');
-    application = await electron.launch({ args: [path.resolve('.'), '--ozone-platform=x11', `--user-data-dir=${path.join(directory, 'profile')}`, fixture], env: { ...process.env, XDG_CONFIG_HOME: path.join(directory, 'config'), XDG_CACHE_HOME: path.join(directory, 'cache') } });
+    application = await electron.launch({ args: [path.resolve('.'), ...platformArgs, `--user-data-dir=${path.join(directory, 'profile')}`, fixture], env: { ...process.env, XDG_CONFIG_HOME: path.join(directory, 'config'), XDG_CACHE_HOME: path.join(directory, 'cache') } });
     const page = await application.firstWindow();
     page.on('pageerror', (error) => errors.push(error.message));
     const tree = page.getByRole('navigation', { name: '工作区文件' });
@@ -200,7 +208,7 @@ test('工作区切换、右键菜单、面板拖拽与容器自适应', async ()
     await expect(tree).toHaveCount(0);
     await expect(page.getByRole('navigation', { name: '本文目录' })).toBeVisible();
     expect((await dimensions()).reading).toBeGreaterThanOrEqual(360);
-    await page.screenshot({ path: path.join(os.homedir(), '.pi/work/emd-workspace-narrow.png') });
+    await page.screenshot({ path: test.info().outputPath('emd-workspace-narrow.png') });
     await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(1180, 850));
     await expect(tree).toBeVisible();
     await expect(page.getByRole('navigation', { name: '本文目录' })).toBeVisible();
@@ -208,7 +216,7 @@ test('工作区切换、右键菜单、面板拖拽与容器自适应', async ()
     await expect(tree).toHaveCount(0);
     await page.getByRole('button', { name: '显示工作区', exact: true }).click();
     await expect(tree).toBeVisible();
-    await page.screenshot({ path: path.join(os.homedir(), '.pi/work/emd-workspace-wide.png') });
+    await page.screenshot({ path: test.info().outputPath('emd-workspace-wide.png') });
 
     // Zoom supplies a 2360px layout viewport even when the window manager caps native window sizes.
     const viewportWidth = await page.evaluate(() => window.innerWidth);
@@ -241,7 +249,7 @@ test('工作区切换、右键菜单、面板拖拽与容器自适应', async ()
     await expect(page.getByRole('navigation', { name: '本文目录' })).toHaveCount(0);
     const bothHidden = await checkWideContent();
     expect(bothHidden).toBeGreaterThan(leftHidden + 200);
-    await page.screenshot({ path: path.join(os.homedir(), '.pi/work/emd-full-width.png') });
+    await page.screenshot({ path: test.info().outputPath('emd-full-width.png') });
     await page.getByRole('button', { name: '显示工作区', exact: true }).click();
     await page.getByRole('button', { name: '展开目录面板', exact: true }).click();
     await expect(tree).toBeVisible();
@@ -259,5 +267,107 @@ test('工作区切换、右键菜单、面板拖拽与容器自适应', async ()
     if (application) await application.close();
     await fs.rm(directory, { recursive: true, force: true });
     await fs.rm(outside, { force: true });
+  }
+});
+
+test('macOS Finder 打开恢复窗口、Dock 激活及 Command 快捷键', async () => {
+  test.skip(process.platform !== 'darwin', 'macOS 原生窗口与 Command 行为');
+  const directory = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'emd-mac-')));
+  const first = path.join(directory, 'Finder 示例.md');
+  const second = path.join(directory, '另一个 文件.md');
+  const shortcut = path.join(directory, '快捷键.md');
+  const copy = path.join(directory, '快捷键 副本.md');
+  const original = Buffer.from('\ufeff# 快捷键\r\n\r\n只读内容。\r\n');
+  let application;
+  const errors = [];
+  try {
+    await fs.writeFile(first, '# Finder 示例\n');
+    await fs.writeFile(second, '# 另一个文件\n');
+    await fs.writeFile(shortcut, original);
+    application = await electron.launch({
+      args: [path.resolve('.'), `--user-data-dir=${path.join(directory, 'profile')}`, path.basename(first), path.basename(second)],
+      cwd: directory,
+    });
+    const page = await application.firstWindow();
+    page.on('pageerror', (error) => errors.push(error.message));
+    async function command(keyCode, shift = false) {
+      // CDP keyboard dispatch bypasses Electron's before-input-event handler.
+      await application.evaluate(({ BrowserWindow }, { keyCode, shift }) => {
+        const contents = BrowserWindow.getAllWindows()[0].webContents;
+        const modifiers = shift ? ['meta', 'shift'] : ['meta'];
+        contents.sendInputEvent({ type: 'keyDown', keyCode, modifiers });
+        contents.sendInputEvent({ type: 'keyUp', keyCode, modifiers });
+      }, { keyCode, shift });
+    }
+    await expect(page.getByRole('tab')).toHaveCount(2);
+    await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('另一个文件');
+
+    await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].hide());
+    expect(await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isVisible())).toBe(false);
+    const prevented = await application.evaluate(({ app }, source) => {
+      let prevented = false;
+      app.emit('open-file', { preventDefault() { prevented = true; } }, source);
+      return prevented;
+    }, first);
+    expect(prevented).toBe(true);
+    await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('Finder 示例');
+    await expect(page.getByRole('tab')).toHaveCount(2);
+    await expect.poll(() => application.evaluate(({ BrowserWindow }) => {
+      const window = BrowserWindow.getAllWindows()[0];
+      return window.isVisible() && window.isFocused();
+    })).toBe(true);
+
+    await application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].minimize());
+    await expect.poll(() => application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isMinimized())).toBe(true);
+    await application.evaluate(({ app }, source) => app.emit('open-file', { preventDefault() {} }, source), second);
+    await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('另一个文件');
+    await expect.poll(() => application.evaluate(({ BrowserWindow }) => {
+      const window = BrowserWindow.getAllWindows()[0];
+      return window.isVisible() && !window.isMinimized() && window.isFocused();
+    })).toBe(true);
+
+    await application.evaluate(({ app, BrowserWindow }) => {
+      BrowserWindow.getAllWindows()[0].hide();
+      app.emit('activate');
+    });
+    await expect.poll(() => application.evaluate(({ BrowserWindow }) => {
+      const window = BrowserWindow.getAllWindows()[0];
+      return window.isVisible() && window.isFocused();
+    })).toBe(true);
+
+    await application.evaluate(({ dialog }, source) => {
+      dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [source] });
+    }, shortcut);
+    await command('O');
+    await expect(page.getByRole('tab')).toHaveCount(3);
+    await expect(page.locator('.document-panel:not([hidden]) h1')).toHaveText('快捷键');
+    await command('F');
+    const search = page.getByRole('textbox', { name: '查找内容' });
+    await expect(search).toBeFocused();
+    await search.fill('只读内容');
+    expect(await application.evaluate(({ Menu }) => {
+      const edit = Menu.getApplicationMenu().items.find((item) => item.role === 'editmenu');
+      return edit.submenu.items.filter((item) => ['copy', 'paste', 'selectall'].includes(item.role)).map((item) => [item.role, item.accelerator]);
+    })).toEqual([
+      ['copy', 'CommandOrControl+C'], ['paste', 'CommandOrControl+V'], ['selectall', 'CommandOrControl+A'],
+    ]);
+    await page.getByRole('button', { name: '关闭查找' }).click();
+
+    await application.evaluate(({ dialog }, destination) => {
+      dialog.showSaveDialog = async () => ({ canceled: false, filePath: destination });
+    }, copy);
+    await command('S', true);
+    await expect(page.getByRole('status')).toContainText('已另存为');
+    expect(await fs.readFile(copy)).toEqual(original);
+    expect(await fs.readFile(shortcut)).toEqual(original);
+    await fs.writeFile(shortcut, '# 快捷键\n\n外部更新后的内容。\n');
+    await command('R');
+    await expect(page.locator('.document-panel:not([hidden]) .vp-doc')).toContainText('外部更新后的内容');
+    await command('W');
+    await expect(page.getByRole('tab')).toHaveCount(2);
+    expect(errors).toEqual([]);
+  } finally {
+    if (application) await application.close();
+    await fs.rm(directory, { recursive: true, force: true });
   }
 });

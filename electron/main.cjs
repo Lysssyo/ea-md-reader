@@ -59,14 +59,21 @@ function checkedHandler(channel, handler) {
   });
 }
 function menuAction(action) { send('emd:action', action); }
+function focusWindow() {
+  if (!window || window.isDestroyed()) return;
+  if (window.isMinimized()) window.restore();
+  window.show();
+  window.focus();
+}
 
 if (!isPrimary) app.quit();
 else {
   app.on('second-instance', (_event, argv, cwd) => {
     openPaths(fileArguments(argv, cwd));
-    if (window) { if (window.isMinimized()) window.restore(); window.show(); window.focus(); }
+    focusWindow();
   });
-  app.on('open-file', (event, filePath) => { event.preventDefault(); openPaths([filePath]); });
+  app.on('open-file', (event, filePath) => { event.preventDefault(); openPaths([filePath]); focusWindow(); });
+  if (process.platform === 'darwin') app.on('activate', focusWindow);
   app.on('window-all-closed', () => app.quit());
   app.whenReady().then(async () => {
     protocol.handle('emd', (request) => {
@@ -99,7 +106,9 @@ else {
     window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
     window.webContents.session.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
     window.webContents.session.setPermissionCheckHandler(() => false);
-    Menu.setApplicationMenu(null);
+    Menu.setApplicationMenu(process.platform === 'darwin' ? Menu.buildFromTemplate([
+      { role: 'appMenu' }, { role: 'editMenu' }, { role: 'windowMenu' },
+    ]) : null);
     window.webContents.on('before-input-event', (event, input) => {
       if (input.type !== 'keyDown') return;
       const key = input.key.toLowerCase();

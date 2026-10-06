@@ -6,7 +6,7 @@ const os = require('node:os');
 const { readDocument, saveDocument, fileArguments, scanWorkspace, isWithin } = require('../electron/files.cjs');
 
 test('UTF-8 原始字节另存为，禁止覆盖源文件及其硬链接', async () => {
-  const directory = await fs.mkdtemp(path.join(os.homedir(), '.pi/work/emd-files-'));
+  const directory = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'emd-files-')));
   try {
     const source = path.join(directory, '有 空格.md');
     const bytes = Buffer.from('\ufeff---\r\ntitle: 示例\r\n---\r\n# 标题\r\n');
@@ -29,7 +29,7 @@ test('UTF-8 原始字节另存为，禁止覆盖源文件及其硬链接', async
 });
 
 test('工作区递归筛选 Markdown，剪去空目录，不遍历符号链接目录', async () => {
-  const directory = await fs.mkdtemp(path.join(os.homedir(), '.pi/work/emd-tree-'));
+  const directory = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'emd-tree-')));
   try {
     await fs.mkdir(path.join(directory, '章节', '子目录'), { recursive: true });
     await fs.mkdir(path.join(directory, '无文档'));

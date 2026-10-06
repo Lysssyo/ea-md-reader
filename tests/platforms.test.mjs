@@ -1,31 +1,38 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, readFile, writeFile, rm, stat, access } from 'node:fs/promises';
-import { homedir } from 'node:os';
+import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { parsePlatformArgs, selectPlatform } from '../scripts/platforms.mjs';
 
-test('平台选择保留 KDE，TODO 平台和错误参数明确失败', () => {
+test('平台选择支持 KDE 和 macOS，TODO 平台和错误参数明确失败', async () => {
   assert.equal(selectPlatform(undefined, 'linux', 'KDE').name, 'KDE/Linux');
   assert.equal(selectPlatform(undefined, 'linux', '').name, 'KDE/Linux');
+  const mac = selectPlatform(undefined, 'darwin');
+  assert.equal(mac.name, 'macOS');
+  assert.equal(mac.os, 'darwin');
+  const adapter = await mac.load();
+  assert.equal(typeof adapter.install, 'function');
+  assert.equal(typeof adapter.uninstall, 'function');
   assert.deepEqual(parsePlatformArgs(['--platform', 'kde', '带 空格的目录']), { platform: 'kde', rest: ['带 空格的目录'] });
   assert.deepEqual(parsePlatformArgs(['--uninstall', '--platform=kde']), { platform: 'kde', rest: ['--uninstall'] });
-  for (const [host, desktop] of [['linux', 'ubuntu:GNOME'], ['darwin', ''], ['win32', '']]) assert.throws(() => selectPlatform(undefined, host, desktop), /TODO/);
+  for (const [host, desktop] of [['linux', 'ubuntu:GNOME'], ['win32', '']]) assert.throws(() => selectPlatform(undefined, host, desktop), /TODO/);
   assert.throws(() => selectPlatform('kde', 'darwin'), /linux/);
+  assert.throws(() => selectPlatform('mac', 'linux'), /darwin/);
   assert.throws(() => selectPlatform('typo', 'linux'), /未知平台/);
   assert.throws(() => parsePlatformArgs(['--platform']), /需要指定/);
   assert.throws(() => parsePlatformArgs(['--platform=kde', '--platform=kde']), /只能指定一次/);
 });
 
 test('TODO 打包、安装和卸载入口在执行外部命令或写入前退出', async () => {
-  const directory = await mkdtemp(join(homedir(), '.pi/work/emd-platform-'));
+  const directory = await mkdtemp(join(tmpdir(), 'emd-platform-'));
   try {
     const marker = join(directory, 'build-started');
     const npmCli = join(directory, 'npm.mjs');
     await writeFile(npmCli, `import { writeFileSync } from 'node:fs'; writeFileSync(${JSON.stringify(marker)}, JSON.stringify(process.argv.slice(2))); process.exit(17);`);
     const env = { ...process.env, npm_execpath: npmCli, XDG_DATA_HOME: join(directory, 'data'), XDG_STATE_HOME: join(directory, 'state') };
-    for (const platform of ['gnome', 'mac', 'windows']) {
+    for (const platform of ['gnome', 'windows']) {
       for (const [script, args] of [['scripts/pack.mjs', []], ['scripts/install.mjs', []], ['scripts/install.mjs', ['--uninstall']]]) {
         const result = spawnSync(process.execPath, [script, `--platform=${platform}`, ...args], { cwd: resolve('.'), env, encoding: 'utf8' });
         assert.equal(result.status, 1);
@@ -33,15 +40,25 @@ test('TODO 打包、安装和卸载入口在执行外部命令或写入前退出
       }
     }
     for (const file of [marker, join(directory, 'data'), join(directory, 'state')]) await assert.rejects(access(file), { code: 'ENOENT' });
-    const failedBuild = spawnSync(process.execPath, ['scripts/pack.mjs', '--platform=kde'], { cwd: resolve('.'), env, encoding: 'utf8' });
-    assert.equal(failedBuild.status, 1);
-    assert.match(failedBuild.stderr, /Command failed/);
-    assert.deepEqual(JSON.parse(await readFile(marker, 'utf8')), ['run', 'build']);
+    const foreignPlatform = process.platform === 'darwin' ? 'kde' : 'mac';
+    for (const [script, args] of [['scripts/pack.mjs', []], ['scripts/install.mjs', []], ['scripts/install.mjs', ['--uninstall']]]) {
+      const result = spawnSync(process.execPath, [script, `--platform=${foreignPlatform}`, ...args], { cwd: resolve('.'), env, encoding: 'utf8' });
+      assert.equal(result.status, 1);
+      assert.match(result.stderr, /目前要求/);
+    }
+    await assert.rejects(access(marker), { code: 'ENOENT' });
+    const supportedPlatform = { linux: 'kde', darwin: 'mac' }[process.platform];
+    if (supportedPlatform) {
+      const failedBuild = spawnSync(process.execPath, ['scripts/pack.mjs', `--platform=${supportedPlatform}`], { cwd: resolve('.'), env, encoding: 'utf8' });
+      assert.equal(failedBuild.status, 1);
+      assert.match(failedBuild.stderr, /Command failed/);
+      assert.deepEqual(JSON.parse(await readFile(marker, 'utf8')), ['run', 'build']);
+    }
   } finally { await rm(directory, { recursive: true, force: true }); }
 });
 
-test('KDE 模块保留安装产物、启动器、desktop 校验与卸载行为', async () => {
-  const directory = await mkdtemp(join(homedir(), '.pi/work/emd-install-'));
+test('KDE 模块保留安装产物、启动器、desktop 校验与卸载行为', { skip: process.platform !== 'linux' }, async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'emd-install-'));
   try {
     const home = join(directory, "home with ' quote %");
     const source = join(directory, 'source');
