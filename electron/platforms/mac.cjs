@@ -1,4 +1,5 @@
 module.exports = {
+  createFullscreenToggle: require('./fullscreen.cjs'),
   keyboard: {
     primary: { input: 'meta', accelerator: 'Command', hint: 'Cmd' },
     altHint: 'Option', fullscreen: { key: 'F', modifiers: ['Control', 'Primary'] },

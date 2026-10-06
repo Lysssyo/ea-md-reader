@@ -1,6 +1,6 @@
 # 2：顶栏与工作区整理，修复标签栏滚动条
 
-状态：2.0 尺寸取证完成，正式 UI 实现待前置接口与 F12 接入。取证证据见 [probe-layout](probe-layout.md)。 来源：本轮用户请求。源码证据来自当前未提交工作区，取证基线见[条目 1](../1-feat-platform-interface/issue.md)。本文维护本条目的需求、证据和验收条件。
+状态：2.0 尺寸取证完成，正式 UI 实现待前置接口与 F12 接入。取证证据见 [probe-layout](artifacts/probe-layout.md)。 来源：本轮用户请求。源码证据来自当前未提交工作区，取证基线见[条目 1](../1-feat-platform-interface/issue.md)。本文维护本条目的需求、证据和验收条件。
 
 ## 原始请求
 

@@ -33,7 +33,7 @@ test('真实键盘、按钮和原生菜单共用命令，查找输入保留复�
     await application.evaluate(({ BrowserWindow }) => {
       global.commandInputs = [];
       BrowserWindow.getAllWindows()[0].webContents.on('before-input-event', (_event, input) => {
-        if (input.type === 'keyDown') global.commandInputs.push(input);
+        if (input.type === 'keyDown') global.commandInputs.push({ ...input, prevented: _event.defaultPrevented });
       });
     });
     await key('O', [primary, 'shift']);
@@ -60,13 +60,32 @@ test('真实键盘、按钮和原生菜单共用命令，查找输入保留复�
     await page.getByRole('button', { name: '打开文件', exact: true }).focus();
     await key('F', [primary]);
     await expect(search).toBeFocused();
+    await application.evaluate(({ app, BrowserWindow }) => {
+      app.focus({ steal: true });
+      BrowserWindow.getAllWindows()[0].focus();
+    });
+    await expect.poll(() => application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isFocused())).toBe(true);
+    await search.focus();
     clipboard = await application.evaluate(({ clipboard }) => clipboard.readText());
     await search.fill('原生复制');
-    await key('A', [primary]);
-    await key('C', [primary]);
+    async function edit(keyCode, action) {
+      await key(keyCode, [primary]);
+      if (process.platform === 'darwin') {
+        // sendInputEvent does not dispatch Cocoa edit selectors (electron#6338).
+        // Check that our handler leaves the input untouched, then invoke the
+        // same native first-responder action used by the menu's edit role.
+        const input = await application.evaluate(() => global.commandInputs.at(-1));
+        expect(input.key.toLowerCase()).toBe(keyCode.toLowerCase());
+        expect(input.prevented).toBe(false);
+        await application.evaluate(({ Menu }, action) => Menu.sendActionToFirstResponder(action), action);
+      }
+    }
+    await edit('A', 'selectAll:');
+    await expect.poll(() => search.evaluate((input) => input.selectionEnd - input.selectionStart)).toBe(4);
+    await edit('C', 'copy:');
     await expect.poll(() => application.evaluate(({ clipboard }) => clipboard.readText())).toBe('原生复制');
     await search.fill('');
-    await key('V', [primary]);
+    await edit('V', 'paste:');
     await expect(search).toHaveValue('原生复制');
     await page.getByRole('button', { name: '关闭查找' }).click();
     const zoom = () => application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].webContents.getZoomLevel());
@@ -131,6 +150,10 @@ test('全屏使用本平台绑定，工作区祖先由主进程返回', async ()
       return window.emd.workspace(id, document.querySelector('.workspace-root').title);
     });
     expect(context.activeAncestors).toEqual([path.dirname(nested), directory]);
+    const { originalBounds, displayBounds } = await application.evaluate(({ BrowserWindow, screen }) => {
+      const window = BrowserWindow.getAllWindows()[0];
+      return { originalBounds: window.getBounds(), displayBounds: screen.getDisplayMatching(window.getBounds()).bounds };
+    });
     await application.evaluate(({ BrowserWindow }) => {
       const contents = BrowserWindow.getAllWindows()[0].webContents;
       const keyCode = process.platform === 'darwin' ? 'F' : 'F11';
@@ -138,9 +161,12 @@ test('全屏使用本平台绑定，工作区祖先由主进程返回', async ()
       contents.sendInputEvent({ type: 'keyDown', keyCode, modifiers });
       contents.sendInputEvent({ type: 'keyUp', keyCode, modifiers });
     });
-    await expect.poll(() => application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isFullScreen())).toBe(true);
+    if (process.platform === 'win32') {
+      await expect.poll(() => application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].getBounds())).toEqual(displayBounds);
+    } else await expect.poll(() => application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isFullScreen())).toBe(true);
     await page.evaluate(() => window.emd.command('toggleFullscreen'));
-    await expect.poll(() => application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isFullScreen())).toBe(false);
+    if (process.platform === 'win32') await expect.poll(() => application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].getBounds())).toEqual(originalBounds);
+    else await expect.poll(() => application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isFullScreen())).toBe(false);
   } finally {
     if (application) await close(application);
     await fs.rm(directory, { recursive: true, force: true });

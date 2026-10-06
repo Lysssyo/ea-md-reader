@@ -1,0 +1,239 @@
+
+> emd@0.1.0 test:node
+> node --test tests/files.test.cjs tests/platforms.test.mjs tests/mac-platform.test.mjs tests/commands.test.cjs tests/runtime-platforms.test.cjs
+
+TAP version 13
+# Subtest: linux 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+ok 1 - linux 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+  ---
+  duration_ms: 4.866264
+  type: 'test'
+  ...
+# Subtest: linux 主键盘与小键盘缩放不消费无关 Shift 组合
+ok 2 - linux 主键盘与小键盘缩放不消费无关 Shift 组合
+  ---
+  duration_ms: 0.452157
+  type: 'test'
+  ...
+# Subtest: win32 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+ok 3 - win32 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+  ---
+  duration_ms: 0.814163
+  type: 'test'
+  ...
+# Subtest: win32 主键盘与小键盘缩放不消费无关 Shift 组合
+ok 4 - win32 主键盘与小键盘缩放不消费无关 Shift 组合
+  ---
+  duration_ms: 0.24794
+  type: 'test'
+  ...
+# Subtest: darwin 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+ok 5 - darwin 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+  ---
+  duration_ms: 1.021646
+  type: 'test'
+  ...
+# Subtest: darwin 主键盘与小键盘缩放不消费无关 Shift 组合
+ok 6 - darwin 主键盘与小键盘缩放不消费无关 Shift 组合
+  ---
+  duration_ms: 0.223463
+  type: 'test'
+  ...
+# Subtest: 键盘消费一次并让复制键继续进入原生菜单与输入框
+ok 7 - 键盘消费一次并让复制键继续进入原生菜单与输入框
+  ---
+  duration_ms: 2.055827
+  type: 'test'
+  ...
+# Subtest: POSIX 和 Windows 根目录及祖先使用 Node 路径语义
+ok 8 - POSIX 和 Windows 根目录及祖先使用 Node 路径语义
+  ---
+  duration_ms: 1.792338
+  type: 'test'
+  ...
+# Subtest: UTF-8 原始字节另存为，禁止覆盖源文件及其硬链接
+ok 9 - UTF-8 原始字节另存为，禁止覆盖源文件及其硬链接
+  ---
+  duration_ms: 18.267215
+  type: 'test'
+  ...
+# Subtest: HTML 原始字节另存为与文件 URL 参数
+ok 10 - HTML 原始字节另存为与文件 URL 参数
+  ---
+  duration_ms: 7.963595
+  type: 'test'
+  ...
+# Subtest: 工作区递归筛选 Markdown 和 HTML，剪去空目录，不遍历符号链接目录
+ok 11 - 工作区递归筛选 Markdown 和 HTML，剪去空目录，不遍历符号链接目录
+  ---
+  duration_ms: 17.289572
+  type: 'test'
+  ...
+# Subtest: macOS 打包包含应用、DMG、ZIP 和只读 Markdown / HTML 文件关联
+ok 12 - macOS 打包包含应用、DMG、ZIP 和只读 Markdown / HTML 文件关联
+  ---
+  duration_ms: 5.83511
+  type: 'test'
+  ...
+# 已安装用户级 emd：/tmp/emd-mac-O61o6b/home with ' quote %/Applications/emd.app
+# 终端命令：/tmp/emd-mac-O61o6b/home with ' quote %/.local/bin/emd
+# 日志：/tmp/emd-mac-O61o6b/home with ' quote %/Library/Logs/emd/emd.log
+# 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+# Subtest: macOS 安装保留框架链接和权限，启动器传递字面参数与调用目录
+ok 13 - macOS 安装保留框架链接和权限，启动器传递字面参数与调用目录
+  ---
+  duration_ms: 65.478725
+  type: 'test'
+  ...
+# 已安装用户级 emd：/tmp/emd-mac-Knueai/home with ' quote %/Applications/emd.app
+# 终端命令：/tmp/emd-mac-Knueai/home with ' quote %/.local/bin/emd
+# 日志：/tmp/emd-mac-Knueai/home with ' quote %/Library/Logs/emd/emd.log
+# 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+# 已安装用户级 emd：/tmp/emd-mac-Knueai/home with ' quote %/Applications/emd.app
+# 终端命令：/tmp/emd-mac-Knueai/home with ' quote %/.local/bin/emd
+# 日志：/tmp/emd-mac-Knueai/home with ' quote %/Library/Logs/emd/emd.log
+# 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+# Subtest: macOS 默认产物目录和解包目录均能安装，升级清除旧包文件
+ok 14 - macOS 默认产物目录和解包目录均能安装，升级清除旧包文件
+  ---
+  duration_ms: 17.160749
+  type: 'test'
+  ...
+# 已安装用户级 emd：/tmp/emd-mac-BE0UwY/home with ' quote %/Applications/emd.app
+# 终端命令：/tmp/emd-mac-BE0UwY/home with ' quote %/.local/bin/emd
+# 日志：/tmp/emd-mac-BE0UwY/home with ' quote %/Library/Logs/emd/emd.log
+# 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+# Subtest: macOS 无效源包、复制失败与注册失败保留已有安装
+ok 15 - macOS 无效源包、复制失败与注册失败保留已有安装
+  ---
+  duration_ms: 26.004792
+  type: 'test'
+  ...
+# Subtest: macOS 首次安装注册后启动器提交失败恢复注册与原文件
+ok 16 - macOS 首次安装注册后启动器提交失败恢复注册与原文件
+  ---
+  duration_ms: 9.812119
+  type: 'test'
+  ...
+# 已安装用户级 emd：/tmp/emd-mac-9OMRU8/home with ' quote %/Applications/emd.app
+# 终端命令：/tmp/emd-mac-9OMRU8/home with ' quote %/.local/bin/emd
+# 日志：/tmp/emd-mac-9OMRU8/home with ' quote %/Library/Logs/emd/emd.log
+# 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+# Subtest: macOS 升级注册后启动器提交失败恢复注册与原文件
+ok 17 - macOS 升级注册后启动器提交失败恢复注册与原文件
+  ---
+  duration_ms: 15.913454
+  type: 'test'
+  ...
+# 已安装用户级 emd：/tmp/emd-mac-dPP2dN/home with ' quote %/Applications/emd.app
+# 终端命令：/tmp/emd-mac-dPP2dN/home with ' quote %/.local/bin/emd
+# 日志：/tmp/emd-mac-dPP2dN/home with ' quote %/Library/Logs/emd/emd.log
+# 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+# Subtest: macOS 注册恢复失败同时报告原故障并继续恢复旧包和启动器
+    # Subtest: unregister
+    ok 1 - unregister
+      ---
+      duration_ms: 13.891922
+      type: 'test'
+      ...
+# 已安装用户级 emd：/tmp/emd-mac-VTpKYo/home with ' quote %/Applications/emd.app
+# 终端命令：/tmp/emd-mac-VTpKYo/home with ' quote %/.local/bin/emd
+# 日志：/tmp/emd-mac-VTpKYo/home with ' quote %/Library/Logs/emd/emd.log
+# 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+    # Subtest: restore
+    ok 2 - restore
+      ---
+      duration_ms: 15.278861
+      type: 'test'
+      ...
+    1..2
+ok 18 - macOS 注册恢复失败同时报告原故障并继续恢复旧包和启动器
+  ---
+  duration_ms: 30.646781
+  type: 'test'
+  ...
+# Subtest: macOS 原生 首次安装启动器失败恢复 LaunchServices 绑定
+ok 19 - macOS 原生 首次安装启动器失败恢复 LaunchServices 绑定 # SKIP 需要 macOS 原生 plutil、ditto 和 LaunchServices
+  ---
+  duration_ms: 0.177386
+  type: 'test'
+  ...
+# Subtest: macOS 原生 升级启动器失败恢复 LaunchServices 绑定
+ok 20 - macOS 原生 升级启动器失败恢复 LaunchServices 绑定 # SKIP 需要 macOS 原生 plutil、ditto 和 LaunchServices
+  ---
+  duration_ms: 0.087456
+  type: 'test'
+  ...
+# Subtest: macOS 拒绝覆盖或卸载不属于 emd 的应用和命令
+ok 21 - macOS 拒绝覆盖或卸载不属于 emd 的应用和命令
+  ---
+  duration_ms: 10.485475
+  type: 'test'
+  ...
+# 已安装用户级 emd：/tmp/emd-mac-bZf8ZW/home with ' quote %/Applications/emd.app
+# 终端命令：/tmp/emd-mac-bZf8ZW/home with ' quote %/.local/bin/emd
+# 日志：/tmp/emd-mac-bZf8ZW/home with ' quote %/Library/Logs/emd/emd.log
+# 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+# Subtest: macOS 拒绝目标应用中被替换成链接的可执行文件
+ok 22 - macOS 拒绝目标应用中被替换成链接的可执行文件
+  ---
+  duration_ms: 7.869787
+  type: 'test'
+  ...
+# Subtest: macOS 拒绝应用和命令路径的符号链接，不修改链接目标
+ok 23 - macOS 拒绝应用和命令路径的符号链接，不修改链接目标
+  ---
+  duration_ms: 5.707298
+  type: 'test'
+  ...
+# 已安装用户级 emd：/tmp/emd-mac-2VM7yP/home with ' quote %/Applications/emd.app
+# 终端命令：/tmp/emd-mac-2VM7yP/home with ' quote %/.local/bin/emd
+# 日志：/tmp/emd-mac-2VM7yP/home with ' quote %/Library/Logs/emd/emd.log
+# 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+# 已移除用户级 emd 应用和命令；配置、日志和源文档保留。
+# 已移除用户级 emd 应用和命令；配置、日志和源文档保留。
+# Subtest: macOS 卸载可重复执行并保留用户配置和日志
+ok 24 - macOS 卸载可重复执行并保留用户配置和日志
+  ---
+  duration_ms: 14.013483
+  type: 'test'
+  ...
+# Subtest: 平台选择支持 KDE 和 macOS，TODO 平台和错误参数明确失败
+ok 25 - 平台选择支持 KDE 和 macOS，TODO 平台和错误参数明确失败
+  ---
+  duration_ms: 6.595581
+  type: 'test'
+  ...
+# Subtest: TODO 打包、安装和卸载入口在执行外部命令或写入前退出
+ok 26 - TODO 打包、安装和卸载入口在执行外部命令或写入前退出
+  ---
+  duration_ms: 1528.824316
+  type: 'test'
+  ...
+# Subtest: KDE 模块保留安装产物、启动器、desktop 校验与卸载行为
+ok 27 - KDE 模块保留安装产物、启动器、desktop 校验与卸载行为
+  ---
+  duration_ms: 345.023141
+  type: 'test'
+  ...
+# Subtest: 桌面平台选择明确，Linux 身份与 macOS 文件打开和激活各自归属
+ok 28 - 桌面平台选择明确，Linux 身份与 macOS 文件打开和激活各自归属
+  ---
+  duration_ms: 6.50493
+  type: 'test'
+  ...
+# Subtest: macOS 菜单使用同一命令配置，关闭标签与退出不重复设置原生角色
+ok 29 - macOS 菜单使用同一命令配置，关闭标签与退出不重复设置原生角色
+  ---
+  duration_ms: 1.31345
+  type: 'test'
+  ...
+1..29
+# tests 31
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 2
+# todo 0
+# duration_ms 2079.66847

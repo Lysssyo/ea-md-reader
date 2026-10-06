@@ -1,6 +1,6 @@
 # 4：可配置启动布局与窄屏面板覆盖层
 
-状态：4.0 的 KDE 原型核心路径已实测，完整设置与覆盖层功能待前置阶段完成。证据见 [probe-kde](probe-kde.md)。 来源：本轮用户请求与后续讨论。本文维护需求、取证和验收。代码基线见[条目 1](../1-feat-platform-interface/issue.md)。
+状态：4.0 的 KDE 原型核心路径已实测，完整设置与覆盖层功能待前置阶段完成。证据见 [probe-kde](artifacts/probe-kde.md)。 来源：本轮用户请求与后续讨论。本文维护需求、取证和验收。代码基线见[条目 1](../1-feat-platform-interface/issue.md)。
 
 ## 原始请求与已确认调整
 

@@ -1,0 +1,1103 @@
+﻿2026-10-06T21:17:52.4181850Z Current runner version: '2.337.0'
+2026-10-06T21:17:52.4199900Z ##[group]Runner Image Provisioner
+2026-10-06T21:17:52.4200500Z Hosted Compute Agent
+2026-10-06T21:17:52.4200960Z Version: 20260828.587
+2026-10-06T21:17:52.4201480Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-10-06T21:17:52.4202030Z Build Date: 2026-08-28T16:44:25Z
+2026-10-06T21:17:52.4202520Z Worker ID: {d669226e-cebe-4bbe-9a0d-2edac5064fe5}
+2026-10-06T21:17:52.4203000Z Azure Region: westus
+2026-10-06T21:17:52.4203370Z ##[endgroup]
+2026-10-06T21:17:52.4204410Z ##[group]Operating System
+2026-10-06T21:17:52.4204890Z macOS
+2026-10-06T21:17:52.4205290Z 15.7.9
+2026-10-06T21:17:52.4205640Z 24G830
+2026-10-06T21:17:52.4205990Z ##[endgroup]
+2026-10-06T21:17:52.4206340Z ##[group]Runner Image
+2026-10-06T21:17:52.4206800Z Image: macos-15-arm64
+2026-10-06T21:17:52.4207270Z Version: 20260907.0337.1
+2026-10-06T21:17:52.4208160Z Included Software: https://github.com/actions/runner-images/blob/macos-15-arm64/20260907.0337/images/macos/macos-15-arm64-Readme.md
+2026-10-06T21:17:52.4209220Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15-arm64%2F20260907.0337
+2026-10-06T21:17:52.4209990Z ##[endgroup]
+2026-10-06T21:17:52.4210840Z ##[group]GITHUB_TOKEN Permissions
+2026-10-06T21:17:52.4212050Z Contents: read
+2026-10-06T21:17:52.4212440Z Metadata: read
+2026-10-06T21:17:52.4212900Z ##[endgroup]
+2026-10-06T21:17:52.4216290Z Secret source: Actions
+2026-10-06T21:17:52.4218380Z Cache mode: write
+2026-10-06T21:17:52.4218880Z Prepare workflow directory
+2026-10-06T21:17:52.4587510Z Prepare all required actions
+2026-10-06T21:17:52.4623930Z Getting action download info
+2026-10-06T21:17:52.9901830Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-06T21:17:53.2538540Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-06T21:17:53.3554420Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-06T21:17:53.6464550Z Complete job name: macos-15 / arm64
+2026-10-06T21:17:53.7060170Z ##[group]Run actions/checkout@v4
+2026-10-06T21:17:53.7060860Z with:
+2026-10-06T21:17:53.7061270Z   repository: yceachan/ea-md-reader
+2026-10-06T21:17:53.7064060Z   token: ***
+2026-10-06T21:17:53.7064380Z   ssh-strict: true
+2026-10-06T21:17:53.7064700Z   ssh-user: git
+2026-10-06T21:17:53.7065040Z   persist-credentials: true
+2026-10-06T21:17:53.7065400Z   clean: true
+2026-10-06T21:17:53.7065800Z   sparse-checkout-cone-mode: true
+2026-10-06T21:17:53.7066240Z   fetch-depth: 1
+2026-10-06T21:17:53.7066590Z   fetch-tags: false
+2026-10-06T21:17:53.7066910Z   show-progress: true
+2026-10-06T21:17:53.7067230Z   lfs: false
+2026-10-06T21:17:53.7067600Z   submodules: false
+2026-10-06T21:17:53.7067960Z   set-safe-directory: true
+2026-10-06T21:17:53.7068330Z   allow-unsafe-pr-checkout: false
+2026-10-06T21:17:53.7068890Z env:
+2026-10-06T21:17:53.7069260Z   CSC_IDENTITY_AUTO_DISCOVERY: false
+2026-10-06T21:17:53.7069690Z   XDG_CURRENT_DESKTOP: 
+2026-10-06T21:17:53.7070100Z ##[endgroup]
+2026-10-06T21:17:54.1224390Z Syncing repository: yceachan/ea-md-reader
+2026-10-06T21:17:54.1225950Z ##[group]Getting Git version info
+2026-10-06T21:17:54.1226540Z Working directory is '/Users/runner/work/ea-md-reader/ea-md-reader'
+2026-10-06T21:17:54.1235410Z [command]/opt/homebrew/bin/git version
+2026-10-06T21:17:54.1895880Z git version 2.55.0
+2026-10-06T21:17:54.1920100Z ##[endgroup]
+2026-10-06T21:17:54.1933000Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/b31c6a45-5009-4bbc-ba1d-754a0cb90d6d/.gitconfig'
+2026-10-06T21:17:54.1940740Z Temporarily overriding HOME='/Users/runner/work/_temp/b31c6a45-5009-4bbc-ba1d-754a0cb90d6d' before making global git config changes
+2026-10-06T21:17:54.1941920Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-06T21:17:54.1946780Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/ea-md-reader/ea-md-reader
+2026-10-06T21:17:54.2066840Z Deleting the contents of '/Users/runner/work/ea-md-reader/ea-md-reader'
+2026-10-06T21:17:54.2072040Z ##[group]Initializing the repository
+2026-10-06T21:17:54.2075700Z [command]/opt/homebrew/bin/git init /Users/runner/work/ea-md-reader/ea-md-reader
+2026-10-06T21:17:54.2319700Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-06T21:17:54.2320820Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-06T21:17:54.2373820Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-06T21:17:54.2376530Z hint: call:
+2026-10-06T21:17:54.2377600Z hint:
+2026-10-06T21:17:54.2378930Z hint: 	git config --global init.defaultBranch <name>
+2026-10-06T21:17:54.2380520Z hint:
+2026-10-06T21:17:54.2381870Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-06T21:17:54.2383970Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-06T21:17:54.2385660Z hint:
+2026-10-06T21:17:54.2386700Z hint: 	git branch -m <name>
+2026-10-06T21:17:54.2387910Z hint:
+2026-10-06T21:17:54.2389440Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-06T21:17:54.2392020Z Initialized empty Git repository in /Users/runner/work/ea-md-reader/ea-md-reader/.git/
+2026-10-06T21:17:54.2396310Z [command]/opt/homebrew/bin/git remote add origin https://github.com/yceachan/ea-md-reader
+2026-10-06T21:17:54.2426070Z ##[endgroup]
+2026-10-06T21:17:54.2427950Z ##[group]Disabling automatic garbage collection
+2026-10-06T21:17:54.2439110Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+2026-10-06T21:17:54.2541860Z ##[endgroup]
+2026-10-06T21:17:54.2543150Z ##[group]Setting up auth
+2026-10-06T21:17:54.2545840Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-06T21:17:54.2625610Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-06T21:17:54.4357610Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-06T21:17:54.4433080Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-06T21:17:54.5504500Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-06T21:17:54.5814850Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-06T21:17:54.6632440Z [command]/opt/homebrew/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-06T21:17:54.6703400Z ##[endgroup]
+2026-10-06T21:17:54.6704300Z ##[group]Fetching the repository
+2026-10-06T21:17:54.6707920Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +de6e5c5a124efce277194902f29abe97965e3f7d:refs/remotes/pull/2/merge
+2026-10-06T21:17:55.1439920Z From https://github.com/yceachan/ea-md-reader
+2026-10-06T21:17:55.1441040Z  * [new ref]         de6e5c5a124efce277194902f29abe97965e3f7d -> pull/2/merge
+2026-10-06T21:17:55.1443490Z ##[endgroup]
+2026-10-06T21:17:55.1444390Z ##[group]Determining the checkout info
+2026-10-06T21:17:55.1445380Z ##[endgroup]
+2026-10-06T21:17:55.1450150Z [command]/opt/homebrew/bin/git sparse-checkout disable
+2026-10-06T21:17:55.1532870Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-06T21:17:55.1596250Z ##[group]Checking out the ref
+2026-10-06T21:17:55.1598020Z [command]/opt/homebrew/bin/git checkout --progress --force refs/remotes/pull/2/merge
+2026-10-06T21:17:55.1810000Z HEAD is now at de6e5c5 Merge 0decc43e5991a55a755e9ebc1cd0e27402cc010a into 7cebdef012f4a664e064cdc88a54888779db395b
+2026-10-06T21:17:55.1820690Z ##[endgroup]
+2026-10-06T21:17:55.1907370Z [command]/opt/homebrew/bin/git log -1 --format=%H
+2026-10-06T21:17:55.1978340Z de6e5c5a124efce277194902f29abe97965e3f7d
+2026-10-06T21:17:55.2272720Z ##[group]Run actions/setup-node@v4
+2026-10-06T21:17:55.2273560Z with:
+2026-10-06T21:17:55.2274210Z   node-version: 22
+2026-10-06T21:17:55.2274860Z   cache: npm
+2026-10-06T21:17:55.2275520Z   always-auth: false
+2026-10-06T21:17:55.2276340Z   check-latest: false
+2026-10-06T21:17:55.2283020Z   token: ***
+2026-10-06T21:17:55.2283630Z env:
+2026-10-06T21:17:55.2284250Z   CSC_IDENTITY_AUTO_DISCOVERY: false
+2026-10-06T21:17:55.2285070Z   XDG_CURRENT_DESKTOP: 
+2026-10-06T21:17:55.2285850Z ##[endgroup]
+2026-10-06T21:17:55.3658180Z Found in cache @ /Users/runner/hostedtoolcache/node/22.23.2/arm64
+2026-10-06T21:17:55.3660640Z (node:1692) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-06T21:17:55.3663130Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-06T21:17:55.3664850Z ##[group]Environment details
+2026-10-06T21:17:55.9566740Z node: v22.23.2
+2026-10-06T21:17:55.9921840Z npm: 10.9.8
+2026-10-06T21:17:56.0028500Z yarn: 1.22.22
+2026-10-06T21:17:56.0069570Z ##[endgroup]
+2026-10-06T21:17:56.0442920Z [command]/Users/runner/hostedtoolcache/node/22.23.2/arm64/bin/npm config get cache
+2026-10-06T21:17:56.3249380Z /Users/runner/.npm
+2026-10-06T21:17:56.6280620Z Cache hit for: node-cache-macOS-arm64-npm-37ac43c60893eb43bb5861b606f9365bfad3f831969b858b6db82b6a8592a500
+2026-10-06T21:17:56.6342490Z (node:1692) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-06T21:17:57.9145550Z Received 0 of 84832212 (0.0%), 0.0 MBs/sec
+2026-10-06T21:17:58.9166580Z Received 80637908 of 84832212 (95.1%), 38.4 MBs/sec
+2026-10-06T21:17:58.9838470Z Received 84832212 of 84832212 (100.0%), 39.1 MBs/sec
+2026-10-06T21:17:58.9854230Z Cache Size: ~81 MB (84832212 B)
+2026-10-06T21:17:59.0087330Z [command]/opt/homebrew/bin/gtar -xf /Users/runner/work/_temp/551b29e4-a098-4638-9bf7-7475b646e22e/cache.tzst -P -C /Users/runner/work/ea-md-reader/ea-md-reader --delay-directory-restore --use-compress-program unzstd
+2026-10-06T21:17:59.5920790Z Cache restored successfully
+2026-10-06T21:17:59.5980980Z Cache restored from key: node-cache-macOS-arm64-npm-37ac43c60893eb43bb5861b606f9365bfad3f831969b858b6db82b6a8592a500
+2026-10-06T21:17:59.6226570Z ##[group]Run node -e "console.log({platform:process.platform,arch:process.arch,node:process.version}); if(process.arch!==process.env.EXPECTED_ARCH) process.exit(1)"
+2026-10-06T21:17:59.6227600Z [36;1mnode -e "console.log({platform:process.platform,arch:process.arch,node:process.version}); if(process.arch!==process.env.EXPECTED_ARCH) process.exit(1)"[0m
+2026-10-06T21:17:59.6278780Z shell: /bin/bash -e {0}
+2026-10-06T21:17:59.6279070Z env:
+2026-10-06T21:17:59.6279340Z   CSC_IDENTITY_AUTO_DISCOVERY: false
+2026-10-06T21:17:59.6279690Z   XDG_CURRENT_DESKTOP: 
+2026-10-06T21:17:59.6280000Z   EXPECTED_ARCH: arm64
+2026-10-06T21:17:59.6280250Z ##[endgroup]
+2026-10-06T21:17:59.7240560Z { platform: 'darwin', arch: 'arm64', node: 'v22.23.2' }
+2026-10-06T21:17:59.7328670Z ##[group]Run npm ci
+2026-10-06T21:17:59.7328920Z [36;1mnpm ci[0m
+2026-10-06T21:17:59.7362920Z shell: /bin/bash -e {0}
+2026-10-06T21:17:59.7363180Z env:
+2026-10-06T21:17:59.7363410Z   CSC_IDENTITY_AUTO_DISCOVERY: false
+2026-10-06T21:17:59.7363670Z   XDG_CURRENT_DESKTOP: 
+2026-10-06T21:17:59.7363940Z ##[endgroup]
+2026-10-06T21:18:02.0409770Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2026-10-06T21:18:02.1883940Z npm warn deprecated rimraf@2.6.3: Rimraf versions prior to v4 are no longer supported
+2026-10-06T21:18:02.3307170Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-10-06T21:18:02.7593540Z npm warn deprecated boolean@3.2.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2026-10-06T21:18:06.1143660Z 
+2026-10-06T21:18:06.1145540Z added 520 packages, and audited 521 packages in 6s
+2026-10-06T21:18:06.1146260Z 
+2026-10-06T21:18:06.1147140Z 86 packages are looking for funding
+2026-10-06T21:18:06.1147720Z   run `npm fund` for details
+2026-10-06T21:18:06.1291970Z 
+2026-10-06T21:18:06.1292860Z 10 vulnerabilities (2 low, 8 moderate)
+2026-10-06T21:18:06.1301460Z 
+2026-10-06T21:18:06.1301880Z To address issues that do not require attention, run:
+2026-10-06T21:18:06.1302570Z   npm audit fix
+2026-10-06T21:18:06.1302920Z 
+2026-10-06T21:18:06.1306790Z To address all issues (including breaking changes), run:
+2026-10-06T21:18:06.1307420Z   npm audit fix --force
+2026-10-06T21:18:06.1307780Z 
+2026-10-06T21:18:06.1308770Z Run `npm audit` for details.
+2026-10-06T21:18:06.2906430Z ##[group]Run npm run pack -- --platform=mac
+2026-10-06T21:18:06.2907010Z [36;1mnpm run pack -- --platform=mac[0m
+2026-10-06T21:18:06.2973610Z shell: /bin/bash -e {0}
+2026-10-06T21:18:06.2973920Z env:
+2026-10-06T21:18:06.2974150Z   CSC_IDENTITY_AUTO_DISCOVERY: false
+2026-10-06T21:18:06.2974470Z   XDG_CURRENT_DESKTOP: 
+2026-10-06T21:18:06.2974830Z ##[endgroup]
+2026-10-06T21:18:06.6451210Z 
+2026-10-06T21:18:06.6452730Z > emd@0.1.0 pack
+2026-10-06T21:18:06.6454050Z > node scripts/pack.mjs --platform=mac
+2026-10-06T21:18:06.6454700Z 
+2026-10-06T21:18:06.7152940Z 打包平台：macOS
+2026-10-06T21:18:07.0731380Z 
+2026-10-06T21:18:07.0850410Z > emd@0.1.0 build
+2026-10-06T21:18:07.1208850Z > npm run build:icons && tsc --noEmit && vite build
+2026-10-06T21:18:07.1308320Z 
+2026-10-06T21:18:07.5050880Z 
+2026-10-06T21:18:07.5166870Z > emd@0.1.0 build:icons
+2026-10-06T21:18:07.5268690Z > node scripts/render-icons.mjs
+2026-10-06T21:18:07.5391770Z 
+2026-10-06T21:18:26.7639570Z Rendered application icons from assets/emd.svg
+2026-10-06T21:18:29.5963780Z [36mvite v7.3.6 [32mbuilding client environment for production...[36m[39m
+2026-10-06T21:18:29.6407360Z transforming...
+2026-10-06T21:18:43.7551250Z [32m✓[39m 2528 modules transformed.
+2026-10-06T21:18:45.4946290Z rendering chunks...
+2026-10-06T21:18:47.3017570Z computing gzip size...
+2026-10-06T21:18:48.3085880Z [2mdist/[22m[32mindex.html                                       [39m[1m[2m  0.69 kB[22m[1m[22m[2m │ gzip:   0.41 kB[22m
+2026-10-06T21:18:48.3089760Z [2mdist/[22m[2massets/[22m[32mKaTeX_Size3-Regular-CTq5MqoE.woff         [39m[1m[2m  4.42 kB[22m[1m[22m
+2026-10-06T21:18:48.3094170Z [2mdist/[22m[2massets/[22m[32mKaTeX_Size4-Regular-Dl5lxZxV.woff2        [39m[1m[2m  4.93 kB[22m[1m[22m
+2026-10-06T21:18:48.3097510Z [2mdist/[22m[2massets/[22m[32mKaTeX_Size2-Regular-Dy4dx90m.woff2        [39m[1m[2m  5.21 kB[22m[1m[22m
+2026-10-06T21:18:48.3100430Z [2mdist/[22m[2massets/[22m[32mKaTeX_Size1-Regular-mCD8mA8B.woff2        [39m[1m[2m  5.47 kB[22m[1m[22m
+2026-10-06T21:18:48.3104260Z [2mdist/[22m[2massets/[22m[32mKaTeX_Size4-Regular-BF-4gkZK.woff         [39m[1m[2m  5.98 kB[22m[1m[22m
+2026-10-06T21:18:48.3107110Z [2mdist/[22m[2massets/[22m[32mKaTeX_Size2-Regular-oD1tc_U0.woff         [39m[1m[2m  6.19 kB[22m[1m[22m
+2026-10-06T21:18:48.3109560Z [2mdist/[22m[2massets/[22m[32mKaTeX_Size1-Regular-C195tn64.woff         [39m[1m[2m  6.50 kB[22m[1m[22m
+2026-10-06T21:18:48.3112080Z [2mdist/[22m[2massets/[22m[32mKaTeX_Caligraphic-Regular-Di6jR-x-.woff2  [39m[1m[2m  6.91 kB[22m[1m[22m
+2026-10-06T21:18:48.3118260Z [2mdist/[22m[2massets/[22m[32mKaTeX_Caligraphic-Bold-Dq_IR9rO.woff2     [39m[1m[2m  6.91 kB[22m[1m[22m
+2026-10-06T21:18:48.3119290Z [2mdist/[22m[2massets/[22m[32mKaTeX_Size3-Regular-DgpXs0kz.ttf          [39m[1m[2m  7.59 kB[22m[1m[22m
+2026-10-06T21:18:48.3131740Z [2mdist/[22m[2massets/[22m[32mKaTeX_Caligraphic-Regular-CTRA-rTL.woff   [39m[1m[2m  7.66 kB[22m[1m[22m
+2026-10-06T21:18:48.3132660Z [2mdist/[22m[2massets/[22m[32mKaTeX_Caligraphic-Bold-BEiXGLvX.woff      [39m[1m[2m  7.72 kB[22m[1m[22m
+2026-10-06T21:18:48.3133670Z [2mdist/[22m[2massets/[22m[32mKaTeX_Script-Regular-D3wIWfF6.woff2       [39m[1m[2m  9.64 kB[22m[1m[22m
+2026-10-06T21:18:48.3134530Z [2mdist/[22m[2massets/[22m[32mKaTeX_SansSerif-Regular-DDBCnlJ7.woff2    [39m[1m[2m 10.34 kB[22m[1m[22m
+2026-10-06T21:18:48.3135460Z [2mdist/[22m[2massets/[22m[32mKaTeX_Size4-Regular-DWFBv043.ttf          [39m[1m[2m 10.36 kB[22m[1m[22m
+2026-10-06T21:18:48.3136360Z [2mdist/[22m[2massets/[22m[32mKaTeX_Script-Regular-D5yQViql.woff        [39m[1m[2m 10.59 kB[22m[1m[22m
+2026-10-06T21:18:48.3137200Z [2mdist/[22m[2massets/[22m[32mKaTeX_Fraktur-Regular-CTYiF6lA.woff2      [39m[1m[2m 11.32 kB[22m[1m[22m
+2026-10-06T21:18:48.3139170Z [2mdist/[22m[2massets/[22m[32mKaTeX_Fraktur-Bold-CL6g_b3V.woff2         [39m[1m[2m 11.35 kB[22m[1m[22m
+2026-10-06T21:18:48.3140060Z [2mdist/[22m[2massets/[22m[32mKaTeX_Size2-Regular-B7gKUWhC.ttf          [39m[1m[2m 11.51 kB[22m[1m[22m
+2026-10-06T21:18:48.3140960Z [2mdist/[22m[2massets/[22m[32mKaTeX_SansSerif-Italic-C3H0VqGB.woff2     [39m[1m[2m 12.03 kB[22m[1m[22m
+2026-10-06T21:18:48.3141940Z [2mdist/[22m[2massets/[22m[32mKaTeX_SansSerif-Bold-D1sUS0GD.woff2       [39m[1m[2m 12.22 kB[22m[1m[22m
+2026-10-06T21:18:48.3142770Z [2mdist/[22m[2massets/[22m[32mKaTeX_Size1-Regular-Dbsnue_I.ttf          [39m[1m[2m 12.23 kB[22m[1m[22m
+2026-10-06T21:18:48.3143650Z [2mdist/[22m[2massets/[22m[32mKaTeX_SansSerif-Regular-CS6fqUqJ.woff     [39m[1m[2m 12.32 kB[22m[1m[22m
+2026-10-06T21:18:48.3144550Z [2mdist/[22m[2massets/[22m[32mKaTeX_Caligraphic-Regular-wX97UBjC.ttf    [39m[1m[2m 12.34 kB[22m[1m[22m
+2026-10-06T21:18:48.3145450Z [2mdist/[22m[2massets/[22m[32mKaTeX_Caligraphic-Bold-ATXxdsX0.ttf       [39m[1m[2m 12.37 kB[22m[1m[22m
+2026-10-06T21:18:48.3146310Z [2mdist/[22m[2massets/[22m[32mKaTeX_Fraktur-Regular-Dxdc4cR9.woff       [39m[1m[2m 13.21 kB[22m[1m[22m
+2026-10-06T21:18:48.3147210Z [2mdist/[22m[2massets/[22m[32mKaTeX_Fraktur-Bold-BsDP51OF.woff          [39m[1m[2m 13.30 kB[22m[1m[22m
+2026-10-06T21:18:48.3148320Z [2mdist/[22m[2massets/[22m[32mKaTeX_Typewriter-Regular-CO6r4hn1.woff2   [39m[1m[2m 13.57 kB[22m[1m[22m
+2026-10-06T21:18:48.3149280Z [2mdist/[22m[2massets/[22m[32mKaTeX_SansSerif-Italic-DN2j7dab.woff      [39m[1m[2m 14.11 kB[22m[1m[22m
+2026-10-06T21:18:48.3150160Z [2mdist/[22m[2massets/[22m[32mKaTeX_SansSerif-Bold-DbIhKOiC.woff        [39m[1m[2m 14.41 kB[22m[1m[22m
+2026-10-06T21:18:48.3151010Z [2mdist/[22m[2massets/[22m[32mKaTeX_Typewriter-Regular-C0xS9mPB.woff    [39m[1m[2m 16.03 kB[22m[1m[22m
+2026-10-06T21:18:48.3151940Z [2mdist/[22m[2massets/[22m[32mKaTeX_Math-BoldItalic-CZnvNsCZ.woff2      [39m[1m[2m 16.40 kB[22m[1m[22m
+2026-10-06T21:18:48.3153100Z [2mdist/[22m[2massets/[22m[32mKaTeX_Math-Italic-t53AETM-.woff2          [39m[1m[2m 16.44 kB[22m[1m[22m
+2026-10-06T21:18:48.3154900Z [2mdist/[22m[2massets/[22m[32mKaTeX_Script-Regular-C5JkGWo-.ttf         [39m[1m[2m 16.65 kB[22m[1m[22m
+2026-10-06T21:18:48.3155820Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-BoldItalic-DxDJ3AOS.woff2      [39m[1m[2m 16.78 kB[22m[1m[22m
+2026-10-06T21:18:48.3156720Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-Italic-NWA7e6Wa.woff2          [39m[1m[2m 16.99 kB[22m[1m[22m
+2026-10-06T21:18:48.3157610Z [2mdist/[22m[2massets/[22m[32mKaTeX_Math-BoldItalic-iY-2wyZ7.woff       [39m[1m[2m 18.67 kB[22m[1m[22m
+2026-10-06T21:18:48.3158430Z [2mdist/[22m[2massets/[22m[32mKaTeX_Math-Italic-DA0__PXp.woff           [39m[1m[2m 18.75 kB[22m[1m[22m
+2026-10-06T21:18:48.3169400Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-BoldItalic-SpSLRI95.woff       [39m[1m[2m 19.41 kB[22m[1m[22m
+2026-10-06T21:18:48.3170360Z [2mdist/[22m[2massets/[22m[32mKaTeX_SansSerif-Regular-BNo7hRIc.ttf      [39m[1m[2m 19.44 kB[22m[1m[22m
+2026-10-06T21:18:48.3171300Z [2mdist/[22m[2massets/[22m[32mKaTeX_Fraktur-Regular-CB_wures.ttf        [39m[1m[2m 19.57 kB[22m[1m[22m
+2026-10-06T21:18:48.3172340Z [2mdist/[22m[2massets/[22m[32mKaTeX_Fraktur-Bold-BdnERNNW.ttf           [39m[1m[2m 19.58 kB[22m[1m[22m
+2026-10-06T21:18:48.3173160Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-Italic-BMLOBm91.woff           [39m[1m[2m 19.68 kB[22m[1m[22m
+2026-10-06T21:18:48.3174060Z [2mdist/[22m[2massets/[22m[32mKaTeX_SansSerif-Italic-YYjJ1zSn.ttf       [39m[1m[2m 22.36 kB[22m[1m[22m
+2026-10-06T21:18:48.3174950Z [2mdist/[22m[2massets/[22m[32mKaTeX_SansSerif-Bold-CFMepnvq.ttf         [39m[1m[2m 24.50 kB[22m[1m[22m
+2026-10-06T21:18:48.3175780Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-Bold-Cx986IdX.woff2            [39m[1m[2m 25.32 kB[22m[1m[22m
+2026-10-06T21:18:48.3177350Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-Regular-B22Nviop.woff2         [39m[1m[2m 26.27 kB[22m[1m[22m
+2026-10-06T21:18:48.3178500Z [2mdist/[22m[2massets/[22m[32mKaTeX_Typewriter-Regular-D3Ib7_Hf.ttf     [39m[1m[2m 27.56 kB[22m[1m[22m
+2026-10-06T21:18:48.3186220Z [2mdist/[22m[2massets/[22m[32mKaTeX_AMS-Regular-BQhdFMY1.woff2          [39m[1m[2m 28.08 kB[22m[1m[22m
+2026-10-06T21:18:48.3187520Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-Bold-Jm3AIy58.woff             [39m[1m[2m 29.91 kB[22m[1m[22m
+2026-10-06T21:18:48.3188650Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-Regular-Dr94JaBh.woff          [39m[1m[2m 30.77 kB[22m[1m[22m
+2026-10-06T21:18:48.3193840Z [2mdist/[22m[2massets/[22m[32mKaTeX_Math-BoldItalic-B3XSjfu4.ttf        [39m[1m[2m 31.20 kB[22m[1m[22m
+2026-10-06T21:18:48.3197810Z [2mdist/[22m[2massets/[22m[32mKaTeX_Math-Italic-flOr_0UB.ttf            [39m[1m[2m 31.31 kB[22m[1m[22m
+2026-10-06T21:18:48.3198750Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-BoldItalic-DzxPMmG6.ttf        [39m[1m[2m 32.97 kB[22m[1m[22m
+2026-10-06T21:18:48.3203450Z [2mdist/[22m[2massets/[22m[32mKaTeX_AMS-Regular-DMm9YOAa.woff           [39m[1m[2m 33.52 kB[22m[1m[22m
+2026-10-06T21:18:48.3204770Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-Italic-3WenGoN9.ttf            [39m[1m[2m 33.58 kB[22m[1m[22m
+2026-10-06T21:18:48.3206010Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-Bold-waoOVXN0.ttf              [39m[1m[2m 51.34 kB[22m[1m[22m
+2026-10-06T21:18:48.3207020Z [2mdist/[22m[2massets/[22m[32mKaTeX_Main-Regular-ypZvNtVU.ttf           [39m[1m[2m 53.58 kB[22m[1m[22m
+2026-10-06T21:18:48.3208040Z [2mdist/[22m[2massets/[22m[32mKaTeX_AMS-Regular-DRggAlZN.ttf            [39m[1m[2m 63.63 kB[22m[1m[22m
+2026-10-06T21:18:48.3275820Z [2mdist/[22m[2massets/[22m[35mindex-BwxPVEoW.css                        [39m[1m[2m 49.45 kB[22m[1m[22m[2m │ gzip:  12.80 kB[22m
+2026-10-06T21:18:48.3276910Z [2mdist/[22m[2massets/[22m[36mchannel-FUdXnKJX.js                       [39m[1m[2m  0.11 kB[22m[1m[22m[2m │ gzip:   0.13 kB[22m
+2026-10-06T21:18:48.3277780Z [2mdist/[22m[2massets/[22m[36minit-Gi6I4Gst.js                          [39m[1m[2m  0.15 kB[22m[1m[22m[2m │ gzip:   0.13 kB[22m
+2026-10-06T21:18:48.3278650Z [2mdist/[22m[2massets/[22m[36mchunk-2Q5K7J3B-o2JtGGfA.js                [39m[1m[2m  0.19 kB[22m[1m[22m[2m │ gzip:   0.16 kB[22m
+2026-10-06T21:18:48.3279660Z [2mdist/[22m[2massets/[22m[36mchunk-JWPE2WC7-Cl1QLhVt.js                [39m[1m[2m  0.23 kB[22m[1m[22m[2m │ gzip:   0.17 kB[22m
+2026-10-06T21:18:48.3280670Z [2mdist/[22m[2massets/[22m[36mchunk-XXDRQBXY-I-YnLo6L.js                [39m[1m[2m  0.23 kB[22m[1m[22m[2m │ gzip:   0.21 kB[22m
+2026-10-06T21:18:48.3281550Z [2mdist/[22m[2massets/[22m[36mchunk-5VM5RSS4-CLOA691W.js                [39m[1m[2m  0.37 kB[22m[1m[22m[2m │ gzip:   0.27 kB[22m
+2026-10-06T21:18:48.3284230Z [2mdist/[22m[2massets/[22m[36mstateDiagram-v2-MP3YSRHH-B2P103kj.js      [39m[1m[2m  0.43 kB[22m[1m[22m[2m │ gzip:   0.30 kB[22m
+2026-10-06T21:18:48.3285390Z [2mdist/[22m[2massets/[22m[36mclassDiagram-ZZMXUADV-Cx1tDEYN.js         [39m[1m[2m  0.47 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+2026-10-06T21:18:48.3286500Z [2mdist/[22m[2massets/[22m[36mclassDiagram-v2-VYDZK3BY-Cx1tDEYN.js      [39m[1m[2m  0.47 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+2026-10-06T21:18:48.3287720Z [2mdist/[22m[2massets/[22m[36mchunk-POPQ4Y6H-3TACjkb4.js                [39m[1m[2m  0.51 kB[22m[1m[22m[2m │ gzip:   0.36 kB[22m
+2026-10-06T21:18:48.3288950Z [2mdist/[22m[2massets/[22m[36mcodeowners-Bp6g37R7.js                    [39m[1m[2m  0.55 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+2026-10-06T21:18:48.3290100Z [2mdist/[22m[2massets/[22m[36mswimlanesDiagram-VR7AAH4N-C5wxo-hl.js     [39m[1m[2m  0.55 kB[22m[1m[22m[2m │ gzip:   0.37 kB[22m
+2026-10-06T21:18:48.3291480Z [2mdist/[22m[2massets/[22m[36minfoDiagram-27XIBGKW-_RHcM5LJ.js          [39m[1m[2m  0.59 kB[22m[1m[22m[2m │ gzip:   0.41 kB[22m
+2026-10-06T21:18:48.3292480Z [2mdist/[22m[2massets/[22m[36mshellsession-BADoaaVG.js                  [39m[1m[2m  0.71 kB[22m[1m[22m[2m │ gzip:   0.43 kB[22m
+2026-10-06T21:18:48.3293520Z [2mdist/[22m[2massets/[22m[36mtsv-B_m7g4N7.js                           [39m[1m[2m  0.74 kB[22m[1m[22m[2m │ gzip:   0.34 kB[22m
+2026-10-06T21:18:48.3294560Z [2mdist/[22m[2massets/[22m[36mhtml-derivative-DZhk3IEZ.js               [39m[1m[2m  0.90 kB[22m[1m[22m[2m │ gzip:   0.50 kB[22m
+2026-10-06T21:18:48.3295540Z [2mdist/[22m[2massets/[22m[36msizeCapture-INFHLROL-nXGNq9r5.js          [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:   0.53 kB[22m
+2026-10-06T21:18:48.3296560Z [2mdist/[22m[2massets/[22m[36mgit-rebase-r7XF79zn.js                    [39m[1m[2m  0.98 kB[22m[1m[22m[2m │ gzip:   0.44 kB[22m
+2026-10-06T21:18:48.3297490Z [2mdist/[22m[2massets/[22m[36mqmldir-C8lEn-DE.js                        [39m[1m[2m  1.00 kB[22m[1m[22m[2m │ gzip:   0.45 kB[22m
+2026-10-06T21:18:48.3298410Z [2mdist/[22m[2massets/[22m[36mcsv-fuZLfV_i.js                           [39m[1m[2m  1.14 kB[22m[1m[22m[2m │ gzip:   0.37 kB[22m
+2026-10-06T21:18:48.3299250Z [2mdist/[22m[2massets/[22m[36mordinal-Cboi1Yqb.js                       [39m[1m[2m  1.19 kB[22m[1m[22m[2m │ gzip:   0.57 kB[22m
+2026-10-06T21:18:48.3300100Z [2mdist/[22m[2massets/[22m[36mgit-commit-F4YmCXRG.js                    [39m[1m[2m  1.23 kB[22m[1m[22m[2m │ gzip:   0.53 kB[22m
+2026-10-06T21:18:48.3300960Z [2mdist/[22m[2massets/[22m[36mxsl-CtQFsRM5.js                           [39m[1m[2m  1.39 kB[22m[1m[22m[2m │ gzip:   0.52 kB[22m
+2026-10-06T21:18:48.3301950Z [2mdist/[22m[2massets/[22m[36msparql-rVzFXLq3.js                        [39m[1m[2m  1.48 kB[22m[1m[22m[2m │ gzip:   0.82 kB[22m
+2026-10-06T21:18:48.3302990Z [2mdist/[22m[2massets/[22m[36mini-BEwlwnbL.js                           [39m[1m[2m  1.53 kB[22m[1m[22m[2m │ gzip:   0.50 kB[22m
+2026-10-06T21:18:48.3304050Z [2mdist/[22m[2massets/[22m[36mrailroadDiagram-O6MQD6OU-DEkPl9ae.js      [39m[1m[2m  1.61 kB[22m[1m[22m[2m │ gzip:   0.75 kB[22m
+2026-10-06T21:18:48.3305060Z [2mdist/[22m[2massets/[22m[36mfortran-fixed-form-CkoXwp7k.js            [39m[1m[2m  1.67 kB[22m[1m[22m[2m │ gzip:   0.69 kB[22m
+2026-10-06T21:18:48.3306150Z [33m
+2026-10-06T21:18:48.3306490Z (!) Some chunks are larger than 500 kB after minification. Consider:
+2026-10-06T21:18:48.3307240Z - Using dynamic import() to code-split the application
+2026-10-06T21:18:48.3308240Z - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+2026-10-06T21:18:48.3309190Z - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+2026-10-06T21:18:48.3319330Z [2mdist/[22m[2massets/[22m[36mdocker-BcOcwvcX.js                        [39m[1m[2m  1.74 kB[22m[1m[22m[2m │ gzip:   0.60 kB[22m
+2026-10-06T21:18:48.3320640Z [2mdist/[22m[2massets/[22m[36mdotenv-De0Btta0.js                        [39m[1m[2m  1.75 kB[22m[1m[22m[2m │ gzip:   0.61 kB[22m
+2026-10-06T21:18:48.3321830Z [2mdist/[22m[2massets/[22m[36mabnfDiagram-VCTEODGH-CW857IX5.js          [39m[1m[2m  1.81 kB[22m[1m[22m[2m │ gzip:   0.89 kB[22m
+2026-10-06T21:18:48.3322870Z [2mdist/[22m[2massets/[22m[36mdesktop-BmXAJ9_W.js                       [39m[1m[2m  1.83 kB[22m[1m[22m[2m │ gzip:   0.76 kB[22m
+2026-10-06T21:18:48.3340580Z [2mdist/[22m[2massets/[22m[36mchunk-F27PBJKO-BHOfQOWm.js                [39m[1m[2m  1.88 kB[22m[1m[22m[2m │ gzip:   0.82 kB[22m
+2026-10-06T21:18:48.3341730Z [2mdist/[22m[2massets/[22m[36mhxml-2-FPmUDs.js                          [39m[1m[2m  1.89 kB[22m[1m[22m[2m │ gzip:   0.90 kB[22m
+2026-10-06T21:18:48.3343490Z [2mdist/[22m[2massets/[22m[36mpegDiagram-XKGWAZYB-CJfN6Ktr.js           [39m[1m[2m  1.96 kB[22m[1m[22m[2m │ gzip:   0.92 kB[22m
+2026-10-06T21:18:48.3344790Z [2mdist/[22m[2massets/[22m[36mebnfDiagram-PWID7BFC-CHSS9qdm.js          [39m[1m[2m  2.01 kB[22m[1m[22m[2m │ gzip:   0.88 kB[22m
+2026-10-06T21:18:48.3346020Z [2mdist/[22m[2massets/[22m[36mwenyan-BV7otONQ.js                        [39m[1m[2m  2.16 kB[22m[1m[22m[2m │ gzip:   1.09 kB[22m
+2026-10-06T21:18:48.3346910Z [2mdist/[22m[2massets/[22m[36mjssm-C2t-YnRu.js                          [39m[1m[2m  2.24 kB[22m[1m[22m[2m │ gzip:   0.62 kB[22m
+2026-10-06T21:18:48.3347980Z [2mdist/[22m[2massets/[22m[36mreg-C-SQnVFl.js                           [39m[1m[2m  2.35 kB[22m[1m[22m[2m │ gzip:   0.70 kB[22m
+2026-10-06T21:18:48.3349060Z [2mdist/[22m[2massets/[22m[36medge-CJaD-t2L.js                          [39m[1m[2m  2.36 kB[22m[1m[22m[2m │ gzip:   0.70 kB[22m
+2026-10-06T21:18:48.3350060Z [2mdist/[22m[2massets/[22m[36mdiff-D97Zzqfu.js                          [39m[1m[2m  2.57 kB[22m[1m[22m[2m │ gzip:   0.70 kB[22m
+2026-10-06T21:18:48.3351200Z [2mdist/[22m[2massets/[22m[36mgleam-BspZqrRM.js                         [39m[1m[2m  2.58 kB[22m[1m[22m[2m │ gzip:   0.82 kB[22m
+2026-10-06T21:18:48.3352360Z [2mdist/[22m[2massets/[22m[36merb-CSMaCouu.js                           [39m[1m[2m  2.61 kB[22m[1m[22m[2m │ gzip:   0.84 kB[22m
+2026-10-06T21:18:48.3353390Z [2mdist/[22m[2massets/[22m[36mhy-DFXneXwc.js                            [39m[1m[2m  2.65 kB[22m[1m[22m[2m │ gzip:   1.18 kB[22m
+2026-10-06T21:18:48.3354470Z [2mdist/[22m[2massets/[22m[36mjson-Cp-IABpG.js                          [39m[1m[2m  2.82 kB[22m[1m[22m[2m │ gzip:   0.78 kB[22m
+2026-10-06T21:18:48.3355600Z [2mdist/[22m[2massets/[22m[36mopenscad-C4EeE6gA.js                      [39m[1m[2m  2.82 kB[22m[1m[22m[2m │ gzip:   1.01 kB[22m
+2026-10-06T21:18:48.3356600Z [2mdist/[22m[2massets/[22m[36mlog-2UxHyX5q.js                           [39m[1m[2m  2.85 kB[22m[1m[22m[2m │ gzip:   0.90 kB[22m
+2026-10-06T21:18:48.3357600Z [2mdist/[22m[2massets/[22m[36mcairo-KRGpt6FW.js                         [39m[1m[2m  2.94 kB[22m[1m[22m[2m │ gzip:   0.81 kB[22m
+2026-10-06T21:18:48.3358670Z [2mdist/[22m[2massets/[22m[36mberry-uYugtg8r.js                         [39m[1m[2m  3.01 kB[22m[1m[22m[2m │ gzip:   0.81 kB[22m
+2026-10-06T21:18:48.3359630Z [2mdist/[22m[2massets/[22m[36mjsonl-DcaNXYhu.js                         [39m[1m[2m  3.01 kB[22m[1m[22m[2m │ gzip:   0.79 kB[22m
+2026-10-06T21:18:48.3360680Z [2mdist/[22m[2massets/[22m[36mjsonc-Des-eS-w.js                         [39m[1m[2m  3.11 kB[22m[1m[22m[2m │ gzip:   0.80 kB[22m
+2026-10-06T21:18:48.3361640Z [2mdist/[22m[2massets/[22m[36mlogo-BtOb2qkB.js                          [39m[1m[2m  3.13 kB[22m[1m[22m[2m │ gzip:   1.47 kB[22m
+2026-10-06T21:18:48.3363500Z [2mdist/[22m[2massets/[22m[36mpo-BTJTHyun.js                            [39m[1m[2m  3.24 kB[22m[1m[22m[2m │ gzip:   0.91 kB[22m
+2026-10-06T21:18:48.3364370Z [2mdist/[22m[2massets/[22m[36mjson5-C9tS-k6U.js                         [39m[1m[2m  3.25 kB[22m[1m[22m[2m │ gzip:   0.83 kB[22m
+2026-10-06T21:18:48.3365260Z [2mdist/[22m[2massets/[22m[36mmipsasm-CKIfxQSi.js                       [39m[1m[2m  3.26 kB[22m[1m[22m[2m │ gzip:   1.18 kB[22m
+2026-10-06T21:18:48.3366390Z [2mdist/[22m[2massets/[22m[36mtasl-QIJgUcNo.js                          [39m[1m[2m  3.29 kB[22m[1m[22m[2m │ gzip:   0.85 kB[22m
+2026-10-06T21:18:48.3367400Z [2mdist/[22m[2massets/[22m[36mrbs-CpoqiR4B.js                           [39m[1m[2m  3.31 kB[22m[1m[22m[2m │ gzip:   0.73 kB[22m
+2026-10-06T21:18:48.3368270Z [2mdist/[22m[2massets/[22m[36mgenie-D0YGMca9.js                         [39m[1m[2m  3.36 kB[22m[1m[22m[2m │ gzip:   1.21 kB[22m
+2026-10-06T21:18:48.3369220Z [2mdist/[22m[2massets/[22m[36mrel-C3B-1QV4.js                           [39m[1m[2m  3.37 kB[22m[1m[22m[2m │ gzip:   1.11 kB[22m
+2026-10-06T21:18:48.3380740Z [2mdist/[22m[2massets/[22m[36mvala-CsfeWuGM.js                          [39m[1m[2m  3.37 kB[22m[1m[22m[2m │ gzip:   1.19 kB[22m
+2026-10-06T21:18:48.3382030Z [2mdist/[22m[2massets/[22m[36marc-B3krsYDy.js                           [39m[1m[2m  3.43 kB[22m[1m[22m[2m │ gzip:   1.47 kB[22m
+2026-10-06T21:18:48.3383050Z [2mdist/[22m[2massets/[22m[36msplunk-BtCnVYZw.js                        [39m[1m[2m  3.44 kB[22m[1m[22m[2m │ gzip:   1.52 kB[22m
+2026-10-06T21:18:48.3384030Z [2mdist/[22m[2massets/[22m[36mfluent-C4IJs8-o.js                        [39m[1m[2m  3.61 kB[22m[1m[22m[2m │ gzip:   0.90 kB[22m
+2026-10-06T21:18:48.3385010Z [2mdist/[22m[2massets/[22m[36mssh-config-_ykCGR6B.js                    [39m[1m[2m  3.62 kB[22m[1m[22m[2m │ gzip:   1.60 kB[22m
+2026-10-06T21:18:48.3386040Z [2mdist/[22m[2massets/[22m[36mjsonnet-DFQXde-d.js                       [39m[1m[2m  3.62 kB[22m[1m[22m[2m │ gzip:   1.05 kB[22m
+2026-10-06T21:18:48.3387180Z [2mdist/[22m[2massets/[22m[36mkdl-DV7GczEv.js                           [39m[1m[2m  3.63 kB[22m[1m[22m[2m │ gzip:   1.04 kB[22m
+2026-10-06T21:18:48.3388330Z [2mdist/[22m[2massets/[22m[36mglsl-DplSGwfg.js                          [39m[1m[2m  3.63 kB[22m[1m[22m[2m │ gzip:   1.41 kB[22m
+2026-10-06T21:18:48.3389340Z [2mdist/[22m[2massets/[22m[36mhurl-irOxFIW8.js                          [39m[1m[2m  3.65 kB[22m[1m[22m[2m │ gzip:   1.16 kB[22m
+2026-10-06T21:18:48.3390350Z [2mdist/[22m[2massets/[22m[36mnarrat-DRg8JJMk.js                        [39m[1m[2m  3.67 kB[22m[1m[22m[2m │ gzip:   1.11 kB[22m
+2026-10-06T21:18:48.3391210Z [2mdist/[22m[2massets/[22m[36mturtle-BsS91CYL.js                        [39m[1m[2m  3.70 kB[22m[1m[22m[2m │ gzip:   0.98 kB[22m
+2026-10-06T21:18:48.3392200Z [2mdist/[22m[2massets/[22m[36mzenscript-DVFEvuxE.js                     [39m[1m[2m  3.91 kB[22m[1m[22m[2m │ gzip:   1.28 kB[22m
+2026-10-06T21:18:48.3393260Z [2mdist/[22m[2massets/[22m[36mron-D8l8udqQ.js                           [39m[1m[2m  3.91 kB[22m[1m[22m[2m │ gzip:   0.98 kB[22m
+2026-10-06T21:18:48.3394160Z [2mdist/[22m[2massets/[22m[36mgn-8iBmfbXw.js                            [39m[1m[2m  4.02 kB[22m[1m[22m[2m │ gzip:   1.50 kB[22m
+2026-10-06T21:18:48.3395140Z [2mdist/[22m[2massets/[22m[36mpascal-D93ZcfNL.js                        [39m[1m[2m  4.15 kB[22m[1m[22m[2m │ gzip:   1.67 kB[22m
+2026-10-06T21:18:48.3396160Z [2mdist/[22m[2massets/[22m[36mdiagram-Z3DM3KII-_CUAebxI.js              [39m[1m[2m  4.21 kB[22m[1m[22m[2m │ gzip:   1.83 kB[22m
+2026-10-06T21:18:48.3397240Z [2mdist/[22m[2massets/[22m[36mtcl-dwOrl1Do.js                           [39m[1m[2m  4.43 kB[22m[1m[22m[2m │ gzip:   1.52 kB[22m
+2026-10-06T21:18:48.3403730Z [2mdist/[22m[2massets/[22m[36mnextflow-BCxp2Aob.js                      [39m[1m[2m  4.51 kB[22m[1m[22m[2m │ gzip:   1.16 kB[22m
+2026-10-06T21:18:48.3404700Z [2mdist/[22m[2massets/[22m[36mrosmsg-BJDFO7_C.js                        [39m[1m[2m  4.52 kB[22m[1m[22m[2m │ gzip:   1.06 kB[22m
+2026-10-06T21:18:48.3405590Z [2mdist/[22m[2massets/[22m[36mhttp-jrhK8wxY.js                          [39m[1m[2m  4.55 kB[22m[1m[22m[2m │ gzip:   1.12 kB[22m
+2026-10-06T21:18:48.3406550Z [2mdist/[22m[2massets/[22m[36mpolar-C0HS_06l.js                         [39m[1m[2m  4.67 kB[22m[1m[22m[2m │ gzip:   1.12 kB[22m
+2026-10-06T21:18:48.3407570Z [2mdist/[22m[2massets/[22m[36mdefaultLocale-DX6XiGOO.js                 [39m[1m[2m  4.69 kB[22m[1m[22m[2m │ gzip:   2.18 kB[22m
+2026-10-06T21:18:48.3408510Z [2mdist/[22m[2massets/[22m[36msdbl-DVxCFoDh.js                          [39m[1m[2m  4.70 kB[22m[1m[22m[2m │ gzip:   2.01 kB[22m
+2026-10-06T21:18:48.3409370Z [2mdist/[22m[2massets/[22m[36mfennel-BYunw83y.js                        [39m[1m[2m  4.77 kB[22m[1m[22m[2m │ gzip:   1.53 kB[22m
+2026-10-06T21:18:48.3424780Z [2mdist/[22m[2massets/[22m[36mbibtex-CHM0blh-.js                        [39m[1m[2m  4.80 kB[22m[1m[22m[2m │ gzip:   0.83 kB[22m
+2026-10-06T21:18:48.3425720Z [2mdist/[22m[2massets/[22m[36mllvm-BZoOZj88.js                          [39m[1m[2m  5.04 kB[22m[1m[22m[2m │ gzip:   2.01 kB[22m
+2026-10-06T21:18:48.3426750Z [2mdist/[22m[2massets/[22m[36mwgsl-Dx-B1_4e.js                          [39m[1m[2m  5.14 kB[22m[1m[22m[2m │ gzip:   1.39 kB[22m
+2026-10-06T21:18:48.3427780Z [2mdist/[22m[2massets/[22m[36mgdresource-TyuKm33G.js                    [39m[1m[2m  5.29 kB[22m[1m[22m[2m │ gzip:   1.34 kB[22m
+2026-10-06T21:18:48.3428860Z [2mdist/[22m[2massets/[22m[36mqml-3beO22l8.js                           [39m[1m[2m  5.34 kB[22m[1m[22m[2m │ gzip:   1.38 kB[22m
+2026-10-06T21:18:48.3429840Z [2mdist/[22m[2massets/[22m[36mzig-VOosw3JB.js                           [39m[1m[2m  5.34 kB[22m[1m[22m[2m │ gzip:   1.55 kB[22m
+2026-10-06T21:18:48.3430840Z [2mdist/[22m[2massets/[22m[36mdax-CEL-wOlO.js                           [39m[1m[2m  5.37 kB[22m[1m[22m[2m │ gzip:   2.23 kB[22m
+2026-10-06T21:18:48.3431790Z [2mdist/[22m[2massets/[22m[36mbicep-Bmn6On1c.js                         [39m[1m[2m  5.38 kB[22m[1m[22m[2m │ gzip:   1.15 kB[22m
+2026-10-06T21:18:48.3432720Z [2mdist/[22m[2massets/[22m[36mxml-sdJ4AIDG.js                           [39m[1m[2m  5.38 kB[22m[1m[22m[2m │ gzip:   1.21 kB[22m
+2026-10-06T21:18:48.3433650Z [2mdist/[22m[2massets/[22m[36mawk-DMzUqQB5.js                           [39m[1m[2m  5.46 kB[22m[1m[22m[2m │ gzip:   1.38 kB[22m
+2026-10-06T21:18:48.3434670Z [2mdist/[22m[2massets/[22m[36mlinear-CBDaVLx1.js                        [39m[1m[2m  5.66 kB[22m[1m[22m[2m │ gzip:   2.31 kB[22m
+2026-10-06T21:18:48.3435660Z [2mdist/[22m[2massets/[22m[36mjinja-DFQZVq3b.js                         [39m[1m[2m  5.69 kB[22m[1m[22m[2m │ gzip:   1.40 kB[22m
+2026-10-06T21:18:48.3436540Z [2mdist/[22m[2massets/[22m[36mlean-BZvkOJ9d.js                          [39m[1m[2m  5.78 kB[22m[1m[22m[2m │ gzip:   1.92 kB[22m
+2026-10-06T21:18:48.3437400Z [2mdist/[22m[2massets/[22m[36mpowerquery-CEu0bR-o.js                    [39m[1m[2m  5.90 kB[22m[1m[22m[2m │ gzip:   1.52 kB[22m
+2026-10-06T21:18:48.3438420Z [2mdist/[22m[2massets/[22m[36mshaderlab-Dg9Lc6iA.js                     [39m[1m[2m  5.92 kB[22m[1m[22m[2m │ gzip:   2.08 kB[22m
+2026-10-06T21:18:48.3458140Z [2mdist/[22m[2massets/[22m[36mcypher-COkxafJQ.js                        [39m[1m[2m  5.96 kB[22m[1m[22m[2m │ gzip:   1.73 kB[22m
+2026-10-06T21:18:48.3459590Z [2mdist/[22m[2massets/[22m[36mcoq-BqXF5kFF.js                           [39m[1m[2m  6.02 kB[22m[1m[22m[2m │ gzip:   1.96 kB[22m
+2026-10-06T21:18:48.3461300Z [2mdist/[22m[2massets/[22m[36mvb-Cu-pLBUe.js                            [39m[1m[2m  6.08 kB[22m[1m[22m[2m │ gzip:   2.33 kB[22m
+2026-10-06T21:18:48.3462220Z [2mdist/[22m[2massets/[22m[36mmoonbit-Bag4Rp_g.js                       [39m[1m[2m  6.08 kB[22m[1m[22m[2m │ gzip:   1.71 kB[22m
+2026-10-06T21:18:48.3463120Z [2mdist/[22m[2massets/[22m[36mdiagram-UQ7AKVKN-C6Wnrt-2.js              [39m[1m[2m  6.08 kB[22m[1m[22m[2m │ gzip:   2.62 kB[22m
+2026-10-06T21:18:48.3464060Z [2mdist/[22m[2massets/[22m[36mmin-dark-CafNBF8u.js                      [39m[1m[2m  6.29 kB[22m[1m[22m[2m │ gzip:   1.71 kB[22m
+2026-10-06T21:18:48.3465060Z [2mdist/[22m[2massets/[22m[36mpieDiagram-E7YTZNPT-DDKSzztx.js           [39m[1m[2m  6.29 kB[22m[1m[22m[2m │ gzip:   2.62 kB[22m
+2026-10-06T21:18:48.3465950Z [2mdist/[22m[2massets/[22m[36mgdshader-DkwncUOv.js                      [39m[1m[2m  6.33 kB[22m[1m[22m[2m │ gzip:   1.73 kB[22m
+2026-10-06T21:18:48.3466810Z [2mdist/[22m[2massets/[22m[36mara-BRHolxvo.js                           [39m[1m[2m  6.36 kB[22m[1m[22m[2m │ gzip:   1.81 kB[22m
+2026-10-06T21:18:48.3467910Z [2mdist/[22m[2massets/[22m[36mverilog-nZwndyjY.js                       [39m[1m[2m  6.41 kB[22m[1m[22m[2m │ gzip:   1.92 kB[22m
+2026-10-06T21:18:48.3468770Z [2mdist/[22m[2massets/[22m[36mclojure-P80f7IUj.js                       [39m[1m[2m  6.41 kB[22m[1m[22m[2m │ gzip:   1.42 kB[22m
+2026-10-06T21:18:48.3469680Z [2mdist/[22m[2massets/[22m[36mpostcss-CXtECtnM.js                       [39m[1m[2m  6.42 kB[22m[1m[22m[2m │ gzip:   1.91 kB[22m
+2026-10-06T21:18:48.3470530Z [2mdist/[22m[2massets/[22m[36mtoml-vGWfd6FD.js                          [39m[1m[2m  6.43 kB[22m[1m[22m[2m │ gzip:   1.28 kB[22m
+2026-10-06T21:18:48.3471420Z [2mdist/[22m[2massets/[22m[36mproto-C7zT0LnQ.js                         [39m[1m[2m  6.55 kB[22m[1m[22m[2m │ gzip:   1.42 kB[22m
+2026-10-06T21:18:48.3472320Z [2mdist/[22m[2massets/[22m[36mchapel-DTp_pixX.js                        [39m[1m[2m  6.62 kB[22m[1m[22m[2m │ gzip:   1.85 kB[22m
+2026-10-06T21:18:48.3473220Z [2mdist/[22m[2massets/[22m[36mr-Cf5RLm7j.js                             [39m[1m[2m  6.74 kB[22m[1m[22m[2m │ gzip:   1.84 kB[22m
+2026-10-06T21:18:48.3474430Z [2mdist/[22m[2massets/[22m[36mred-DMbB5_pp.js                           [39m[1m[2m  6.74 kB[22m[1m[22m[2m │ gzip:   1.71 kB[22m
+2026-10-06T21:18:48.3475340Z [2mdist/[22m[2massets/[22m[36mtalonscript-CkByrt1z.js                   [39m[1m[2m  6.76 kB[22m[1m[22m[2m │ gzip:   1.49 kB[22m
+2026-10-06T21:18:48.3476240Z [2mdist/[22m[2massets/[22m[36mriscv-BM1_JUlF.js                         [39m[1m[2m  6.91 kB[22m[1m[22m[2m │ gzip:   1.98 kB[22m
+2026-10-06T21:18:48.3477210Z [2mdist/[22m[2massets/[22m[36msolarized-light-DCG28T6R.js               [39m[1m[2m  6.94 kB[22m[1m[22m[2m │ gzip:   1.82 kB[22m
+2026-10-06T21:18:48.3478150Z [2mdist/[22m[2massets/[22m[36mmin-light-CTRr51gU.js                     [39m[1m[2m  6.97 kB[22m[1m[22m[2m │ gzip:   1.89 kB[22m
+2026-10-06T21:18:48.3479050Z [2mdist/[22m[2massets/[22m[36msoy-zscZBeg6.js                           [39m[1m[2m  6.98 kB[22m[1m[22m[2m │ gzip:   1.66 kB[22m
+2026-10-06T21:18:48.3480030Z [2mdist/[22m[2massets/[22m[36mscheme-C98Dy4si.js                        [39m[1m[2m  7.17 kB[22m[1m[22m[2m │ gzip:   2.05 kB[22m
+2026-10-06T21:18:48.3480920Z [2mdist/[22m[2massets/[22m[36mhlsl-D3lLCCz7.js                          [39m[1m[2m  7.26 kB[22m[1m[22m[2m │ gzip:   2.19 kB[22m
+2026-10-06T21:18:48.3481900Z [2mdist/[22m[2massets/[22m[36msolarized-dark-UcubFVte.js                [39m[1m[2m  7.39 kB[22m[1m[22m[2m │ gzip:   1.91 kB[22m
+2026-10-06T21:18:48.3482800Z [2mdist/[22m[2massets/[22m[36mqss-IeuSbFQv.js                           [39m[1m[2m  7.47 kB[22m[1m[22m[2m │ gzip:   2.58 kB[22m
+2026-10-06T21:18:48.3484010Z [2mdist/[22m[2massets/[22m[36mprisma-Vru482bI.js                        [39m[1m[2m  7.74 kB[22m[1m[22m[2m │ gzip:   1.48 kB[22m
+2026-10-06T21:18:48.3484960Z [2mdist/[22m[2massets/[22m[36msystemd-4A_iFExJ.js                       [39m[1m[2m  7.87 kB[22m[1m[22m[2m │ gzip:   2.55 kB[22m
+2026-10-06T21:18:48.3485860Z [2mdist/[22m[2massets/[22m[36mregexp-CDVJQ6XC.js                        [39m[1m[2m  7.99 kB[22m[1m[22m[2m │ gzip:   1.42 kB[22m
+2026-10-06T21:18:48.3486790Z [2mdist/[22m[2massets/[22m[36mdiagram-S7CK7UJ4-CVENdfMO.js              [39m[1m[2m  8.22 kB[22m[1m[22m[2m │ gzip:   3.67 kB[22m
+2026-10-06T21:18:48.3487840Z [2mdist/[22m[2massets/[22m[36mmonokai-CR4piiQ-.js                       [39m[1m[2m  8.25 kB[22m[1m[22m[2m │ gzip:   1.98 kB[22m
+2026-10-06T21:18:48.3488770Z [2mdist/[22m[2massets/[22m[36mhaml-GN_XdMnF.js                          [39m[1m[2m  8.26 kB[22m[1m[22m[2m │ gzip:   1.81 kB[22m
+2026-10-06T21:18:48.3489710Z [2mdist/[22m[2massets/[22m[36mvue-html-AaS7Mt5G.js                      [39m[1m[2m  8.47 kB[22m[1m[22m[2m │ gzip:   1.68 kB[22m
+2026-10-06T21:18:48.3490850Z [2mdist/[22m[2massets/[22m[36mplsql-ChMvpjG-.js                         [39m[1m[2m  8.51 kB[22m[1m[22m[2m │ gzip:   3.00 kB[22m
+2026-10-06T21:18:48.3491770Z [2mdist/[22m[2massets/[22m[36mdart-CtKP3W-j.js                          [39m[1m[2m  8.62 kB[22m[1m[22m[2m │ gzip:   2.00 kB[22m
+2026-10-06T21:18:48.3492680Z [2mdist/[22m[2massets/[22m[36mhorizon-BUw7H-hv.js                       [39m[1m[2m  8.78 kB[22m[1m[22m[2m │ gzip:   1.96 kB[22m
+2026-10-06T21:18:48.3494220Z [2mdist/[22m[2massets/[22m[36mkotlin-BdnUsdx6.js                        [39m[1m[2m  8.79 kB[22m[1m[22m[2m │ gzip:   2.13 kB[22m
+2026-10-06T21:18:48.3495200Z [2mdist/[22m[2massets/[22m[36mhorizon-bright-CUuTKBJd.js                [39m[1m[2m  8.79 kB[22m[1m[22m[2m │ gzip:   1.97 kB[22m
+2026-10-06T21:18:48.3496200Z [2mdist/[22m[2massets/[22m[36mmake-CHLpvVh8.js                          [39m[1m[2m  8.96 kB[22m[1m[22m[2m │ gzip:   1.77 kB[22m
+2026-10-06T21:18:48.3497110Z [2mdist/[22m[2massets/[22m[36mandromeeda-C4gqWexZ.js                    [39m[1m[2m  9.02 kB[22m[1m[22m[2m │ gzip:   2.36 kB[22m
+2026-10-06T21:18:48.3498080Z [2mdist/[22m[2massets/[22m[36msas-BGn39htG.js                           [39m[1m[2m  9.06 kB[22m[1m[22m[2m │ gzip:   3.81 kB[22m
+2026-10-06T21:18:48.3498980Z [2mdist/[22m[2massets/[22m[36mdark-plus-C3mMm8J8.js                     [39m[1m[2m  9.10 kB[22m[1m[22m[2m │ gzip:   2.10 kB[22m
+2026-10-06T21:18:48.3499880Z [2mdist/[22m[2massets/[22m[36mslack-dark-BthQWCQV.js                    [39m[1m[2m  9.12 kB[22m[1m[22m[2m │ gzip:   1.97 kB[22m
+2026-10-06T21:18:48.3500750Z [2mdist/[22m[2massets/[22m[36msmithy-cds9vsN8.js                        [39m[1m[2m  9.13 kB[22m[1m[22m[2m │ gzip:   1.53 kB[22m
+2026-10-06T21:18:48.3501600Z [2mdist/[22m[2massets/[22m[36msass-Cj5Yp3dK.js                          [39m[1m[2m  9.29 kB[22m[1m[22m[2m │ gzip:   2.49 kB[22m
+2026-10-06T21:18:48.3502470Z [2mdist/[22m[2massets/[22m[36mplastic-3e1v2bzS.js                       [39m[1m[2m  9.30 kB[22m[1m[22m[2m │ gzip:   1.98 kB[22m
+2026-10-06T21:18:48.3503380Z [2mdist/[22m[2massets/[22m[36mslack-ochin-DqwNpetd.js                   [39m[1m[2m  9.43 kB[22m[1m[22m[2m │ gzip:   2.10 kB[22m
+2026-10-06T21:18:48.3504230Z [2mdist/[22m[2massets/[22m[36mtex-D96PA37w.js                           [39m[1m[2m  9.67 kB[22m[1m[22m[2m │ gzip:   3.06 kB[22m
+2026-10-06T21:18:48.3505120Z [2mdist/[22m[2massets/[22m[36mjison-wvAkD_A8.js                         [39m[1m[2m  9.69 kB[22m[1m[22m[2m │ gzip:   1.85 kB[22m
+2026-10-06T21:18:48.3505980Z [2mdist/[22m[2massets/[22m[36mcmake-D1j8_8rp.js                         [39m[1m[2m  9.86 kB[22m[1m[22m[2m │ gzip:   3.37 kB[22m
+2026-10-06T21:18:48.3506830Z [2mdist/[22m[2massets/[22m[36mlight-plus-B7mTdjB0.js                    [39m[1m[2m  9.94 kB[22m[1m[22m[2m │ gzip:   2.27 kB[22m
+2026-10-06T21:18:48.3508020Z [2mdist/[22m[2massets/[22m[36mhcl-BWvSN4gD.js                           [39m[1m[2m 10.05 kB[22m[1m[22m[2m │ gzip:   1.93 kB[22m
+2026-10-06T21:18:48.3508920Z [2mdist/[22m[2massets/[22m[36mcynefinDiagram-5FMLGOSQ-BNh775dA.js       [39m[1m[2m 10.10 kB[22m[1m[22m[2m │ gzip:   3.63 kB[22m
+2026-10-06T21:18:48.3509890Z [2mdist/[22m[2massets/[22m[36mstateDiagram-D77RDMKH-CdlHAbe9.js         [39m[1m[2m 10.37 kB[22m[1m[22m[2m │ gzip:   3.63 kB[22m
+2026-10-06T21:18:48.3510770Z [2mdist/[22m[2massets/[22m[36mpkl-u5AG7uiY.js                           [39m[1m[2m 10.37 kB[22m[1m[22m[2m │ gzip:   1.38 kB[22m
+2026-10-06T21:18:48.3511620Z [2mdist/[22m[2massets/[22m[36mdream-maker-BtqSS_iP.js                   [39m[1m[2m 10.47 kB[22m[1m[22m[2m │ gzip:   2.25 kB[22m
+2026-10-06T21:18:48.3512480Z [2mdist/[22m[2massets/[22m[36mraku-DXvB9xmW.js                          [39m[1m[2m 10.47 kB[22m[1m[22m[2m │ gzip:   2.94 kB[22m
+2026-10-06T21:18:48.3513670Z [2mdist/[22m[2massets/[22m[36myaml-Buea-lGh.js                          [39m[1m[2m 10.51 kB[22m[1m[22m[2m │ gzip:   2.27 kB[22m
+2026-10-06T21:18:48.3514580Z [2mdist/[22m[2massets/[22m[36mnextflow-groovy-CedDknKX.js               [39m[1m[2m 10.53 kB[22m[1m[22m[2m │ gzip:   2.17 kB[22m
+2026-10-06T21:18:48.3515450Z [2mdist/[22m[2massets/[22m[36mrst-CVOjT0e7.js                           [39m[1m[2m 10.67 kB[22m[1m[22m[2m │ gzip:   2.42 kB[22m
+2026-10-06T21:18:48.3516340Z [2mdist/[22m[2massets/[22m[36mdagre-GXQ25YYZ-DBJ9PiOm.js                [39m[1m[2m 10.68 kB[22m[1m[22m[2m │ gzip:   4.03 kB[22m
+2026-10-06T21:18:48.3517270Z [2mdist/[22m[2massets/[22m[36mdiagram-VSXAHHWV-CcBux2xS.js              [39m[1m[2m 10.72 kB[22m[1m[22m[2m │ gzip:   4.13 kB[22m
+2026-10-06T21:18:48.3518220Z [2mdist/[22m[2massets/[22m[36melm-DbKCFpqz.js                           [39m[1m[2m 10.97 kB[22m[1m[22m[2m │ gzip:   2.12 kB[22m
+2026-10-06T21:18:48.3519100Z [2mdist/[22m[2massets/[22m[36mgithub-light-DAi9KRSo.js                  [39m[1m[2m 11.18 kB[22m[1m[22m[2m │ gzip:   2.51 kB[22m
+2026-10-06T21:18:48.3519980Z [2mdist/[22m[2massets/[22m[36mjust-CMxyWJJc.js                          [39m[1m[2m 11.23 kB[22m[1m[22m[2m │ gzip:   2.80 kB[22m
+2026-10-06T21:18:48.3520850Z [2mdist/[22m[2massets/[22m[36mprolog-CbFg5uaA.js                        [39m[1m[2m 11.36 kB[22m[1m[22m[2m │ gzip:   3.83 kB[22m
+2026-10-06T21:18:48.3521710Z [2mdist/[22m[2massets/[22m[36mterraform-BETggiCN.js                     [39m[1m[2m 11.39 kB[22m[1m[22m[2m │ gzip:   2.51 kB[22m
+2026-10-06T21:18:48.3522610Z [2mdist/[22m[2massets/[22m[36mgithub-dark-DHJKELXO.js                   [39m[1m[2m 11.41 kB[22m[1m[22m[2m │ gzip:   2.55 kB[22m
+2026-10-06T21:18:48.3523480Z [2mdist/[22m[2massets/[22m[36mpuppet-BMWR74SV.js                        [39m[1m[2m 11.44 kB[22m[1m[22m[2m │ gzip:   2.11 kB[22m
+2026-10-06T21:18:48.3524360Z [2mdist/[22m[2massets/[22m[36mlaserwave-DUszq2jm.js                     [39m[1m[2m 11.50 kB[22m[1m[22m[2m │ gzip:   2.58 kB[22m
+2026-10-06T21:18:48.3525240Z [2mdist/[22m[2massets/[22m[36mgherkin-DyxjwDmM.js                       [39m[1m[2m 11.95 kB[22m[1m[22m[2m │ gzip:   5.05 kB[22m
+2026-10-06T21:18:48.3526110Z [2mdist/[22m[2massets/[22m[36mwasm-MzD3tlZU.js                          [39m[1m[2m 12.01 kB[22m[1m[22m[2m │ gzip:   2.19 kB[22m
+2026-10-06T21:18:48.3526970Z [2mdist/[22m[2massets/[22m[36mhjson-D5-asLiD.js                         [39m[1m[2m 12.05 kB[22m[1m[22m[2m │ gzip:   1.64 kB[22m
+2026-10-06T21:18:48.3527830Z [2mdist/[22m[2massets/[22m[36msurrealql-Cjom0U5J.js                     [39m[1m[2m 12.06 kB[22m[1m[22m[2m │ gzip:   3.30 kB[22m
+2026-10-06T21:18:48.3528700Z [2mdist/[22m[2massets/[22m[36mapache-Pmp26Uib.js                        [39m[1m[2m 12.46 kB[22m[1m[22m[2m │ gzip:   3.72 kB[22m
+2026-10-06T21:18:48.3530080Z [2mdist/[22m[2massets/[22m[36mhandlebars-DPT5vKgj.js                    [39m[1m[2m 12.48 kB[22m[1m[22m[2m │ gzip:   2.42 kB[22m
+2026-10-06T21:18:48.3530980Z [2mdist/[22m[2massets/[22m[36mvesper-DRje8inN.js                        [39m[1m[2m 12.73 kB[22m[1m[22m[2m │ gzip:   1.98 kB[22m
+2026-10-06T21:18:48.3531840Z [2mdist/[22m[2massets/[22m[36mbeancount-BgSHGh8x.js                     [39m[1m[2m 12.86 kB[22m[1m[22m[2m │ gzip:   2.21 kB[22m
+2026-10-06T21:18:48.3532700Z [2mdist/[22m[2massets/[22m[36mbat-CickPsom.js                           [39m[1m[2m 12.89 kB[22m[1m[22m[2m │ gzip:   3.23 kB[22m
+2026-10-06T21:18:48.3533560Z [2mdist/[22m[2massets/[22m[36mfish-BvzEVeQv.js                          [39m[1m[2m 13.04 kB[22m[1m[22m[2m │ gzip:   1.74 kB[22m
+2026-10-06T21:18:48.3534580Z [2mdist/[22m[2massets/[22m[36mnsis-BlV79W_Q.js                          [39m[1m[2m 13.13 kB[22m[1m[22m[2m │ gzip:   4.07 kB[22m
+2026-10-06T21:18:48.3535660Z [2mdist/[22m[2massets/[22m[36mv-BGw2Nkan.js                             [39m[1m[2m 13.33 kB[22m[1m[22m[2m │ gzip:   2.77 kB[22m
+2026-10-06T21:18:48.3536560Z [2mdist/[22m[2massets/[22m[36mvitesse-light-CVO1_9PV.js                 [39m[1m[2m 13.62 kB[22m[1m[22m[2m │ gzip:   3.04 kB[22m
+2026-10-06T21:18:48.3537430Z [2mdist/[22m[2massets/[22m[36maurora-x-D-2ljcwZ.js                      [39m[1m[2m 13.66 kB[22m[1m[22m[2m │ gzip:   2.28 kB[22m
+2026-10-06T21:18:48.3538350Z [2mdist/[22m[2massets/[22m[36mvitesse-black-Bkuqu6BP.js                 [39m[1m[2m 13.68 kB[22m[1m[22m[2m │ gzip:   3.06 kB[22m
+2026-10-06T21:18:48.3539230Z [2mdist/[22m[2massets/[22m[36mvitesse-dark-D0r3Knsf.js                  [39m[1m[2m 13.76 kB[22m[1m[22m[2m │ gzip:   3.06 kB[22m
+2026-10-06T21:18:48.3540110Z [2mdist/[22m[2massets/[22m[36mpug-BtYPkAgq.js                           [39m[1m[2m 13.84 kB[22m[1m[22m[2m │ gzip:   2.58 kB[22m
+2026-10-06T21:18:48.3541020Z [2mdist/[22m[2massets/[22m[36msynthwave-84-CbfX1IO0.js                  [39m[1m[2m 14.04 kB[22m[1m[22m[2m │ gzip:   2.87 kB[22m
+2026-10-06T21:18:48.3541980Z [2mdist/[22m[2massets/[22m[36msmalltalk-BOQMe2GC.js                     [39m[1m[2m 14.13 kB[22m[1m[22m[2m │ gzip:   2.16 kB[22m
+2026-10-06T21:18:48.3542880Z [2mdist/[22m[2massets/[22m[36mgithub-light-default-D7oLnXFd.js          [39m[1m[2m 14.16 kB[22m[1m[22m[2m │ gzip:   3.04 kB[22m
+2026-10-06T21:18:48.3543840Z [2mdist/[22m[2massets/[22m[36mgithub-light-high-contrast-BfjtVDDH.js    [39m[1m[2m 14.28 kB[22m[1m[22m[2m │ gzip:   3.02 kB[22m
+2026-10-06T21:18:48.3544790Z [2mdist/[22m[2massets/[22m[36mclarity-Dn5IMItf.js                       [39m[1m[2m 14.36 kB[22m[1m[22m[2m │ gzip:   2.51 kB[22m
+2026-10-06T21:18:48.3545710Z [2mdist/[22m[2massets/[22m[36mgithub-dark-dimmed-DH5Ifo-i.js            [39m[1m[2m 14.43 kB[22m[1m[22m[2m │ gzip:   3.13 kB[22m
+2026-10-06T21:18:48.3546680Z [2mdist/[22m[2massets/[22m[36mgithub-dark-default-Cuk6v7N8.js           [39m[1m[2m 14.44 kB[22m[1m[22m[2m │ gzip:   3.13 kB[22m
+2026-10-06T21:18:48.3547620Z [2mdist/[22m[2massets/[22m[36mgithub-dark-high-contrast-E3gJ1_iC.js     [39m[1m[2m 14.60 kB[22m[1m[22m[2m │ gzip:   3.09 kB[22m
+2026-10-06T21:18:48.3548520Z [2mdist/[22m[2massets/[22m[36mgnuplot-DdkO51Og.js                       [39m[1m[2m 14.78 kB[22m[1m[22m[2m │ gzip:   3.27 kB[22m
+2026-10-06T21:18:48.3549380Z [2mdist/[22m[2massets/[22m[36mrust-DPvrY3IQ.js                          [39m[1m[2m 15.17 kB[22m[1m[22m[2m │ gzip:   2.73 kB[22m
+2026-10-06T21:18:48.3550230Z [2mdist/[22m[2massets/[22m[36mkusto-wEQ09or8.js                         [39m[1m[2m 15.17 kB[22m[1m[22m[2m │ gzip:   3.92 kB[22m
+2026-10-06T21:18:48.3551080Z [2mdist/[22m[2massets/[22m[36mnix-CwoSXNpI.js                           [39m[1m[2m 15.51 kB[22m[1m[22m[2m │ gzip:   2.48 kB[22m
+2026-10-06T21:18:48.3552260Z [2mdist/[22m[2massets/[22m[36mlua-BaeVxFsk.js                           [39m[1m[2m 15.54 kB[22m[1m[22m[2m │ gzip:   3.16 kB[22m
+2026-10-06T21:18:48.3553160Z [2mdist/[22m[2massets/[22m[36mactionscript-3-B3316cI-.js                [39m[1m[2m 15.54 kB[22m[1m[22m[2m │ gzip:   2.71 kB[22m
+2026-10-06T21:18:48.3554080Z [2mdist/[22m[2massets/[22m[36mchunk-SVP7TREG-C-_jshwc.js                [39m[1m[2m 15.73 kB[22m[1m[22m[2m │ gzip:   4.41 kB[22m
+2026-10-06T21:18:48.3554950Z [2mdist/[22m[2massets/[22m[36mabap-BdImnpbu.js                          [39m[1m[2m 15.85 kB[22m[1m[22m[2m │ gzip:   5.91 kB[22m
+2026-10-06T21:18:48.3555820Z [2mdist/[22m[2massets/[22m[36mdiagram-VX7I27RA-CenI9kOk.js              [39m[1m[2m 15.96 kB[22m[1m[22m[2m │ gzip:   5.70 kB[22m
+2026-10-06T21:18:48.3556740Z [2mdist/[22m[2massets/[22m[36mmatlab-D7o27uSR.js                        [39m[1m[2m 16.09 kB[22m[1m[22m[2m │ gzip:   3.06 kB[22m
+2026-10-06T21:18:48.3557810Z [2mdist/[22m[2massets/[22m[36mcue-D82EKSYY.js                           [39m[1m[2m 16.20 kB[22m[1m[22m[2m │ gzip:   2.06 kB[22m
+2026-10-06T21:18:48.3558670Z [2mdist/[22m[2massets/[22m[36mluau-nOZpfvQi.js                          [39m[1m[2m 16.30 kB[22m[1m[22m[2m │ gzip:   3.58 kB[22m
+2026-10-06T21:18:48.3559520Z [2mdist/[22m[2massets/[22m[36melixir-DkJLSxtU.js                        [39m[1m[2m 16.32 kB[22m[1m[22m[2m │ gzip:   2.80 kB[22m
+2026-10-06T21:18:48.3560380Z [2mdist/[22m[2massets/[22m[36msolidity-DijEV5ha.js                      [39m[1m[2m 16.41 kB[22m[1m[22m[2m │ gzip:   3.16 kB[22m
+2026-10-06T21:18:48.3561250Z [2mdist/[22m[2massets/[22m[36modin-BBf5iR-q.js                          [39m[1m[2m 16.51 kB[22m[1m[22m[2m │ gzip:   2.94 kB[22m
+2026-10-06T21:18:48.3562450Z [2mdist/[22m[2massets/[22m[36mts-tags-Ls60c9xG.js                       [39m[1m[2m 16.57 kB[22m[1m[22m[2m │ gzip:   2.07 kB[22m
+2026-10-06T21:18:48.3563510Z [2mdist/[22m[2massets/[22m[36mkanagawa-wave-DFGoQZhC.js                 [39m[1m[2m 17.12 kB[22m[1m[22m[2m │ gzip:   2.93 kB[22m
+2026-10-06T21:18:48.3564480Z [2mdist/[22m[2massets/[22m[36mkanagawa-lotus-C3DzagqV.js                [39m[1m[2m 17.12 kB[22m[1m[22m[2m │ gzip:   2.93 kB[22m
+2026-10-06T21:18:48.3565470Z [2mdist/[22m[2massets/[22m[36mkanagawa-dragon-BuwD2xS4.js               [39m[1m[2m 17.12 kB[22m[1m[22m[2m │ gzip:   2.95 kB[22m
+2026-10-06T21:18:48.3570570Z [2mdist/[22m[2massets/[22m[36mishikawaDiagram-5VMMS53U-DCz6yYPF.js      [39m[1m[2m 17.47 kB[22m[1m[22m[2m │ gzip:   6.64 kB[22m
+2026-10-06T21:18:48.3571620Z [2mdist/[22m[2massets/[22m[36mmove-el3G9tDJ.js                          [39m[1m[2m 17.66 kB[22m[1m[22m[2m │ gzip:   3.06 kB[22m
+2026-10-06T21:18:48.3572700Z [2mdist/[22m[2massets/[22m[36mgraphql-ChdNCCLP.js                       [39m[1m[2m 18.00 kB[22m[1m[22m[2m │ gzip:   2.52 kB[22m
+2026-10-06T21:18:48.3573670Z [2mdist/[22m[2massets/[22m[36mliquid-B-duXHXw.js                        [39m[1m[2m 18.09 kB[22m[1m[22m[2m │ gzip:   3.16 kB[22m
+2026-10-06T21:18:48.3578150Z [2mdist/[22m[2massets/[22m[36msvelte-D84K1R2Q.js                        [39m[1m[2m 18.25 kB[22m[1m[22m[2m │ gzip:   3.15 kB[22m
+2026-10-06T21:18:48.3579380Z [2mdist/[22m[2massets/[22m[36mmaterial-theme-D5KoaKCx.js                [39m[1m[2m 18.62 kB[22m[1m[22m[2m │ gzip:   3.11 kB[22m
+2026-10-06T21:18:48.3580530Z [2mdist/[22m[2massets/[22m[36mmaterial-theme-darker-BfHTSMKl.js         [39m[1m[2m 18.63 kB[22m[1m[22m[2m │ gzip:   3.11 kB[22m
+2026-10-06T21:18:48.3581650Z [2mdist/[22m[2massets/[22m[36mmaterial-theme-ocean-CyktbL80.js          [39m[1m[2m 18.63 kB[22m[1m[22m[2m │ gzip:   3.14 kB[22m
+2026-10-06T21:18:48.3591420Z [2mdist/[22m[2massets/[22m[36mmaterial-theme-lighter-B0m2ddpp.js        [39m[1m[2m 18.63 kB[22m[1m[22m[2m │ gzip:   3.11 kB[22m
+2026-10-06T21:18:48.3593120Z [2mdist/[22m[2massets/[22m[36mmaterial-theme-palenight-Csfq5Kiy.js      [39m[1m[2m 18.64 kB[22m[1m[22m[2m │ gzip:   3.13 kB[22m
+2026-10-06T21:18:48.3594060Z [2mdist/[22m[2massets/[22m[36mgdscript-DqcFQ5yU.js                      [39m[1m[2m 19.09 kB[22m[1m[22m[2m │ gzip:   3.77 kB[22m
+2026-10-06T21:18:48.3594920Z [2mdist/[22m[2massets/[22m[36mgroovy-gcz8RCvz.js                        [39m[1m[2m 19.18 kB[22m[1m[22m[2m │ gzip:   3.60 kB[22m
+2026-10-06T21:18:48.3595800Z [2mdist/[22m[2massets/[22m[36mglimmer-js-Drrc9bTt.js                    [39m[1m[2m 20.07 kB[22m[1m[22m[2m │ gzip:   2.95 kB[22m
+2026-10-06T21:18:48.3596670Z [2mdist/[22m[2massets/[22m[36mglimmer-ts-zeybXsvi.js                    [39m[1m[2m 20.07 kB[22m[1m[22m[2m │ gzip:   2.94 kB[22m
+2026-10-06T21:18:48.3597550Z [2mdist/[22m[2massets/[22m[36mayu-dark-DYE7WIF3.js                      [39m[1m[2m 20.08 kB[22m[1m[22m[2m │ gzip:   3.94 kB[22m
+2026-10-06T21:18:48.3598680Z [2mdist/[22m[2massets/[22m[36mayu-mirage-32ctXXKs.js                    [39m[1m[2m 20.09 kB[22m[1m[22m[2m │ gzip:   3.94 kB[22m
+2026-10-06T21:18:48.3599570Z [2mdist/[22m[2massets/[22m[36mayu-light-BA47KaF1.js                     [39m[1m[2m 20.15 kB[22m[1m[22m[2m │ gzip:   3.93 kB[22m
+2026-10-06T21:18:48.3600440Z [2mdist/[22m[2massets/[22m[36mpowershell-Dd0kTxKP.js                    [39m[1m[2m 20.15 kB[22m[1m[22m[2m │ gzip:   4.07 kB[22m
+2026-10-06T21:18:48.3601310Z [2mdist/[22m[2massets/[22m[36mmdc-DF4WjDMn.js                           [39m[1m[2m 20.18 kB[22m[1m[22m[2m │ gzip:   6.81 kB[22m
+2026-10-06T21:18:48.3602270Z [2mdist/[22m[2massets/[22m[36mkanban-definition-UXKFOSKX-BfqL7w_0.js    [39m[1m[2m 20.30 kB[22m[1m[22m[2m │ gzip:   7.21 kB[22m
+2026-10-06T21:18:48.3603190Z [2mdist/[22m[2massets/[22m[36mviml-CJc9bBzg.js                          [39m[1m[2m 20.37 kB[22m[1m[22m[2m │ gzip:   6.73 kB[22m
+2026-10-06T21:18:48.3604070Z [2mdist/[22m[2massets/[22m[36msnazzy-light-Bw305WKR.js                  [39m[1m[2m 20.77 kB[22m[1m[22m[2m │ gzip:   3.83 kB[22m
+2026-10-06T21:18:48.3604940Z [2mdist/[22m[2massets/[22m[36mdracula-BzJJZx-M.js                       [39m[1m[2m 21.07 kB[22m[1m[22m[2m │ gzip:   4.00 kB[22m
+2026-10-06T21:18:48.3605810Z [2mdist/[22m[2massets/[22m[36mdracula-soft-BXkSAIEj.js                  [39m[1m[2m 21.08 kB[22m[1m[22m[2m │ gzip:   4.04 kB[22m
+2026-10-06T21:18:48.3606670Z [2mdist/[22m[2massets/[22m[36mwit-5i3qLPDT.js                           [39m[1m[2m 21.47 kB[22m[1m[22m[2m │ gzip:   2.89 kB[22m
+2026-10-06T21:18:48.3607530Z [2mdist/[22m[2massets/[22m[36mrose-pine-5qJOZa0Y.js                     [39m[1m[2m 21.74 kB[22m[1m[22m[2m │ gzip:   3.88 kB[22m
+2026-10-06T21:18:48.3608410Z [2mdist/[22m[2massets/[22m[36mrose-pine-moon-C9pEdX9L.js                [39m[1m[2m 21.75 kB[22m[1m[22m[2m │ gzip:   3.90 kB[22m
+2026-10-06T21:18:48.3609310Z [2mdist/[22m[2massets/[22m[36mrose-pine-dawn-zx0QlTCp.js                [39m[1m[2m 21.75 kB[22m[1m[22m[2m │ gzip:   3.90 kB[22m
+2026-10-06T21:18:48.3610200Z [2mdist/[22m[2massets/[22m[36mnushell-BXD5iret.js                       [39m[1m[2m 21.77 kB[22m[1m[22m[2m │ gzip:   5.44 kB[22m
+2026-10-06T21:18:48.3611050Z [2mdist/[22m[2massets/[22m[36mnim-nV83PyhX.js                           [39m[1m[2m 22.46 kB[22m[1m[22m[2m │ gzip:   3.16 kB[22m
+2026-10-06T21:18:48.3611910Z [2mdist/[22m[2massets/[22m[36mcommon-lisp-Cg-RD9OK.js                   [39m[1m[2m 22.58 kB[22m[1m[22m[2m │ gzip:   6.06 kB[22m
+2026-10-06T21:18:48.3612810Z [2mdist/[22m[2massets/[22m[36mgruvbox-dark-hard-CFHQjOhq.js             [39m[1m[2m 22.63 kB[22m[1m[22m[2m │ gzip:   4.18 kB[22m
+2026-10-06T21:18:48.3613720Z [2mdist/[22m[2massets/[22m[36mgruvbox-dark-soft-CVdnzihN.js             [39m[1m[2m 22.63 kB[22m[1m[22m[2m │ gzip:   4.17 kB[22m
+2026-10-06T21:18:48.3615060Z [2mdist/[22m[2massets/[22m[36mgruvbox-light-hard-CH1njM8p.js            [39m[1m[2m 22.64 kB[22m[1m[22m[2m │ gzip:   4.18 kB[22m
+2026-10-06T21:18:48.3616110Z [2mdist/[22m[2massets/[22m[36mgruvbox-light-soft-hJgmCMqR.js            [39m[1m[2m 22.64 kB[22m[1m[22m[2m │ gzip:   4.18 kB[22m
+2026-10-06T21:18:48.3617040Z [2mdist/[22m[2massets/[22m[36mgruvbox-dark-medium-GsRaNv29.js           [39m[1m[2m 22.64 kB[22m[1m[22m[2m │ gzip:   4.18 kB[22m
+2026-10-06T21:18:48.3622250Z [2mdist/[22m[2massets/[22m[36mgruvbox-light-medium-DRw_LuNl.js          [39m[1m[2m 22.64 kB[22m[1m[22m[2m │ gzip:   4.18 kB[22m
+2026-10-06T21:18:48.3623300Z [2mdist/[22m[2massets/[22m[36mmindmap-definition-YA3MSWOX-B_Ix6xuA.js   [39m[1m[2m 23.18 kB[22m[1m[22m[2m │ gzip:   7.83 kB[22m
+2026-10-06T21:18:48.3624280Z [2mdist/[22m[2massets/[22m[36msankeyDiagram-P5KCCOFB-DwtJo_TO.js        [39m[1m[2m 23.20 kB[22m[1m[22m[2m │ gzip:   8.56 kB[22m
+2026-10-06T21:18:48.3629530Z [2mdist/[22m[2massets/[22m[36mjourneyDiagram-3NMN7TZE-DIEEoj9H.js       [39m[1m[2m 23.57 kB[22m[1m[22m[2m │ gzip:   8.35 kB[22m
+2026-10-06T21:18:48.3630560Z [2mdist/[22m[2massets/[22m[36mcadence-Bv_4Rxtq.js                       [39m[1m[2m 23.67 kB[22m[1m[22m[2m │ gzip:   3.67 kB[22m
+2026-10-06T21:18:48.3631420Z [2mdist/[22m[2massets/[22m[36msql-DkvoVjww.js                           [39m[1m[2m 23.67 kB[22m[1m[22m[2m │ gzip:   7.48 kB[22m
+2026-10-06T21:18:48.3632280Z [2mdist/[22m[2massets/[22m[36mastro-DTjqU0_L.js                         [39m[1m[2m 24.01 kB[22m[1m[22m[2m │ gzip:   7.55 kB[22m
+2026-10-06T21:18:48.3633140Z [2mdist/[22m[2massets/[22m[36mapl-ChzvTHjC.js                           [39m[1m[2m 24.04 kB[22m[1m[22m[2m │ gzip:   4.20 kB[22m
+2026-10-06T21:18:48.3634010Z [2mdist/[22m[2massets/[22m[36mtempl-Vpw5XpSW.js                         [39m[1m[2m 24.06 kB[22m[1m[22m[2m │ gzip:   5.40 kB[22m
+2026-10-06T21:18:48.3634910Z [2mdist/[22m[2massets/[22m[36mvhdl-CeAyd5Ju.js                          [39m[1m[2m 24.26 kB[22m[1m[22m[2m │ gzip:   3.87 kB[22m
+2026-10-06T21:18:48.3635780Z [2mdist/[22m[2massets/[22m[36mangular-html-D_SYSyRt.js                  [39m[1m[2m 24.29 kB[22m[1m[22m[2m │ gzip:   4.01 kB[22m
+2026-10-06T21:18:48.3636660Z [2mdist/[22m[2massets/[22m[36mpurescript-CklMAg4u.js                    [39m[1m[2m 24.69 kB[22m[1m[22m[2m │ gzip:   3.25 kB[22m
+2026-10-06T21:18:48.3637530Z [2mdist/[22m[2massets/[22m[36mvue-DSqPwMUe.js                           [39m[1m[2m 24.96 kB[22m[1m[22m[2m │ gzip:   3.04 kB[22m
+2026-10-06T21:18:48.3638390Z [2mdist/[22m[2massets/[22m[36mone-light-C3Wv6jpd.js                     [39m[1m[2m 25.30 kB[22m[1m[22m[2m │ gzip:   3.67 kB[22m
+2026-10-06T21:18:48.3639270Z [2mdist/[22m[2massets/[22m[36mfsharp-CXgrBDvD.js                        [39m[1m[2m 25.31 kB[22m[1m[22m[2m │ gzip:   4.13 kB[22m
+2026-10-06T21:18:48.3640150Z [2mdist/[22m[2massets/[22m[36mtwig-D9-LOF2p.js                          [39m[1m[2m 25.31 kB[22m[1m[22m[2m │ gzip:   4.21 kB[22m
+2026-10-06T21:18:48.3641050Z [2mdist/[22m[2massets/[22m[36mwardleyDiagram-VM6X3IG4-BqUFGpH4.js       [39m[1m[2m 25.50 kB[22m[1m[22m[2m │ gzip:   6.79 kB[22m
+2026-10-06T21:18:48.3642070Z [2mdist/[22m[2massets/[22m[36mmarko-BYgDmDgU.js                         [39m[1m[2m 25.72 kB[22m[1m[22m[2m │ gzip:   3.66 kB[22m
+2026-10-06T21:18:48.3642960Z [2mdist/[22m[2massets/[22m[36mnight-owl-light-CMTm3GFP.js               [39m[1m[2m 25.90 kB[22m[1m[22m[2m │ gzip:   4.26 kB[22m
+2026-10-06T21:18:48.3649630Z [2mdist/[22m[2massets/[22m[36mc3-Dp5svz6Z.js                            [39m[1m[2m 26.39 kB[22m[1m[22m[2m │ gzip:   3.99 kB[22m
+2026-10-06T21:18:48.3650610Z [2mdist/[22m[2massets/[22m[36msystem-verilog-0hqHdDBg.js                [39m[1m[2m 26.56 kB[22m[1m[22m[2m │ gzip:   4.88 kB[22m
+2026-10-06T21:18:48.3652410Z [2mdist/[22m[2massets/[22m[36mnord-Ddv68eIx.js                          [39m[1m[2m 26.72 kB[22m[1m[22m[2m │ gzip:   4.40 kB[22m
+2026-10-06T21:18:48.3653290Z [2mdist/[22m[2massets/[22m[36mcodeql-DsOJ9woJ.js                        [39m[1m[2m 26.88 kB[22m[1m[22m[2m │ gzip:   3.79 kB[22m
+2026-10-06T21:18:48.3654280Z [2mdist/[22m[2massets/[22m[36mtypespec-ClX509-Q.js                      [39m[1m[2m 27.00 kB[22m[1m[22m[2m │ gzip:   2.76 kB[22m
+2026-10-06T21:18:48.3655150Z [2mdist/[22m[2massets/[22m[36mscss-Cw6XMfVs.js                          [39m[1m[2m 27.20 kB[22m[1m[22m[2m │ gzip:   4.20 kB[22m
+2026-10-06T21:18:48.3655990Z [2mdist/[22m[2massets/[22m[36mjava-CylS5w8V.js                          [39m[1m[2m 27.22 kB[22m[1m[22m[2m │ gzip:   4.26 kB[22m
+2026-10-06T21:18:48.3656850Z [2mdist/[22m[2massets/[22m[36mcoffee-Ch7k5sss.js                        [39m[1m[2m 27.42 kB[22m[1m[22m[2m │ gzip:   6.35 kB[22m
+2026-10-06T21:18:48.3657940Z [2mdist/[22m[2massets/[22m[36mrazor-CyjPwjZj.js                         [39m[1m[2m 27.51 kB[22m[1m[22m[2m │ gzip:   3.57 kB[22m
+2026-10-06T21:18:48.3658800Z [2mdist/[22m[2massets/[22m[36mscala-CqE71os6.js                         [39m[1m[2m 28.89 kB[22m[1m[22m[2m │ gzip:   3.94 kB[22m
+2026-10-06T21:18:48.3659660Z [2mdist/[22m[2massets/[22m[36mnight-owl-C39BiMTA.js                     [39m[1m[2m 28.91 kB[22m[1m[22m[2m │ gzip:   5.16 kB[22m
+2026-10-06T21:18:48.3660510Z [2mdist/[22m[2massets/[22m[36mcrystal-LUwhHfY5.js                       [39m[1m[2m 29.39 kB[22m[1m[22m[2m │ gzip:   4.45 kB[22m
+2026-10-06T21:18:48.3661410Z [2mdist/[22m[2massets/[22m[36mgitGraphDiagram-WWUBYQGX-BYmF1fPo.js      [39m[1m[2m 29.42 kB[22m[1m[22m[2m │ gzip:   8.70 kB[22m
+2026-10-06T21:18:48.3662330Z [2mdist/[22m[2massets/[22m[36mapplescript-Co6uUVPk.js                   [39m[1m[2m 29.57 kB[22m[1m[22m[2m │ gzip:   5.93 kB[22m
+2026-10-06T21:18:48.3663240Z [2mdist/[22m[2massets/[22m[36merDiagram-RLTQ6QDP-C11v4BrV.js            [39m[1m[2m 30.79 kB[22m[1m[22m[2m │ gzip:  10.59 kB[22m
+2026-10-06T21:18:48.3664180Z [2mdist/[22m[2massets/[22m[36mtimeline-definition-24CTP7MA-mW6NuLip.js  [39m[1m[2m 30.84 kB[22m[1m[22m[2m │ gzip:  10.15 kB[22m
+2026-10-06T21:18:48.3665130Z [2mdist/[22m[2massets/[22m[36mrequirementDiagram-BXWQKSXE-C9i98qcr.js   [39m[1m[2m 31.00 kB[22m[1m[22m[2m │ gzip:   9.73 kB[22m
+2026-10-06T21:18:48.3666030Z [2mdist/[22m[2massets/[22m[36mstylus-BEDo0Tqx.js                        [39m[1m[2m 31.07 kB[22m[1m[22m[2m │ gzip:   7.99 kB[22m
+2026-10-06T21:18:48.3666870Z [2mdist/[22m[2massets/[22m[36mjulia-Cu79e8SL.js                         [39m[1m[2m 31.29 kB[22m[1m[22m[2m │ gzip:   4.37 kB[22m
+2026-10-06T21:18:48.3667710Z [2mdist/[22m[2massets/[22m[36mahk-BrbAagtO.js                           [39m[1m[2m 31.45 kB[22m[1m[22m[2m │ gzip:   7.81 kB[22m
+2026-10-06T21:18:48.3668580Z [2mdist/[22m[2massets/[22m[36mpoimandres-CS3Unz2-.js                    [39m[1m[2m 33.49 kB[22m[1m[22m[2m │ gzip:   5.50 kB[22m
+2026-10-06T21:18:48.3669430Z [2mdist/[22m[2massets/[22m[36mbsl-DlhNcFeZ.js                           [39m[1m[2m 33.95 kB[22m[1m[22m[2m │ gzip:   8.36 kB[22m
+2026-10-06T21:18:48.3670310Z [2mdist/[22m[2massets/[22m[36mquadrantDiagram-AXDQQJYC-BOzng_oh.js      [39m[1m[2m 34.01 kB[22m[1m[22m[2m │ gzip:   9.98 kB[22m
+2026-10-06T21:18:48.3671190Z [2mdist/[22m[2massets/[22m[36mnginx-BpAMiNFr.js                         [39m[1m[2m 35.37 kB[22m[1m[22m[2m │ gzip:   4.43 kB[22m
+2026-10-06T21:18:48.3672050Z [2mdist/[22m[2massets/[22m[36mhouston-DnULxvSX.js                       [39m[1m[2m 35.42 kB[22m[1m[22m[2m │ gzip:   5.78 kB[22m
+2026-10-06T21:18:48.3672900Z [2mdist/[22m[2massets/[22m[36mlayout-B2pWYY9-.js                        [39m[1m[2m 35.44 kB[22m[1m[22m[2m │ gzip:  12.75 kB[22m
+2026-10-06T21:18:48.3673870Z [2mdist/[22m[2massets/[22m[36mtokyo-night-hegEt444.js                   [39m[1m[2m 35.67 kB[22m[1m[22m[2m │ gzip:   6.24 kB[22m
+2026-10-06T21:18:48.3674730Z [2mdist/[22m[2massets/[22m[36mhaxe-CfZj7gIn.js                          [39m[1m[2m 35.95 kB[22m[1m[22m[2m │ gzip:   6.01 kB[22m
+2026-10-06T21:18:48.3675570Z [2mdist/[22m[2massets/[22m[36morg-6a7ccXN_.js                           [39m[1m[2m 36.32 kB[22m[1m[22m[2m │ gzip:   3.70 kB[22m
+2026-10-06T21:18:48.3676430Z [2mdist/[22m[2massets/[22m[36mone-dark-pro-CxGP3dtY.js                  [39m[1m[2m 37.06 kB[22m[1m[22m[2m │ gzip:   6.11 kB[22m
+2026-10-06T21:18:48.3677290Z [2mdist/[22m[2massets/[22m[36merlang-DsQrWhSR.js                        [39m[1m[2m 37.48 kB[22m[1m[22m[2m │ gzip:   4.40 kB[22m
+2026-10-06T21:18:48.3678160Z [2mdist/[22m[2massets/[22m[36mchunk-IMKFNOWR-C9iztqsZ.js                [39m[1m[2m 38.11 kB[22m[1m[22m[2m │ gzip:  12.53 kB[22m
+2026-10-06T21:18:48.3679180Z [2mdist/[22m[2massets/[22m[36mbird2-Bx8U0n9b.js                         [39m[1m[2m 38.68 kB[22m[1m[22m[2m │ gzip:   8.50 kB[22m
+2026-10-06T21:18:48.3680040Z [2mdist/[22m[2massets/[22m[36mcobol-BBKr1ja6.js                         [39m[1m[2m 39.13 kB[22m[1m[22m[2m │ gzip:  10.86 kB[22m
+2026-10-06T21:18:48.3680880Z [2mdist/[22m[2massets/[22m[36masm-D_Q5rh1f.js                           [39m[1m[2m 40.72 kB[22m[1m[22m[2m │ gzip:   8.21 kB[22m
+2026-10-06T21:18:48.3681730Z [2mdist/[22m[2massets/[22m[36mshellscript-Yzrsuije.js                   [39m[1m[2m 41.48 kB[22m[1m[22m[2m │ gzip:   6.09 kB[22m
+2026-10-06T21:18:48.3682590Z [2mdist/[22m[2massets/[22m[36mhaskell-Df6bDoY_.js                       [39m[1m[2m 41.49 kB[22m[1m[22m[2m │ gzip:   6.44 kB[22m
+2026-10-06T21:18:48.3683520Z [2mdist/[22m[2massets/[22m[36mblockDiagram-I7D4REHJ--3MbKKbn.js         [39m[1m[2m 41.76 kB[22m[1m[22m[2m │ gzip:  13.58 kB[22m
+2026-10-06T21:18:48.3684450Z [2mdist/[22m[2massets/[22m[36mvennDiagram-4TSXK5OY-CuJerX2C.js          [39m[1m[2m 41.96 kB[22m[1m[22m[2m │ gzip:  15.70 kB[22m
+2026-10-06T21:18:48.3685320Z [2mdist/[22m[2massets/[22m[36mperl-5klg-GXX.js                          [39m[1m[2m 43.16 kB[22m[1m[22m[2m │ gzip:   4.67 kB[22m
+2026-10-06T21:18:48.3686160Z [2mdist/[22m[2massets/[22m[36md-85-TOEBH.js                             [39m[1m[2m 43.80 kB[22m[1m[22m[2m │ gzip:   8.47 kB[22m
+2026-10-06T21:18:48.3687050Z [2mdist/[22m[2massets/[22m[36mxychartDiagram-S5SC5T6Z-ulGzTtn9.js       [39m[1m[2m 44.51 kB[22m[1m[22m[2m │ gzip:  12.61 kB[22m
+2026-10-06T21:18:48.3687930Z [2mdist/[22m[2massets/[22m[36mahk2-8Zs4aa1G.js                          [39m[1m[2m 45.07 kB[22m[1m[22m[2m │ gzip:   9.88 kB[22m
+2026-10-06T21:18:48.3688770Z [2mdist/[22m[2massets/[22m[36mruby-C8rp0wew.js                          [39m[1m[2m 46.76 kB[22m[1m[22m[2m │ gzip:   5.83 kB[22m
+2026-10-06T21:18:48.3689620Z [2mdist/[22m[2massets/[22m[36mgo-C27-OAKa.js                            [39m[1m[2m 46.82 kB[22m[1m[22m[2m │ gzip:   5.18 kB[22m
+2026-10-06T21:18:48.3690450Z [2mdist/[22m[2massets/[22m[36mapex-DhZFqWV2.js                          [39m[1m[2m 47.89 kB[22m[1m[22m[2m │ gzip:   6.90 kB[22m
+2026-10-06T21:18:48.3691300Z [2mdist/[22m[2massets/[22m[36mada-BIOnG6TC.js                           [39m[1m[2m 48.08 kB[22m[1m[22m[2m │ gzip:   6.03 kB[22m
+2026-10-06T21:18:48.3692160Z [2mdist/[22m[2massets/[22m[36mchunk-TICWLB2K-Dy-UYYod.js                [39m[1m[2m 49.21 kB[22m[1m[22m[2m │ gzip:  15.76 kB[22m
+2026-10-06T21:18:48.3693020Z [2mdist/[22m[2massets/[22m[36mimba-DGztddWO.js                          [39m[1m[2m 49.93 kB[22m[1m[22m[2m │ gzip:   9.46 kB[22m
+2026-10-06T21:18:48.3693890Z [2mdist/[22m[2massets/[22m[36mcatppuccin-mocha-Ct7hS0mc.js              [39m[1m[2m 50.85 kB[22m[1m[22m[2m │ gzip:   8.49 kB[22m
+2026-10-06T21:18:48.3695050Z [2mdist/[22m[2massets/[22m[36mcatppuccin-latte-DH-8KZSZ.js              [39m[1m[2m 50.85 kB[22m[1m[22m[2m │ gzip:   8.49 kB[22m
+2026-10-06T21:18:48.3695960Z [2mdist/[22m[2massets/[22m[36mcatppuccin-frappe-CZL1YF0i.js             [39m[1m[2m 50.85 kB[22m[1m[22m[2m │ gzip:   8.51 kB[22m
+2026-10-06T21:18:48.3696880Z [2mdist/[22m[2massets/[22m[36mcatppuccin-macchiato-B7yYVSCf.js          [39m[1m[2m 50.86 kB[22m[1m[22m[2m │ gzip:   8.50 kB[22m
+2026-10-06T21:18:48.3697770Z [2mdist/[22m[2massets/[22m[36mcss-Z72CF80r.js                           [39m[1m[2m 53.37 kB[22m[1m[22m[2m │ gzip:  12.44 kB[22m
+2026-10-06T21:18:48.3698630Z [2mdist/[22m[2massets/[22m[36meverforest-dark-BgDCqdQA.js               [39m[1m[2m 53.75 kB[22m[1m[22m[2m │ gzip:   8.42 kB[22m
+2026-10-06T21:18:48.3699520Z [2mdist/[22m[2massets/[22m[36meverforest-light-C8M2exoo.js              [39m[1m[2m 53.75 kB[22m[1m[22m[2m │ gzip:   8.42 kB[22m
+2026-10-06T21:18:48.3700410Z [2mdist/[22m[2massets/[22m[36mmermaid-CQcHuHx7.js                       [39m[1m[2m 54.81 kB[22m[1m[22m[2m │ gzip:   4.81 kB[22m
+2026-10-06T21:18:48.3701510Z [2mdist/[22m[2massets/[22m[36mwikitext-BhOHFoWU.js                      [39m[1m[2m 55.89 kB[22m[1m[22m[2m │ gzip:   4.76 kB[22m
+2026-10-06T21:18:48.3702380Z [2mdist/[22m[2massets/[22m[36mstata-DACIj5bg.js                         [39m[1m[2m 56.99 kB[22m[1m[22m[2m │ gzip:  12.36 kB[22m
+2026-10-06T21:18:48.3703220Z [2mdist/[22m[2massets/[22m[36mhtml-BlS82ilI.js                          [39m[1m[2m 57.25 kB[22m[1m[22m[2m │ gzip:  11.69 kB[22m
+2026-10-06T21:18:48.3704080Z [2mdist/[22m[2massets/[22m[36mballerina-BFfxhgS-.js                     [39m[1m[2m 58.69 kB[22m[1m[22m[2m │ gzip:   8.15 kB[22m
+2026-10-06T21:18:48.3704950Z [2mdist/[22m[2massets/[22m[36mmarkdown-Cvjx9yec.js                      [39m[1m[2m 59.34 kB[22m[1m[22m[2m │ gzip:   5.64 kB[22m
+2026-10-06T21:18:48.3705860Z [2mdist/[22m[2massets/[22m[36mflowDiagram-HODETNUW-D2UmWm2m.js          [39m[1m[2m 61.88 kB[22m[1m[22m[2m │ gzip:  19.89 kB[22m
+2026-10-06T21:18:48.3706760Z [2mdist/[22m[2massets/[22m[36mocaml-C0hk2d4L.js                         [39m[1m[2m 62.45 kB[22m[1m[22m[2m │ gzip:   5.02 kB[22m
+2026-10-06T21:18:48.3707640Z [2mdist/[22m[2massets/[22m[36mc4Diagram-7LVT6UL2-D6Kz6980.js            [39m[1m[2m 65.47 kB[22m[1m[22m[2m │ gzip:  18.79 kB[22m
+2026-10-06T21:18:48.3708510Z [2mdist/[22m[2massets/[22m[36mmojo-DJz3ZmWd.js                          [39m[1m[2m 69.52 kB[22m[1m[22m[2m │ gzip:   9.27 kB[22m
+2026-10-06T21:18:48.3709400Z [2mdist/[22m[2massets/[22m[36mganttDiagram-EL5Y4UJY-50iHyRn3.js         [39m[1m[2m 69.69 kB[22m[1m[22m[2m │ gzip:  23.55 kB[22m
+2026-10-06T21:18:48.3710300Z [2mdist/[22m[2massets/[22m[36mpython-B6aJPvgy.js                        [39m[1m[2m 69.95 kB[22m[1m[22m[2m │ gzip:   9.13 kB[22m
+2026-10-06T21:18:48.3711160Z [2mdist/[22m[2massets/[22m[36mc-BIGW1oBm.js                             [39m[1m[2m 72.11 kB[22m[1m[22m[2m │ gzip:  10.51 kB[22m
+2026-10-06T21:18:48.3712010Z [2mdist/[22m[2massets/[22m[36mlatex-DJVikpzR.js                         [39m[1m[2m 73.27 kB[22m[1m[22m[2m │ gzip:   6.82 kB[22m
+2026-10-06T21:18:48.3712870Z [2mdist/[22m[2massets/[22m[36mvyper-CDx5xZoG.js                         [39m[1m[2m 74.65 kB[22m[1m[22m[2m │ gzip:  10.74 kB[22m
+2026-10-06T21:18:48.3713730Z [2mdist/[22m[2massets/[22m[36mhack-Ck6-gGSS.js                          [39m[1m[2m 81.13 kB[22m[1m[22m[2m │ gzip:  26.38 kB[22m
+2026-10-06T21:18:48.3714610Z [2mdist/[22m[2massets/[22m[36mcose-bilkent-JH36ORCC-BoaP8ffR.js         [39m[1m[2m 81.70 kB[22m[1m[22m[2m │ gzip:  22.48 kB[22m
+2026-10-06T21:18:48.3715510Z [2mdist/[22m[2massets/[22m[36mswift-C2oV4EkX.js                         [39m[1m[2m 87.23 kB[22m[1m[22m[2m │ gzip:  14.84 kB[22m
+2026-10-06T21:18:48.3716500Z [2mdist/[22m[2massets/[22m[36mfortran-free-form-BxgE0vQu.js             [39m[1m[2m 88.97 kB[22m[1m[22m[2m │ gzip:  11.27 kB[22m
+2026-10-06T21:18:48.3717390Z [2mdist/[22m[2massets/[22m[36mcsharp-B_TYUkTI.js                        [39m[1m[2m 91.44 kB[22m[1m[22m[2m │ gzip:  10.84 kB[22m
+2026-10-06T21:18:48.3718240Z [2mdist/[22m[2massets/[22m[36mracket-BqYA7rlc.js                        [39m[1m[2m 92.39 kB[22m[1m[22m[2m │ gzip:  15.02 kB[22m
+2026-10-06T21:18:48.3719090Z [2mdist/[22m[2massets/[22m[36mless-B1dDrJ26.js                          [39m[1m[2m 97.63 kB[22m[1m[22m[2m │ gzip:  14.70 kB[22m
+2026-10-06T21:18:48.3719990Z [2mdist/[22m[2massets/[22m[36mblade-k33SngOZ.js                         [39m[1m[2m104.98 kB[22m[1m[22m[2m │ gzip:  28.20 kB[22m
+2026-10-06T21:18:48.3721010Z [2mdist/[22m[2massets/[22m[36mobjective-c-DXmwc3jG.js                   [39m[1m[2m105.41 kB[22m[1m[22m[2m │ gzip:  23.33 kB[22m
+2026-10-06T21:18:48.3721880Z [2mdist/[22m[2massets/[22m[36mphp-DoruYMF0.js                           [39m[1m[2m113.13 kB[22m[1m[22m[2m │ gzip:  28.73 kB[22m
+2026-10-06T21:18:48.3723460Z [2mdist/[22m[2massets/[22m[36mswimlanes-42K2YHIH-BdJ0LRlL.js            [39m[1m[2m115.79 kB[22m[1m[22m[2m │ gzip:  42.51 kB[22m
+2026-10-06T21:18:48.3724700Z [2mdist/[22m[2massets/[22m[36msequenceDiagram-WJ2MYXX4-CEuvbsH4.js      [39m[1m[2m116.97 kB[22m[1m[22m[2m │ gzip:  31.14 kB[22m
+2026-10-06T21:18:48.3751530Z [2mdist/[22m[2massets/[22m[36masciidoc-CSVQ5wI8.js                      [39m[1m[2m136.05 kB[22m[1m[22m[2m │ gzip:   9.50 kB[22m
+2026-10-06T21:18:48.3752980Z [2mdist/[22m[2massets/[22m[36mmdx-Cmh6b_Ma.js                           [39m[1m[2m136.11 kB[22m[1m[22m[2m │ gzip:  23.35 kB[22m
+2026-10-06T21:18:48.3753930Z [2mdist/[22m[2massets/[22m[36marchitectureDiagram-5GKGNRK7-cDa105zn.js  [39m[1m[2m151.82 kB[22m[1m[22m[2m │ gzip:  43.14 kB[22m
+2026-10-06T21:18:48.3754970Z [2mdist/[22m[2massets/[22m[36mtypst-DamkJZ1Q.js                         [39m[1m[2m163.55 kB[22m[1m[22m[2m │ gzip:  10.98 kB[22m
+2026-10-06T21:18:48.3755930Z [2mdist/[22m[2massets/[22m[36mobjective-cpp-CLxacb5B.js                 [39m[1m[2m171.97 kB[22m[1m[22m[2m │ gzip:  30.62 kB[22m
+2026-10-06T21:18:48.3756910Z [2mdist/[22m[2massets/[22m[36mjavascript-wDzz0qaB.js                    [39m[1m[2m174.83 kB[22m[1m[22m[2m │ gzip:  16.51 kB[22m
+2026-10-06T21:18:48.3757890Z [2mdist/[22m[2massets/[22m[36mtsx-COt5Ahok.js                           [39m[1m[2m175.54 kB[22m[1m[22m[2m │ gzip:  16.51 kB[22m
+2026-10-06T21:18:48.3758740Z [2mdist/[22m[2massets/[22m[36mjsx-g9-lgVsj.js                           [39m[1m[2m177.79 kB[22m[1m[22m[2m │ gzip:  16.61 kB[22m
+2026-10-06T21:18:48.3759740Z [2mdist/[22m[2massets/[22m[36mtypescript-BPQ3VLAy.js                    [39m[1m[2m181.08 kB[22m[1m[22m[2m │ gzip:  16.04 kB[22m
+2026-10-06T21:18:48.3760640Z [2mdist/[22m[2massets/[22m[36mangular-ts-DGq0tZX5.js                    [39m[1m[2m183.82 kB[22m[1m[22m[2m │ gzip:  16.63 kB[22m
+2026-10-06T21:18:48.3761580Z [2mdist/[22m[2massets/[22m[36mvue-vine-C0RcJ6UU.js                      [39m[1m[2m190.05 kB[22m[1m[22m[2m │ gzip:  17.98 kB[22m
+2026-10-06T21:18:48.3762490Z [2mdist/[22m[2massets/[22m[36mkatex-HP8lGamR.js                         [39m[1m[2m261.31 kB[22m[1m[22m[2m │ gzip:  77.57 kB[22m
+2026-10-06T21:18:48.3763410Z [2mdist/[22m[2massets/[22m[36mwolfram-lXgVvXCa.js                       [39m[1m[2m262.39 kB[22m[1m[22m[2m │ gzip:  77.14 kB[22m
+2026-10-06T21:18:48.3764290Z [2mdist/[22m[2massets/[22m[36mcytoscape.esm-BB4DxJjf.js                 [39m[1m[2m443.04 kB[22m[1m[22m[2m │ gzip: 141.98 kB[22m
+2026-10-06T21:18:48.3765200Z [2mdist/[22m[2massets/[22m[36mwasm-CG6Dc4jp.js                          [39m[1m[33m622.34 kB[39m[22m[2m │ gzip: 230.29 kB[22m
+2026-10-06T21:18:48.3766730Z [2mdist/[22m[2massets/[22m[36mmermaid.core-BTy-rnv4.js                  [39m[1m[33m653.58 kB[39m[22m[2m │ gzip: 158.05 kB[22m
+2026-10-06T21:18:48.3767630Z [2mdist/[22m[2massets/[22m[36mcynefin-OW5HDTMX-CcQKEihN.js              [39m[1m[33m688.15 kB[39m[22m[2m │ gzip: 154.16 kB[22m
+2026-10-06T21:18:48.3768530Z [2mdist/[22m[2massets/[22m[36mindex-DRXQyUs7.js                         [39m[1m[33m755.39 kB[39m[22m[2m │ gzip: 233.42 kB[22m
+2026-10-06T21:18:48.3769420Z [2mdist/[22m[2massets/[22m[36mcpp-BMRokrvK.js                           [39m[1m[33m785.49 kB[39m[22m[2m │ gzip:  53.20 kB[22m
+2026-10-06T21:18:48.3770320Z [2mdist/[22m[2massets/[22m[36memacs-lisp-DaIrSCgJ.js                    [39m[1m[33m790.02 kB[39m[22m[2m │ gzip: 198.84 kB[22m
+2026-10-06T21:18:48.3771290Z [32m✓ built in 18.70s[39m
+2026-10-06T21:18:49.8300910Z   • electron-builder  version=26.15.3 os=24.6.0
+2026-10-06T21:18:49.8401700Z   • loaded configuration  file=package.json ("build" field)
+2026-10-06T21:18:50.9328060Z   • executing @electron/rebuild  electronVersion=44.5.1 arch=arm64 buildFromSource=false workspaceRoot=/Users/runner/work/ea-md-reader/ea-md-reader projectDir=./ appDir=./
+2026-10-06T21:18:50.9329450Z   • installing native dependencies  arch=arm64
+2026-10-06T21:18:51.2370350Z   • completed installing native dependencies
+2026-10-06T21:18:51.2407140Z   • packaging       platform=darwin arch=arm64 electron=44.5.1 appOutDir=release/mac-arm64
+2026-10-06T21:18:51.3500650Z   • downloaded      label=electron progress=100%
+2026-10-06T21:18:55.3467680Z   • downloaded electron zip extracted successfully  output=/Users/runner/work/ea-md-reader/ea-md-reader/release/mac-arm64
+2026-10-06T21:18:55.3989190Z   • searching for node modules  pm=npm searchDir=/Users/runner/work/ea-md-reader/ea-md-reader
+2026-10-06T21:18:56.7965040Z   • searching for node modules  pm=traversal searchDir=/Users/runner/work/ea-md-reader/ea-md-reader
+2026-10-06T21:18:56.7967100Z   • using manual traversal of node_modules to build dependency tree
+2026-10-06T21:18:56.7973090Z   • no node modules returned while searching directories  searchDirectories=[""]
+2026-10-06T21:18:57.5396410Z   • downloaded      label=icons-bundle.tar.gz progress=100%
+2026-10-06T21:18:59.8487720Z   • Current build is a part of pull request, code signing will be skipped.
+2026-10-06T21:18:59.8488410Z Set env CSC_FOR_PULL_REQUEST to true to force code signing.
+2026-10-06T21:18:59.8489410Z There are serious security concerns with CSC_FOR_PULL_REQUEST=true (see the  CircleCI documentation (https://circleci.com/docs/1.0/fork-pr-builds/) for details)
+2026-10-06T21:18:59.8490860Z If you have SSH keys, sensitive env vars or AWS credentials stored in your project settings and untrusted forks can make pull requests against your repo, then this option isn't for you.
+2026-10-06T21:18:59.8511360Z   • building        target=macOS zip arch=arm64 file=release/emd-0.1.0-mac-arm64.zip
+2026-10-06T21:18:59.8519210Z   • building        target=DMG arch=arm64 file=release/emd-0.1.0-mac-arm64.dmg
+2026-10-06T21:18:59.9343640Z   • downloaded      label=dmgbuild-bundle-arm64-75c8a6c.tar.gz progress=100%
+2026-10-06T21:19:22.6600460Z   • building block map  blockMapFile=release/emd-0.1.0-mac-arm64.zip.blockmap
+2026-10-06T21:19:23.1739560Z   • building block map  blockMapFile=release/emd-0.1.0-mac-arm64.dmg.blockmap
+2026-10-06T21:19:33.6226950Z ##[group]Run npm run test:node
+2026-10-06T21:19:33.6227510Z [36;1mnpm run test:node[0m
+2026-10-06T21:19:33.6550230Z shell: /bin/bash -e {0}
+2026-10-06T21:19:33.6550590Z env:
+2026-10-06T21:19:33.6550820Z   CSC_IDENTITY_AUTO_DISCOVERY: false
+2026-10-06T21:19:33.6551180Z   XDG_CURRENT_DESKTOP: 
+2026-10-06T21:19:33.6551450Z ##[endgroup]
+2026-10-06T21:19:34.1344330Z 
+2026-10-06T21:19:34.1346040Z > emd@0.1.0 test:node
+2026-10-06T21:19:34.1348900Z > node --test tests/files.test.cjs tests/platforms.test.mjs tests/mac-platform.test.mjs tests/commands.test.cjs tests/runtime-platforms.test.cjs
+2026-10-06T21:19:34.1350360Z 
+2026-10-06T21:19:34.2317420Z TAP version 13
+2026-10-06T21:19:34.3033280Z # Subtest: linux 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+2026-10-06T21:19:34.3036970Z ok 1 - linux 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+2026-10-06T21:19:34.3037970Z   ---
+2026-10-06T21:19:34.3041530Z   duration_ms: 1.940959
+2026-10-06T21:19:34.3045900Z   type: 'test'
+2026-10-06T21:19:34.3047630Z   ...
+2026-10-06T21:19:34.3058200Z # Subtest: linux 主键盘与小键盘缩放不消费无关 Shift 组合
+2026-10-06T21:19:34.3058720Z ok 2 - linux 主键盘与小键盘缩放不消费无关 Shift 组合
+2026-10-06T21:19:34.3059140Z   ---
+2026-10-06T21:19:34.3059610Z   duration_ms: 0.826625
+2026-10-06T21:19:34.3060040Z   type: 'test'
+2026-10-06T21:19:34.3060470Z   ...
+2026-10-06T21:19:34.3061000Z # Subtest: win32 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+2026-10-06T21:19:34.3063760Z ok 3 - win32 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+2026-10-06T21:19:34.3064380Z   ---
+2026-10-06T21:19:34.3065000Z   duration_ms: 1.150625
+2026-10-06T21:19:34.3065590Z   type: 'test'
+2026-10-06T21:19:34.3066030Z   ...
+2026-10-06T21:19:34.3066770Z # Subtest: win32 主键盘与小键盘缩放不消费无关 Shift 组合
+2026-10-06T21:19:34.3067520Z ok 4 - win32 主键盘与小键盘缩放不消费无关 Shift 组合
+2026-10-06T21:19:34.3067990Z   ---
+2026-10-06T21:19:34.3068570Z   duration_ms: 0.305708
+2026-10-06T21:19:34.3069210Z   type: 'test'
+2026-10-06T21:19:34.3069870Z   ...
+2026-10-06T21:19:34.3070710Z # Subtest: darwin 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+2026-10-06T21:19:34.3071380Z ok 5 - darwin 命令映射保留主要键、精确修饰键与共同 Ctrl+Tab
+2026-10-06T21:19:34.3072330Z   ---
+2026-10-06T21:19:34.3072730Z   duration_ms: 0.8435
+2026-10-06T21:19:34.3073220Z   type: 'test'
+2026-10-06T21:19:34.3073670Z   ...
+2026-10-06T21:19:34.3074210Z # Subtest: darwin 主键盘与小键盘缩放不消费无关 Shift 组合
+2026-10-06T21:19:34.3074900Z ok 6 - darwin 主键盘与小键盘缩放不消费无关 Shift 组合
+2026-10-06T21:19:34.3075470Z   ---
+2026-10-06T21:19:34.3076010Z   duration_ms: 1.057166
+2026-10-06T21:19:34.3076490Z   type: 'test'
+2026-10-06T21:19:34.3076840Z   ...
+2026-10-06T21:19:34.3089350Z # Subtest: 键盘消费一次并让复制键继续进入原生菜单与输入框
+2026-10-06T21:19:34.3091120Z ok 7 - 键盘消费一次并让复制键继续进入原生菜单与输入框
+2026-10-06T21:19:34.3091550Z   ---
+2026-10-06T21:19:34.3092030Z   duration_ms: 1.143
+2026-10-06T21:19:34.3092410Z   type: 'test'
+2026-10-06T21:19:34.3092850Z   ...
+2026-10-06T21:19:34.3093410Z # Subtest: POSIX 和 Windows 根目录及祖先使用 Node 路径语义
+2026-10-06T21:19:34.3093930Z ok 8 - POSIX 和 Windows 根目录及祖先使用 Node 路径语义
+2026-10-06T21:19:34.3094310Z   ---
+2026-10-06T21:19:34.3094710Z   duration_ms: 1.473959
+2026-10-06T21:19:34.3095060Z   type: 'test'
+2026-10-06T21:19:34.3095410Z   ...
+2026-10-06T21:19:34.3131550Z # Subtest: UTF-8 原始字节另存为，禁止覆盖源文件及其硬链接
+2026-10-06T21:19:34.3132230Z ok 9 - UTF-8 原始字节另存为，禁止覆盖源文件及其硬链接
+2026-10-06T21:19:34.3132740Z   ---
+2026-10-06T21:19:34.3133350Z   duration_ms: 15.902292
+2026-10-06T21:19:34.3133830Z   type: 'test'
+2026-10-06T21:19:34.3134330Z   ...
+2026-10-06T21:19:34.3135110Z # Subtest: HTML 原始字节另存为与文件 URL 参数
+2026-10-06T21:19:34.3135870Z ok 10 - HTML 原始字节另存为与文件 URL 参数
+2026-10-06T21:19:34.3136580Z   ---
+2026-10-06T21:19:34.3137020Z   duration_ms: 6.901834
+2026-10-06T21:19:34.3137450Z   type: 'test'
+2026-10-06T21:19:34.3137990Z   ...
+2026-10-06T21:19:34.3337430Z # Subtest: 工作区递归筛选 Markdown 和 HTML，剪去空目录，不遍历符号链接目录
+2026-10-06T21:19:34.3339610Z ok 11 - 工作区递归筛选 Markdown 和 HTML，剪去空目录，不遍历符号链接目录
+2026-10-06T21:19:34.3339950Z   ---
+2026-10-06T21:19:34.3340370Z   duration_ms: 23.074625
+2026-10-06T21:19:34.3340680Z   type: 'test'
+2026-10-06T21:19:34.3341020Z   ...
+2026-10-06T21:19:34.3809000Z # Subtest: macOS 打包包含应用、DMG、ZIP 和只读 Markdown / HTML 文件关联
+2026-10-06T21:19:34.3815410Z ok 12 - macOS 打包包含应用、DMG、ZIP 和只读 Markdown / HTML 文件关联
+2026-10-06T21:19:34.3872320Z   ---
+2026-10-06T21:19:34.3956790Z   duration_ms: 4.867708
+2026-10-06T21:19:34.4008280Z   type: 'test'
+2026-10-06T21:19:34.4028080Z   ...
+2026-10-06T21:19:34.4056240Z # 已安装用户级 emd：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-Zcoqk0/home with ' quote %/Applications/emd.app
+2026-10-06T21:19:34.4067940Z # 终端命令：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-Zcoqk0/home with ' quote %/.local/bin/emd
+2026-10-06T21:19:34.4070720Z # 日志：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-Zcoqk0/home with ' quote %/Library/Logs/emd/emd.log
+2026-10-06T21:19:34.4121580Z # 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+2026-10-06T21:19:34.4608330Z # Subtest: macOS 安装保留框架链接和权限，启动器传递字面参数与调用目录
+2026-10-06T21:19:34.4612310Z ok 13 - macOS 安装保留框架链接和权限，启动器传递字面参数与调用目录
+2026-10-06T21:19:34.4612680Z   ---
+2026-10-06T21:19:34.4612970Z   duration_ms: 87.349458
+2026-10-06T21:19:34.4613300Z   type: 'test'
+2026-10-06T21:19:34.4613610Z   ...
+2026-10-06T21:19:34.4946790Z # 已安装用户级 emd：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-h6uiH0/home with ' quote %/Applications/emd.app
+2026-10-06T21:19:34.4949640Z # 终端命令：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-h6uiH0/home with ' quote %/.local/bin/emd
+2026-10-06T21:19:34.4952160Z # 日志：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-h6uiH0/home with ' quote %/Library/Logs/emd/emd.log
+2026-10-06T21:19:34.4954070Z # 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+2026-10-06T21:19:34.5072580Z # 已安装用户级 emd：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-h6uiH0/home with ' quote %/Applications/emd.app
+2026-10-06T21:19:34.5073760Z # 终端命令：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-h6uiH0/home with ' quote %/.local/bin/emd
+2026-10-06T21:19:34.5074760Z # 日志：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-h6uiH0/home with ' quote %/Library/Logs/emd/emd.log
+2026-10-06T21:19:34.5075890Z # 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+2026-10-06T21:19:34.5276980Z # Subtest: macOS 默认产物目录和解包目录均能安装，升级清除旧包文件
+2026-10-06T21:19:34.5305140Z ok 14 - macOS 默认产物目录和解包目录均能安装，升级清除旧包文件
+2026-10-06T21:19:34.5309010Z   ---
+2026-10-06T21:19:34.5309620Z   duration_ms: 63.081458
+2026-10-06T21:19:34.5311230Z   type: 'test'
+2026-10-06T21:19:34.5311860Z   ...
+2026-10-06T21:19:34.5376600Z # 已安装用户级 emd：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-szDY0H/home with ' quote %/Applications/emd.app
+2026-10-06T21:19:34.5377950Z # 终端命令：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-szDY0H/home with ' quote %/.local/bin/emd
+2026-10-06T21:19:34.5382220Z # 日志：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-szDY0H/home with ' quote %/Library/Logs/emd/emd.log
+2026-10-06T21:19:34.5388050Z # 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+2026-10-06T21:19:34.5969510Z # Subtest: macOS 无效源包、复制失败与注册失败保留已有安装
+2026-10-06T21:19:34.5974970Z ok 15 - macOS 无效源包、复制失败与注册失败保留已有安装
+2026-10-06T21:19:34.5976740Z   ---
+2026-10-06T21:19:34.5979160Z   duration_ms: 72.662125
+2026-10-06T21:19:34.5979890Z   type: 'test'
+2026-10-06T21:19:34.5980390Z   ...
+2026-10-06T21:19:34.6243200Z # Subtest: macOS 首次安装注册后启动器提交失败恢复注册与原文件
+2026-10-06T21:19:34.6243930Z ok 16 - macOS 首次安装注册后启动器提交失败恢复注册与原文件
+2026-10-06T21:19:34.6244440Z   ---
+2026-10-06T21:19:34.6245010Z   duration_ms: 27.790167
+2026-10-06T21:19:34.6247100Z   type: 'test'
+2026-10-06T21:19:34.6248400Z   ...
+2026-10-06T21:19:34.6401180Z # 已安装用户级 emd：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-CB0IVz/home with ' quote %/Applications/emd.app
+2026-10-06T21:19:34.6415170Z # 终端命令：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-CB0IVz/home with ' quote %/.local/bin/emd
+2026-10-06T21:19:34.6416460Z # 日志：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-CB0IVz/home with ' quote %/Library/Logs/emd/emd.log
+2026-10-06T21:19:34.6417290Z # 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+2026-10-06T21:19:34.6635480Z # Subtest: macOS 升级注册后启动器提交失败恢复注册与原文件
+2026-10-06T21:19:34.6640660Z ok 17 - macOS 升级注册后启动器提交失败恢复注册与原文件
+2026-10-06T21:19:34.6641830Z   ---
+2026-10-06T21:19:34.6642170Z   duration_ms: 38.315125
+2026-10-06T21:19:34.6643560Z   type: 'test'
+2026-10-06T21:19:34.6644900Z   ...
+2026-10-06T21:19:34.6721910Z # 已安装用户级 emd：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-Cnp2K1/home with ' quote %/Applications/emd.app
+2026-10-06T21:19:34.6723090Z # 终端命令：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-Cnp2K1/home with ' quote %/.local/bin/emd
+2026-10-06T21:19:34.6724440Z # 日志：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-Cnp2K1/home with ' quote %/Library/Logs/emd/emd.log
+2026-10-06T21:19:34.6725280Z # 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+2026-10-06T21:19:34.6968420Z # Subtest: macOS 注册恢复失败同时报告原故障并继续恢复旧包和启动器
+2026-10-06T21:19:34.6969300Z     # Subtest: unregister
+2026-10-06T21:19:34.6969960Z     ok 1 - unregister
+2026-10-06T21:19:34.6970520Z       ---
+2026-10-06T21:19:34.6971040Z       duration_ms: 33.281166
+2026-10-06T21:19:34.6971600Z       type: 'test'
+2026-10-06T21:19:34.6972070Z       ...
+2026-10-06T21:19:34.7060610Z # 已安装用户级 emd：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-9zckRL/home with ' quote %/Applications/emd.app
+2026-10-06T21:19:34.7064110Z # 终端命令：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-9zckRL/home with ' quote %/.local/bin/emd
+2026-10-06T21:19:34.7067370Z # 日志：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-9zckRL/home with ' quote %/Library/Logs/emd/emd.log
+2026-10-06T21:19:34.7074430Z # 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+2026-10-06T21:19:34.7282770Z     # Subtest: restore
+2026-10-06T21:19:34.7305050Z     ok 2 - restore
+2026-10-06T21:19:34.7306290Z       ---
+2026-10-06T21:19:34.7307320Z       duration_ms: 31.322208
+2026-10-06T21:19:34.7308160Z       type: 'test'
+2026-10-06T21:19:34.7308500Z       ...
+2026-10-06T21:19:34.7308660Z     1..2
+2026-10-06T21:19:34.7309120Z ok 18 - macOS 注册恢复失败同时报告原故障并继续恢复旧包和启动器
+2026-10-06T21:19:34.7309360Z   ---
+2026-10-06T21:19:34.7309520Z   duration_ms: 65.45725
+2026-10-06T21:19:34.7309710Z   type: 'test'
+2026-10-06T21:19:34.7309880Z   ...
+2026-10-06T21:19:57.6257680Z # 已移除用户级 emd 应用和命令；配置、日志和源文档保留。
+2026-10-06T21:19:57.6313700Z # Subtest: macOS 原生 首次安装启动器失败恢复 LaunchServices 绑定
+2026-10-06T21:19:57.6315650Z ok 19 - macOS 原生 首次安装启动器失败恢复 LaunchServices 绑定
+2026-10-06T21:19:57.6317210Z   ---
+2026-10-06T21:19:57.6317650Z   duration_ms: 22900.690375
+2026-10-06T21:19:57.6321020Z   type: 'test'
+2026-10-06T21:19:57.6324250Z   ...
+2026-10-06T21:20:04.5629680Z # 已安装用户级 emd：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-bHQAER/home with ' quote %/Applications/emd.app
+2026-10-06T21:20:04.5742510Z # 终端命令：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-bHQAER/home with ' quote %/.local/bin/emd
+2026-10-06T21:20:04.5947810Z # 日志：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-bHQAER/home with ' quote %/Library/Logs/emd/emd.log
+2026-10-06T21:20:04.6023710Z # 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+2026-10-06T21:20:24.7767020Z # 已移除用户级 emd 应用和命令；配置、日志和源文档保留。
+2026-10-06T21:20:24.7829610Z # Subtest: macOS 原生 升级启动器失败恢复 LaunchServices 绑定
+2026-10-06T21:20:24.7831660Z ok 20 - macOS 原生 升级启动器失败恢复 LaunchServices 绑定
+2026-10-06T21:20:24.7833370Z   ---
+2026-10-06T21:20:24.7834330Z   duration_ms: 27152.2115
+2026-10-06T21:20:24.7835390Z   type: 'test'
+2026-10-06T21:20:24.7837770Z   ...
+2026-10-06T21:20:24.8013470Z # Subtest: macOS 拒绝覆盖或卸载不属于 emd 的应用和命令
+2026-10-06T21:20:24.8014870Z ok 21 - macOS 拒绝覆盖或卸载不属于 emd 的应用和命令
+2026-10-06T21:20:24.8015620Z   ---
+2026-10-06T21:20:24.8016180Z   duration_ms: 19.80125
+2026-10-06T21:20:24.8016720Z   type: 'test'
+2026-10-06T21:20:24.8017370Z   ...
+2026-10-06T21:20:24.8459160Z # 已安装用户级 emd：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-adDZWf/home with ' quote %/Applications/emd.app
+2026-10-06T21:20:24.8561470Z # 终端命令：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-adDZWf/home with ' quote %/.local/bin/emd
+2026-10-06T21:20:24.8667300Z # 日志：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-adDZWf/home with ' quote %/Library/Logs/emd/emd.log
+2026-10-06T21:20:24.8769990Z # 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+2026-10-06T21:20:24.8875970Z # Subtest: macOS 拒绝目标应用中被替换成链接的可执行文件
+2026-10-06T21:20:24.9002430Z ok 22 - macOS 拒绝目标应用中被替换成链接的可执行文件
+2026-10-06T21:20:24.9138510Z   ---
+2026-10-06T21:20:24.9259210Z   duration_ms: 51.605208
+2026-10-06T21:20:24.9361850Z   type: 'test'
+2026-10-06T21:20:24.9463150Z   ...
+2026-10-06T21:20:24.9560420Z # Subtest: macOS 拒绝应用和命令路径的符号链接，不修改链接目标
+2026-10-06T21:20:24.9564150Z ok 23 - macOS 拒绝应用和命令路径的符号链接，不修改链接目标
+2026-10-06T21:20:24.9565020Z   ---
+2026-10-06T21:20:24.9565380Z   duration_ms: 12.325959
+2026-10-06T21:20:24.9567420Z   type: 'test'
+2026-10-06T21:20:24.9568410Z   ...
+2026-10-06T21:20:24.9572090Z # 已安装用户级 emd：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-Gy3OON/home with ' quote %/Applications/emd.app
+2026-10-06T21:20:24.9590920Z # 终端命令：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-Gy3OON/home with ' quote %/.local/bin/emd
+2026-10-06T21:20:24.9592340Z # 日志：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-mac-Gy3OON/home with ' quote %/Library/Logs/emd/emd.log
+2026-10-06T21:20:24.9595750Z # 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+2026-10-06T21:20:24.9597310Z # 已移除用户级 emd 应用和命令；配置、日志和源文档保留。
+2026-10-06T21:20:24.9598790Z # 已移除用户级 emd 应用和命令；配置、日志和源文档保留。
+2026-10-06T21:20:24.9600130Z # Subtest: macOS 卸载可重复执行并保留用户配置和日志
+2026-10-06T21:20:24.9610570Z ok 24 - macOS 卸载可重复执行并保留用户配置和日志
+2026-10-06T21:20:24.9611060Z   ---
+2026-10-06T21:20:24.9611330Z   duration_ms: 30.600375
+2026-10-06T21:20:24.9611690Z   type: 'test'
+2026-10-06T21:20:24.9611990Z   ...
+2026-10-06T21:20:24.9612380Z # Subtest: 平台选择支持 KDE 和 macOS，TODO 平台和错误参数明确失败
+2026-10-06T21:20:24.9620450Z ok 25 - 平台选择支持 KDE 和 macOS，TODO 平台和错误参数明确失败
+2026-10-06T21:20:24.9621290Z   ---
+2026-10-06T21:20:24.9621500Z   duration_ms: 5.455459
+2026-10-06T21:20:24.9621840Z   type: 'test'
+2026-10-06T21:20:24.9622120Z   ...
+2026-10-06T21:20:24.9622510Z # Subtest: TODO 打包、安装和卸载入口在执行外部命令或写入前退出
+2026-10-06T21:20:24.9622930Z ok 26 - TODO 打包、安装和卸载入口在执行外部命令或写入前退出
+2026-10-06T21:20:24.9623240Z   ---
+2026-10-06T21:20:24.9623550Z   duration_ms: 592.333291
+2026-10-06T21:20:24.9623830Z   type: 'test'
+2026-10-06T21:20:24.9624020Z   ...
+2026-10-06T21:20:24.9624440Z # Subtest: KDE 模块保留安装产物、启动器、desktop 校验与卸载行为
+2026-10-06T21:20:24.9625040Z ok 27 - KDE 模块保留安装产物、启动器、desktop 校验与卸载行为 # SKIP 需要 Linux desktop 工具和 POSIX 启动器
+2026-10-06T21:20:24.9625390Z   ---
+2026-10-06T21:20:24.9625630Z   duration_ms: 0.1685
+2026-10-06T21:20:24.9625890Z   type: 'test'
+2026-10-06T21:20:24.9626100Z   ...
+2026-10-06T21:20:24.9626550Z # Subtest: 桌面平台选择明确，Linux 身份与 macOS 文件打开和激活各自归属
+2026-10-06T21:20:24.9627010Z ok 28 - 桌面平台选择明确，Linux 身份与 macOS 文件打开和激活各自归属
+2026-10-06T21:20:24.9628460Z   ---
+2026-10-06T21:20:24.9628720Z   duration_ms: 2.501208
+2026-10-06T21:20:24.9628990Z   type: 'test'
+2026-10-06T21:20:24.9629180Z   ...
+2026-10-06T21:20:24.9629580Z # Subtest: macOS 菜单使用同一命令配置，关闭标签与退出不重复设置原生角色
+2026-10-06T21:20:24.9629990Z ok 29 - macOS 菜单使用同一命令配置，关闭标签与退出不重复设置原生角色
+2026-10-06T21:20:24.9630260Z   ---
+2026-10-06T21:20:24.9630590Z   duration_ms: 1.060875
+2026-10-06T21:20:24.9630880Z   type: 'test'
+2026-10-06T21:20:24.9631130Z   ...
+2026-10-06T21:20:24.9631340Z 1..29
+2026-10-06T21:20:24.9631510Z # tests 31
+2026-10-06T21:20:24.9631830Z # suites 0
+2026-10-06T21:20:24.9632100Z # pass 30
+2026-10-06T21:20:24.9632260Z # fail 0
+2026-10-06T21:20:24.9632510Z # cancelled 0
+2026-10-06T21:20:24.9632760Z # skipped 1
+2026-10-06T21:20:24.9632960Z # todo 0
+2026-10-06T21:20:24.9633230Z # duration_ms 50710.193125
+2026-10-06T21:20:24.9802080Z ##[group]Run npx playwright test --reporter=line,html
+2026-10-06T21:20:24.9802910Z [36;1mnpx playwright test --reporter=line,html[0m
+2026-10-06T21:20:25.0121800Z shell: /bin/bash -e {0}
+2026-10-06T21:20:25.0122130Z env:
+2026-10-06T21:20:25.0122400Z   CSC_IDENTITY_AUTO_DISCOVERY: false
+2026-10-06T21:20:25.0122660Z   XDG_CURRENT_DESKTOP: 
+2026-10-06T21:20:25.0123060Z   PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/reader
+2026-10-06T21:20:25.0123440Z ##[endgroup]
+2026-10-06T21:20:27.2591230Z 
+2026-10-06T21:20:27.2646830Z Running 6 tests using 1 worker
+2026-10-06T21:20:27.2649270Z 
+2026-10-06T21:20:27.8221870Z [1/6] tests/commands.spec.cjs:8:1 › 真实键盘、按钮和原生菜单共用命令，查找输入保留复制粘贴
+2026-10-06T21:20:27.8738040Z tests/commands.spec.cjs:8:1 › 真实键盘、按钮和原生菜单共用命令，查找输入保留复制粘贴
+2026-10-06T21:20:27.8768260Z Downloading Electron binary...
+2026-10-06T21:20:27.8804140Z 
+2026-10-06T21:20:43.1161110Z   1) tests/commands.spec.cjs:8:1 › 真实键盘、按钮和原生菜单共用命令，查找输入保留复制粘贴 ─────────────────────────────────────
+2026-10-06T21:20:43.1193300Z 
+2026-10-06T21:20:43.1194760Z     Error: expect(received).toBe(expected) // Object.is equality
+2026-10-06T21:20:43.1195260Z 
+2026-10-06T21:20:43.1195600Z     Expected: "原生复制"
+2026-10-06T21:20:43.1196170Z     Received: ""
+2026-10-06T21:20:43.1196630Z 
+2026-10-06T21:20:43.1196870Z     Call Log:
+2026-10-06T21:20:43.1197370Z     - Timeout 5000ms exceeded while waiting on the predicate
+2026-10-06T21:20:43.1197670Z 
+2026-10-06T21:20:43.1197950Z       65 |     await key('A', [primary]);
+2026-10-06T21:20:43.1301950Z       66 |     await key('C', [primary]);
+2026-10-06T21:20:43.1331870Z     > 67 |     await expect.poll(() => application.evaluate(({ clipboard }) => clipboard.readText())).toBe('原生复制');
+2026-10-06T21:20:43.1351350Z          |                                                                                            ^
+2026-10-06T21:20:43.1377040Z       68 |     await search.fill('');
+2026-10-06T21:20:43.1377390Z       69 |     await key('V', [primary]);
+2026-10-06T21:20:43.1378200Z       70 |     await expect(search).toHaveValue('原生复制');
+2026-10-06T21:20:43.1378860Z         at /Users/runner/work/ea-md-reader/ea-md-reader/tests/commands.spec.cjs:67:92
+2026-10-06T21:20:43.1379200Z 
+2026-10-06T21:20:43.1379650Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-10-06T21:20:43.1380840Z     test-results/reader/commands-真实键盘、按钮和原生菜单共用命令，查找输入保留复制粘贴/test-failed-1.png
+2026-10-06T21:20:43.1381650Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-06T21:20:43.1381960Z 
+2026-10-06T21:20:43.1382490Z     Error Context: test-results/reader/commands-真实键盘、按钮和原生菜单共用命令，查找输入保留复制粘贴/error-context.md
+2026-10-06T21:20:43.1382810Z 
+2026-10-06T21:20:43.1383280Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+2026-10-06T21:20:43.1384120Z     test-results/reader/commands-真实键盘、按钮和原生菜单共用命令，查找输入保留复制粘贴/trace.zip
+2026-10-06T21:20:43.1384720Z     Usage:
+2026-10-06T21:20:43.1384830Z 
+2026-10-06T21:20:43.1385270Z         npx playwright show-trace test-results/reader/commands-真实键盘、按钮和原生菜单共用命令，查找输入保留复制粘贴/trace.zip
+2026-10-06T21:20:43.1385640Z 
+2026-10-06T21:20:43.1386010Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-06T21:20:43.1386340Z 
+2026-10-06T21:20:43.1386350Z 
+2026-10-06T21:20:43.9265570Z [2/6] tests/commands.spec.cjs:112:1 › 全屏使用本平台绑定，工作区祖先由主进程返回
+2026-10-06T21:20:48.3595650Z [3/6] tests/reader.spec.cjs:10:1 › HTML 内嵌脚本与样式、隔离、工作区切换、查找、重读和原始字节另存为
+2026-10-06T21:20:53.4133630Z [4/6] tests/reader.spec.cjs:86:1 › 渲染、只读、多标签、另存为、重读、第二次启动及相对图片
+2026-10-06T21:20:55.8139520Z tests/reader.spec.cjs:86:1 › 渲染、只读、多标签、另存为、重读、第二次启动及相对图片
+2026-10-06T21:20:55.8244880Z Native normal-window state: {
+2026-10-06T21:20:55.8263740Z   maximized: false,
+2026-10-06T21:20:55.8275000Z   bounds: { x: 0, y: 25, width: 924, height: 584 },
+2026-10-06T21:20:55.8275500Z   workArea: { x: 0, y: 25, width: 1024, height: 684 }
+2026-10-06T21:20:55.8277140Z }
+2026-10-06T21:20:55.8279250Z 
+2026-10-06T21:20:59.5818380Z [5/6] tests/reader.spec.cjs:198:1 › 工作区切换、右键菜单、面板拖拽与容器自适应
+2026-10-06T21:21:04.8961790Z [6/6] tests/reader.spec.cjs:366:1 › macOS Finder 打开恢复窗口、Dock 激活及 Command 快捷键
+2026-10-06T21:21:08.2518230Z   1 failed
+2026-10-06T21:21:08.2621600Z     tests/commands.spec.cjs:8:1 › 真实键盘、按钮和原生菜单共用命令，查找输入保留复制粘贴 ──────────────────────────────────────
+2026-10-06T21:21:08.2734390Z   5 passed (41.8s)
+2026-10-06T21:21:08.4156100Z ##[error]Process completed with exit code 1.
+2026-10-06T21:21:08.4430910Z ##[group]Run npx playwright test --config=playwright.packaged.config.cjs --reporter=line,html
+2026-10-06T21:21:08.4431860Z [36;1mnpx playwright test --config=playwright.packaged.config.cjs --reporter=line,html[0m
+2026-10-06T21:21:08.4511810Z shell: /bin/bash -e {0}
+2026-10-06T21:21:08.4513180Z env:
+2026-10-06T21:21:08.4514370Z   CSC_IDENTITY_AUTO_DISCOVERY: false
+2026-10-06T21:21:08.4515330Z   XDG_CURRENT_DESKTOP: 
+2026-10-06T21:21:08.4515790Z   PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/packaged
+2026-10-06T21:21:08.4516200Z ##[endgroup]
+2026-10-06T21:21:09.8757150Z 
+2026-10-06T21:21:09.8770640Z Running 2 tests using 1 worker
+2026-10-06T21:21:09.8772280Z 
+2026-10-06T21:21:10.2639910Z [1/2] tests/packaged-linux.spec.cjs:7:1 › Linux 原生打包产物启动且源文件保持只读
+2026-10-06T21:21:10.3247510Z [2/2] tests/packaged-mac.spec.cjs:10:1 › macOS 原生包、隔离安装、系统打开、升级与重复卸载
+2026-10-06T21:21:11.3712880Z tests/packaged-mac.spec.cjs:10:1 › macOS 原生包、隔离安装、系统打开、升级与重复卸载
+2026-10-06T21:21:11.3814550Z 已安装用户级 emd：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-packaged-fE0Cuj/isolated home/Applications/emd.app
+2026-10-06T21:21:11.3877040Z 终端命令：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-packaged-fE0Cuj/isolated home/.local/bin/emd
+2026-10-06T21:21:11.3882260Z 日志：/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-packaged-fE0Cuj/isolated home/Library/Logs/emd/emd.log
+2026-10-06T21:21:11.3898230Z 
+2026-10-06T21:21:11.3905700Z 请将 ~/.local/bin 加入 PATH；Finder 打开方式已注册，默认应用设置保留。
+2026-10-06T21:21:11.3908140Z 
+2026-10-06T21:21:11.5032990Z 已移除用户级 emd 应用和命令；配置、日志和源文档保留。
+2026-10-06T21:21:11.5132210Z 
+2026-10-06T21:21:11.5329050Z   1) tests/packaged-mac.spec.cjs:10:1 › macOS 原生包、隔离安装、系统打开、升级与重复卸载 ────────────────────────────────
+2026-10-06T21:21:11.5329600Z 
+2026-10-06T21:21:11.5330530Z     Error: Command failed: /usr/bin/codesign --verify --deep --strict /private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-packaged-fE0Cuj/isolated home/Applications/emd.app
+2026-10-06T21:21:11.5332370Z     /private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/emd-packaged-fE0Cuj/isolated home/Applications/emd.app: code has no resources but signature indicates they must be present
+2026-10-06T21:21:11.5333360Z 
+2026-10-06T21:21:11.5333370Z 
+2026-10-06T21:21:11.5334070Z     Error Context: test-results/packaged/packaged-mac-macOS-原生包、隔离安装、系统打开、升级与重复卸载/error-context.md
+2026-10-06T21:21:11.5334630Z 
+2026-10-06T21:21:11.5335210Z     attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+2026-10-06T21:21:11.5335880Z     test-results/packaged/packaged-mac-macOS-原生包、隔离安装、系统打开、升级与重复卸载/trace.zip
+2026-10-06T21:21:11.5336530Z     Usage:
+2026-10-06T21:21:11.5336620Z 
+2026-10-06T21:21:11.5337090Z         npx playwright show-trace test-results/packaged/packaged-mac-macOS-原生包、隔离安装、系统打开、升级与重复卸载/trace.zip
+2026-10-06T21:21:11.5337450Z 
+2026-10-06T21:21:11.5337800Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-06T21:21:11.5338160Z 
+2026-10-06T21:21:11.5338170Z 
+2026-10-06T21:21:11.5503460Z   1 failed
+2026-10-06T21:21:11.5504320Z     tests/packaged-mac.spec.cjs:10:1 › macOS 原生包、隔离安装、系统打开、升级与重复卸载 ─────────────────────────────────
+2026-10-06T21:21:11.5505120Z   1 skipped
+2026-10-06T21:21:11.6373050Z ##[error]Process completed with exit code 1.
+2026-10-06T21:21:11.6744620Z ##[group]Run actions/upload-artifact@v4
+2026-10-06T21:21:11.6745520Z with:
+2026-10-06T21:21:11.6746940Z   name: desktop-macos-15-arm64
+2026-10-06T21:21:11.6748080Z   retention-days: 7
+2026-10-06T21:21:11.6749070Z   path: playwright-report/
+test-results/
+release/*.dmg
+release/*.zip
+release/*.tar.gz
+
+2026-10-06T21:21:11.6749650Z   if-no-files-found: warn
+2026-10-06T21:21:11.6750090Z   compression-level: 6
+2026-10-06T21:21:11.6750490Z   overwrite: false
+2026-10-06T21:21:11.6750810Z   include-hidden-files: false
+2026-10-06T21:21:11.6751180Z env:
+2026-10-06T21:21:11.6751640Z   CSC_IDENTITY_AUTO_DISCOVERY: false
+2026-10-06T21:21:11.6752130Z   XDG_CURRENT_DESKTOP: 
+2026-10-06T21:21:11.6752520Z ##[endgroup]
+2026-10-06T21:21:12.2630850Z (node:5365) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-06T21:21:12.2631760Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-06T21:21:12.2961890Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-06T21:21:12.2965690Z The least common ancestor is /Users/runner/work/ea-md-reader/ea-md-reader. This will be the root directory of the artifact
+2026-10-06T21:21:12.2966560Z With the provided path, there will be 74 files uploaded
+2026-10-06T21:21:12.2967180Z Artifact name is valid!
+2026-10-06T21:21:12.2967570Z Root directory input is valid!
+2026-10-06T21:21:12.7605230Z Beginning upload of artifact content to blob storage
+2026-10-06T21:21:13.7091520Z (node:5365) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-06T21:21:14.7382270Z Uploaded bytes 8388608
+2026-10-06T21:21:15.4632340Z Uploaded bytes 16777216
+2026-10-06T21:21:15.6656730Z Uploaded bytes 25165824
+2026-10-06T21:21:15.9038010Z Uploaded bytes 33554432
+2026-10-06T21:21:16.2720720Z Uploaded bytes 41943040
+2026-10-06T21:21:16.4075990Z Uploaded bytes 50331648
+2026-10-06T21:21:16.7679080Z Uploaded bytes 58720256
+2026-10-06T21:21:17.1033890Z Uploaded bytes 67108864
+2026-10-06T21:21:17.2853730Z Uploaded bytes 75497472
+2026-10-06T21:21:17.5038420Z Uploaded bytes 83886080
+2026-10-06T21:21:17.9979050Z Uploaded bytes 92274688
+2026-10-06T21:21:18.1584150Z Uploaded bytes 100663296
+2026-10-06T21:21:18.5380840Z Uploaded bytes 109051904
+2026-10-06T21:21:19.0219750Z Uploaded bytes 117440512
+2026-10-06T21:21:19.0321500Z Uploaded bytes 125829120
+2026-10-06T21:21:19.3887440Z Uploaded bytes 134217728
+2026-10-06T21:21:19.5837440Z Uploaded bytes 142606336
+2026-10-06T21:21:19.7156010Z Uploaded bytes 150994944
+2026-10-06T21:21:20.0111690Z Uploaded bytes 159383552
+2026-10-06T21:21:20.0356550Z Uploaded bytes 167772160
+2026-10-06T21:21:20.5030460Z Uploaded bytes 176160768
+2026-10-06T21:21:20.9480020Z Uploaded bytes 184549376
+2026-10-06T21:21:21.1916910Z Uploaded bytes 192937984
+2026-10-06T21:21:21.2932650Z Uploaded bytes 201326592
+2026-10-06T21:21:21.5077100Z Uploaded bytes 209715200
+2026-10-06T21:21:21.8051670Z Uploaded bytes 218103808
+2026-10-06T21:21:22.0786190Z Uploaded bytes 226492416
+2026-10-06T21:21:22.3206070Z Uploaded bytes 234881024
+2026-10-06T21:21:22.5822710Z Uploaded bytes 243269632
+2026-10-06T21:21:22.7958400Z Uploaded bytes 251658240
+2026-10-06T21:21:23.0402540Z Uploaded bytes 260046848
+2026-10-06T21:21:23.2514680Z Uploaded bytes 268435456
+2026-10-06T21:21:23.5848130Z Uploaded bytes 276824064
+2026-10-06T21:21:24.3691210Z Uploaded bytes 285212672
+2026-10-06T21:21:24.5843410Z Uploaded bytes 287688065
+2026-10-06T21:21:24.6578560Z Finished uploading artifact content to blob storage!
+2026-10-06T21:21:24.6580380Z SHA256 digest of uploaded artifact zip is 83c046a7cca14e9fadd9373c8ebe886496c9feed1431e7c1a57e7a011b5376f5
+2026-10-06T21:21:24.6583090Z Finalizing artifact upload
+2026-10-06T21:21:25.0879400Z Artifact desktop-macos-15-arm64.zip successfully finalized. Artifact ID 11445043131
+2026-10-06T21:21:25.0881080Z Artifact desktop-macos-15-arm64 has been successfully uploaded! Final size is 287688065 bytes. Artifact ID is 11445043131
+2026-10-06T21:21:25.0882220Z Artifact download URL: https://github.com/yceachan/ea-md-reader/actions/runs/37532844526/artifacts/11445043131
+2026-10-06T21:21:25.1031830Z Post job cleanup.
+2026-10-06T21:21:25.2327260Z [command]/opt/homebrew/bin/git version
+2026-10-06T21:21:25.2406200Z git version 2.55.0
+2026-10-06T21:21:25.2425380Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/d17ed2a3-d9fa-495c-8085-283fa2841057/.gitconfig'
+2026-10-06T21:21:25.2432060Z Temporarily overriding HOME='/Users/runner/work/_temp/d17ed2a3-d9fa-495c-8085-283fa2841057' before making global git config changes
+2026-10-06T21:21:25.2433060Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-06T21:21:25.2435240Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/ea-md-reader/ea-md-reader
+2026-10-06T21:21:25.2505830Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-06T21:21:25.2585100Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-06T21:21:25.3786980Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-06T21:21:25.3855980Z http.https://github.com/.extraheader
+2026-10-06T21:21:25.3867080Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-06T21:21:25.3973310Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-06T21:21:25.5254630Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-06T21:21:25.5658990Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-06T21:21:25.7526410Z Cleaning up orphan processes
+2026-10-06T21:21:28.0845890Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

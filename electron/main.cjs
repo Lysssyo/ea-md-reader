@@ -17,6 +17,7 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'emd-page', privileges: { standard: true, secure: true } },
 ]);
 let window;
+let toggleFullscreen;
 let rendererReady = false;
 let activeDocumentId = null;
 let applicationMenu = null;
@@ -81,7 +82,7 @@ async function dispatchCommand(id, documentId = activeDocumentId) {
   if (!commandEnabled(id, documentId)) return false;
   if (id === 'openDocument') await openDialog();
   else if (id === 'quit') app.quit();
-  else if (id === 'toggleFullscreen') window.setFullScreen(!window.isFullScreen());
+  else if (id === 'toggleFullscreen') toggleFullscreen();
   else if (id === 'zoomIn') window.webContents.setZoomLevel(window.webContents.getZoomLevel() + 0.5);
   else if (id === 'zoomOut') window.webContents.setZoomLevel(window.webContents.getZoomLevel() - 0.5);
   else if (id === 'zoomReset') window.webContents.setZoomLevel(0);
@@ -150,6 +151,7 @@ else {
       title: 'Ea.Md.Reader', backgroundColor: '#00000000', icon: nativeImage.createFromPath(path.join(__dirname, '..', 'assets', 'emd.png')).resize({ width: 128, height: 128 }),
       webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true },
     });
+    toggleFullscreen = platform.createFullscreenToggle(window);
     window.webContents.on('will-navigate', (event) => event.preventDefault());
     window.webContents.on('will-frame-navigate', (event) => {
       // Only the app can load an opened HTML snapshot. Block other frame destinations.
