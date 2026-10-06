@@ -15,3 +15,9 @@ macOS 编辑夹具：sendInputEvent 的 Cmd+C 不触发 Cocoa selector，与 Ele
 f95ed9e 的 run https://github.com/yceachan/ea-md-reader/actions/runs/37534770335 中，Windows、Linux、macOS arm64 成功；Intel 的构建、Node、其余 UI 和原生打包安装成功，仅粘贴断言失败。选区与原生复制已成功。trace 显示 fill('') 后立即注入 CmdV/Cocoa paste，未观测同一字段 React effect 的 stopFindInPage('clearSelection') 是否完成，因此不能据此断定产品粘贴故障或竞争已被证实。
 
 夹具增加真实 clearSelection 调用完成的观察门槛，并在粘贴前断言字段仍聚焦且为空；保留最终剪贴板/粘贴结果断言，不改产品逻辑、不增加重试或固定等待。完整日志在 second-ci-intel.log，原生 CI 必须重新验证。
+
+## 第三轮与有界诊断
+
+f91d5db 的 run https://github.com/yceachan/ea-md-reader/actions/runs/37535988656 中，arm64 在新增清理计数、焦点、空值门槛全部通过后仍失败于粘贴，因此这些因素未解释故障。Windows/Linux 成功，Intel 在快照时仍执行 UI，不能将未完成结果当成功。
+
+下一运行只增加测试内诊断：同样的拒绝权限策略记录权限 check/request，捕获 selector 调用瞬间 native window/WebContents 焦点、失败后的输入框与剪贴板状态；额外比较 WebContents.paste 路径。不放宽产品权限；原断言失败后仍抛出原错误，即使比较路径成功也不会将 CI 标绿。主线不合入这些红色结果。
