@@ -57,7 +57,7 @@ test('TODO 打包、安装和卸载入口在执行外部命令或写入前退出
   } finally { await rm(directory, { recursive: true, force: true }); }
 });
 
-test('KDE 模块保留安装产物、启动器、desktop 校验与卸载行为', { skip: process.platform !== 'linux' }, async () => {
+test('KDE 模块保留安装产物、启动器、desktop 校验与卸载行为', { skip: process.platform !== 'linux' && '需要 Linux desktop 工具和 POSIX 启动器' }, async () => {
   const directory = await mkdtemp(join(tmpdir(), 'emd-install-'));
   try {
     const home = join(directory, "home with ' quote %");

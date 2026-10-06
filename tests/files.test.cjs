@@ -60,7 +60,7 @@ test('工作区递归筛选 Markdown 和 HTML，剪去空目录，不遍历符�
     await fs.writeFile(path.join(directory, '章节', '页面.HTML'), '<h1>页面</h1>');
     await fs.writeFile(path.join(directory, '章节', '子目录', '网页.htm'), '<h1>网页</h1>');
     await fs.writeFile(path.join(directory, '无文档', '图片.svg'), '<svg/>');
-    await fs.symlink(directory, path.join(directory, '循环目录'));
+    await fs.symlink(directory, path.join(directory, '循环目录'), process.platform === 'win32' ? 'junction' : 'dir');
     const tree = await scanWorkspace(directory);
     assert.deepEqual(tree.nodes.map((node) => node.name), ['章节', '入口.md']);
     assert.deepEqual(new Set(tree.nodes[0].children[0].children.map((node) => node.name)), new Set(['正文.MARKDOWN', '网页.htm']));
