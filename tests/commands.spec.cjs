@@ -32,7 +32,14 @@ test('真实键盘、按钮和原生菜单共用命令，查找输入保留复�
     });
     await application.evaluate(({ BrowserWindow }) => {
       global.commandInputs = [];
-      BrowserWindow.getAllWindows()[0].webContents.on('before-input-event', (_event, input) => {
+      const contents = BrowserWindow.getAllWindows()[0].webContents;
+      global.clearFindCalls = 0;
+      const stopFind = contents.stopFindInPage.bind(contents);
+      contents.stopFindInPage = (action) => {
+        stopFind(action);
+        if (action === 'clearSelection') global.clearFindCalls++;
+      };
+      contents.on('before-input-event', (_event, input) => {
         if (input.type === 'keyDown') global.commandInputs.push({ ...input, prevented: _event.defaultPrevented });
       });
     });
@@ -84,7 +91,13 @@ test('真实键盘、按钮和原生菜单共用命令，查找输入保留复�
     await expect.poll(() => search.evaluate((input) => input.selectionEnd - input.selectionStart)).toBe(4);
     await edit('C', 'copy:');
     await expect.poll(() => application.evaluate(({ clipboard }) => clipboard.readText())).toBe('原生复制');
+    const clearCalls = await application.evaluate(() => global.clearFindCalls);
     await search.fill('');
+    // Emptying the React field also asynchronously clears native find selection.
+    // Wait for that actual effect before starting a new native editing action.
+    await expect.poll(() => application.evaluate(() => global.clearFindCalls)).toBeGreaterThan(clearCalls);
+    await expect(search).toBeFocused();
+    await expect(search).toHaveValue('');
     await edit('V', 'paste:');
     await expect(search).toHaveValue('原生复制');
     await page.getByRole('button', { name: '关闭查找' }).click();

@@ -17,6 +17,6 @@
 
 CI 对应 `.github/workflows/ci.yml`。矩阵不提前取消其他平台，产物保留 7 天。Electron 夹具显式保存进程输出与 API 追踪；追踪不代表完整 DOM/网络取证。失败应从对应日志、截图和报告判断，不以模拟平台参数替代原生结果。
 
-合入门槛：独立审查没有未解决的 P1/P2；最终提交的四个作业成功；需求全部有对应证据。仓库保护设置独立于工作流，当前 main 尚未设置 required checks，不能宣称已强制保护。
+合入门槛：独立审查没有未解决的 P1/P2；最终提交的四个作业成功；需求全部有对应证据。main 的四个必需检查绑定 GitHub Actions，要求基于最新主线通过，并应用于管理员；同时要求线性历史、禁止强推和删除。仓库配置记录见 artifacts/main-protection.json。
 
 macOS 的合成键盘输入未分发 Cocoa 编辑 selector；测试分别确认应用不消费复制键，并调用原生 first responder 验证编辑行为，不把它宣称为物理键盘取证。PR 打包显式允许无凭证的 ad-hoc 签名；不引入 Developer ID。Windows 全屏以实际显示器边界和退出后原窗口恢复判定。
