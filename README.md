@@ -47,7 +47,7 @@ macOS 使用对应的 `Cmd` 快捷键，例如 `Cmd+O`、`Cmd+Shift+S`、`Cmd+W`
 
 ## 构建与用户级安装（Linux）
 
-需要 Node.js 22.12+、npm、`setsid`（util-linux）、ImageMagick（`magick`）及 `desktop-file-utils`，运行 Electron 需要图形会话和系统图形库。
+需要 Node.js 22.12+、npm、`setsid`（util-linux）及 `desktop-file-utils`，运行 Electron 需要图形会话和系统图形库。PNG 图标统一使用锁文件中的 resvg 生成。
 
 ```sh
 npm ci
@@ -131,7 +131,7 @@ npm run uninstall:local -- --platform=mac
 | --- | --- | --- |
 | `scripts/platforms/kde.mjs`、`assets/emd.desktop` | Linux 解包目录和可执行文件；XDG 数据/日志目录、`~/.local/bin`、`/bin/sh`、`setsid`、desktop/MIME 与 hicolor 图标；`desktop-file-validate`、`update-desktop-database`、KDE Plasma 6 的 `kbuildsycoca6` | GNOME 集成验证；Windows 安装与卸载模块 |
 | `scripts/platforms/mac.mjs` | 当前架构的 `.app` / DMG / ZIP、用户级 Applications、nohup 启动器、Finder 注册和卸载 | Developer ID 签名与公证 |
-| `scripts/render-icons.mjs` | Linux 通过 ImageMagick、macOS 通过 resvg 生成 PNG；Mac ICNS 由 builder 生成 | Windows ICO；继续以 `assets/emd.svg` 为唯一设计源 |
+| `scripts/render-icons.mjs` | 各平台通过 resvg 生成 PNG；Mac ICNS 由 builder 生成 | Windows ICO；继续以 `assets/emd.svg` 为唯一设计源 |
 | `electron/main.cjs` | Linux 的 `setDesktopName`；当前无边框透明窗口、自绘窗口按钮、应用菜单、快捷键和关闭窗口即退出的生命周期 | 各系统的窗口行为、macOS 菜单/Dock/生命周期、文件打开及快捷键验证 |
 | `src/App.tsx`、`src/components/Workspace.tsx` | 工作区根目录和后代判断使用 `/` | Windows 路径分隔符、盘符与 UNC 路径处理；本轮不改运行时 |
 | `electron/files.cjs`、本地资源协议 | 使用 Node 的 `path`、`fs`、文件 URL；原始字节保存和 inode 覆盖保护 | 各系统的文件系统语义、符号链接、本地资源 URL 验证 |

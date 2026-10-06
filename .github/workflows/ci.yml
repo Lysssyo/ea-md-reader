@@ -1,0 +1,71 @@
+name: Desktop validation
+
+on:
+  pull_request:
+  push:
+    branches: [main, codex/macos-packaging]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  desktop:
+    name: ${{ matrix.os }} / ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: x64
+            platform: kde
+          - os: macos-15
+            arch: arm64
+            platform: mac
+          - os: macos-15-intel
+            arch: x64
+            platform: mac
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      XDG_CURRENT_DESKTOP: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Record and assert native architecture
+        env:
+          EXPECTED_ARCH: ${{ matrix.arch }}
+        run: node -e "console.log({platform:process.platform,arch:process.arch,node:process.version}); if(process.arch!==process.env.EXPECTED_ARCH) process.exit(1)"
+      - name: Prepare Linux desktop tools
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y xvfb openbox x11-utils desktop-file-utils libgtk-3-0 libnss3 libasound2t64
+      - run: npm ci
+      - name: Build native application and archives
+        run: npm run pack -- --platform=${{ matrix.platform }}
+      - name: Shared files and platform contracts
+        run: node --test tests/files.test.cjs tests/platforms.test.mjs tests/mac-platform.test.mjs
+      - name: Electron UI on Linux
+        if: runner.os == 'Linux'
+        run: xvfb-run -a -s '-screen 0 2560x1440x24' sh -c 'openbox >/tmp/emd-openbox.log 2>&1 & npx playwright test --reporter=line,html && npx playwright test --config=playwright.packaged.config.cjs --reporter=line,html'
+      - name: Native Electron UI on macOS
+        if: runner.os == 'macOS'
+        run: npx playwright test --reporter=line,html
+      - name: Packaged app and system file dispatch
+        if: runner.os == 'macOS'
+        run: npx playwright test --config=playwright.packaged.config.cjs --reporter=line,html
+      - name: Preserve reports and native artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}-${{ matrix.arch }}
+          retention-days: 7
+          path: |
+            playwright-report/
+            test-results/
+            release/*.dmg
+            release/*.zip
+            release/*.tar.gz

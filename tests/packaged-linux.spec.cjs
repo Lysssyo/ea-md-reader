@@ -1,0 +1,28 @@
+const { test, expect, _electron: electron } = require('@playwright/test');
+const fs = require('node:fs/promises');
+const os = require('node:os');
+const path = require('node:path');
+
+test('Linux 原生打包产物启动且源文件保持只读', async () => {
+  test.skip(process.platform !== 'linux', '需要原生 Linux 打包产物');
+  const directory = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'emd-packaged-')));
+  const source = path.join(directory, '原生包.md');
+  const bytes = Buffer.from('\ufeff# 原生包\r\n\r\n只读内容。\r\n');
+  let application;
+  try {
+    await fs.writeFile(source, bytes);
+    application = await electron.launch({
+      executablePath: path.resolve('release/linux-unpacked/emd'),
+      args: ['--ozone-platform=x11', `--user-data-dir=${path.join(directory, 'profile')}`, source],
+    });
+    const page = await application.firstWindow();
+    await expect(page.locator('.vp-doc h1')).toHaveText('原生包');
+    expect(await application.evaluate(() => process.arch)).toBe(process.arch);
+    expect(await page.evaluate(() => typeof window.require)).toBe('undefined');
+    await page.screenshot({ path: test.info().outputPath('packaged-linux.png') });
+    expect(await fs.readFile(source)).toEqual(bytes);
+  } finally {
+    if (application) await application.close();
+    await fs.rm(directory, { recursive: true, force: true });
+  }
+});
