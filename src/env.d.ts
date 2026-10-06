@@ -2,14 +2,19 @@ type ReaderDocument = { id: string; path: string; name: string; text: string; } 
   { kind: 'markdown' } | { kind: 'html'; pageUrl: string }
 );
 interface WorkspaceNode { name: string; path: string; children?: WorkspaceNode[]; }
-interface ReaderWorkspace { root: string; name: string; nodes: WorkspaceNode[]; }
+interface ReaderWorkspace { root: string; name: string; nodes: WorkspaceNode[]; activeAncestors: string[]; }
+type ReaderCommand = 'openDocument' | 'saveAs' | 'closeTab' | 'reloadDocument' | 'findInDocument' | 'nextTab' | 'previousTab' | 'quit' | 'zoomIn' | 'zoomOut' | 'zoomReset' | 'toggleFullscreen' | 'toggleFileMenu';
+type CommandHints = Record<ReaderCommand, string>;
+type CommandAvailability = Record<ReaderCommand, boolean>;
+interface CommandAction { id: ReaderCommand; documentId: string | null; }
 interface WorkspaceAction { action: 'open' | 'new-tab' | 'refresh'; path?: string; }
 interface Window {
   emd: {
     window(action: 'minimize' | 'maximize' | 'close'): Promise<void>;
     onWindowState(listener: (maximized: boolean) => void): () => void;
-    ready(): Promise<void>;
-    open(): Promise<void>;
+    ready(): Promise<CommandHints>;
+    command(id: ReaderCommand, documentId?: string): Promise<boolean>;
+    activeDocument(id: string | null): Promise<CommandAvailability>;
     workspace(id: string, root?: string): Promise<ReaderWorkspace | null>;
     workspaceOpen(root: string, path: string, newTab: boolean, activeId: string): Promise<void>;
     workspaceMenu(root: string, path: string, activeId: string): Promise<void>;
@@ -21,7 +26,7 @@ interface Window {
     find(text: string, forward: boolean): Promise<void>;
     onDocument(listener: (document: ReaderDocument) => void): () => void;
     onActivate(listener: (id: string) => void): () => void;
-    onAction(listener: (action: string) => void): () => void;
+    onAction(listener: (action: CommandAction) => void): () => void;
     onAnchor(listener: (anchor: string) => void): () => void;
     onError(listener: (message: string) => void): () => void;
   };

@@ -146,7 +146,7 @@ test('渲染、只读、多标签、另存为、重读、第二次启动及相�
     await page.getByRole('button', { name: '还原窗口' }).click();
     await expect(page.getByRole('button', { name: '最大化窗口' })).toBeVisible();
     if (process.platform === 'darwin') {
-      expect(await application.evaluate(({ Menu }) => Menu.getApplicationMenu().items.map((item) => item.role.toLowerCase()))).toEqual(['appmenu', 'editmenu', 'windowmenu']);
+      expect(await application.evaluate(({ Menu }) => Menu.getApplicationMenu().items.filter((item) => item.role).map((item) => item.role.toLowerCase()))).toEqual(['appmenu', 'editmenu', 'windowmenu']);
     } else expect(await application.evaluate(({ Menu }) => Menu.getApplicationMenu())).toBe(null);
     await application.evaluate(({ dialog }, destination) => { dialog.showSaveDialog = async () => ({ canceled: false, filePath: destination }); }, copy);
     await page.getByRole('button', { name: '另存为', exact: true }).click();

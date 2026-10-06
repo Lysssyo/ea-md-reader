@@ -33,7 +33,7 @@ function publicDocument(document) {
   return document.kind === 'html' ? { ...result, pageUrl: `emd-page://${document.id}/index.html?revision=${randomUUID()}` } : result;
 }
 
-async function scanWorkspace(root) {
+async function scanWorkspace(root, activePath) {
   async function scan(directory) {
     const entries = await fs.readdir(directory, { withFileTypes: true });
     const nodes = [];
@@ -48,12 +48,24 @@ async function scanWorkspace(root) {
     }
     return nodes.sort((a, b) => Number(!a.children) - Number(!b.children) || a.name.localeCompare(b.name, 'zh-CN', { numeric: true }));
   }
-  return { root, name: path.basename(root), nodes: await scan(root) };
+  return { root, name: path.basename(root), nodes: await scan(root), activeAncestors: activePath ? workspaceContext(activePath, root).activeAncestors : [] };
 }
 
-function isWithin(root, filePath) {
-  const relative = path.relative(root, filePath);
-  return relative !== '' && !relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative);
+function isWithin(root, filePath, paths = path) {
+  const relative = paths.relative(root, filePath);
+  return relative !== '' && !relative.startsWith(`..${paths.sep}`) && relative !== '..' && !paths.isAbsolute(relative);
+}
+
+function workspaceContext(filePath, previousRoot, paths = path) {
+  const root = previousRoot && isWithin(previousRoot, filePath, paths) ? previousRoot : paths.dirname(filePath);
+  const activeAncestors = [];
+  let directory = paths.dirname(filePath);
+  while (isWithin(root, directory, paths)) {
+    activeAncestors.push(directory);
+    directory = paths.dirname(directory);
+  }
+  activeAncestors.push(root);
+  return { root, activeAncestors };
 }
 
 async function saveDocument(document, destination) {
@@ -69,4 +81,4 @@ async function saveDocument(document, destination) {
   await fs.writeFile(destination, document.bytes);
 }
 
-module.exports = { fileArguments, readDocument, publicDocument, saveDocument, scanWorkspace, isWithin, IMAGE_TYPES };
+module.exports = { fileArguments, readDocument, publicDocument, saveDocument, scanWorkspace, isWithin, workspaceContext, IMAGE_TYPES };
